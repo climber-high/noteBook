@@ -4,9 +4,7 @@
 
 > 一本无敌的电子书
 
-* Simple and lightweight (~12kb gzipped)
-* Multiple themes
-* Not build static html files
+* 666
 
 [GitHub](https://github.com/climber-high/noteBook)
 [起步](README.md)
