@@ -83,3 +83,7 @@
 	
 * PHP
 	* [php简介](notebook/PHP/php简介.md)
+	
+* Java
+	* [Java简介](notebook/Java/Java简介.md)
+	* [Java开发环境](notebook/Java/Java开发环境.md)
