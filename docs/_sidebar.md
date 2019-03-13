@@ -43,9 +43,13 @@
     * [gulp的使用](notebook/css/gulp.md)
     
 * javaScript
+	* [JS简介](notebook/javascript/js简介.md)
+	* [JS基本概念](notebook/javascript/JS基本概念.md)
+	* [JS基础](notebook/javascript/js基础.md)
+	* [JS基本类型](notebook/javascript/js基本类型.md)
 	* [string字符串常用方法](notebook/javascript/string字符串常用方法.md)
 	* [Date日期对象](notebook/javascript/Date日期对象.md)
-	* [JS基本概念](notebook/javascript/JS基本概念.md)
+	* [计时器](notebook/javascript/计时器.md)
 
 * ES6
 	* [ES6简介](notebook/ES6/ES6简介.md)
