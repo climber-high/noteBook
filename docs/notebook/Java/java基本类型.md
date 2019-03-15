@@ -140,3 +140,4 @@ float直接量需在数字后面加F或f
 float a=3.14F;
 ```
 
+## char
