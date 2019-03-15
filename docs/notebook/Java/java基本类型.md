@@ -73,13 +73,13 @@ int c=a+b;
 
 | 类型名称 | 字节空间 | 最大表达范围 |
 |:-----:|:-----:|:-----:|
-| int(整型) | 4个字节 | -21多个亿到21多个亿 |
+| int(整型) | 4个字节 | -21多个亿到21多个亿 2147483647   -2147483648|
 | long(长整型) | 8个字节 | 很大很大 |
-| double(双精度浮点型) | 8个字节 | 很大很大 |
+| double(双精度浮点型) | 8个字节 | 很大很大  有效数字16位，包括点|
 | boolean(布尔型) | 1个字节 |  |
 | char(字符型) | 2个字节 |  |
 | short(短整型) | 2个字节 | (很少使用) |
-| float(单精度浮点类型) | 4个字节 | (很少使用) |
+| float(单精度浮点类型) | 4个字节 | (很少使用)有效数字8位，包括点 ，超出会四舍五入|
 | byte(字节类型) | 1个字节 | (很少使用) |
 
 ## int
@@ -87,6 +87,56 @@ int c=a+b;
 1.整数直接量默认为int类型，但不能超范围，超范围则编译错误
 2.两个整数相除，结果还是整数，小数位无条件舍弃
 3.整数运算时，超范围则发生溢出，溢出是需要避免的
+
+System.out.println(5/2);    2
+System.out.println(2/5);    0
+System.out.println(5/2.0);  2.5
+System.out.println(5.0/2);  2.5
+
+int a=2147483647;
+a=a+1;
+System.out.println(a);
+int类型最大值加1，会变成最小值-2147483648。
+
 ```
 
- 
+## long
+```
+1.如果要表示long直接量，需要以L或l结尾
+long a=1000000000*2*10L;  
+System.out.println(a);  200亿
+
+long a=1000000000*3*10L;  
+System.out.println(a);  不是300亿（溢出）
+
+long a=1000000000L*3*10;  
+System.out.println(a);  300亿
+
+2.如果运算时有可能溢出，那么L加在第一个数的后面
+
+3.System.currentTimeMillis()用于获取1970年一月一号到现在的毫秒数
+
+long time=System.currentTimeMillis();
+System.out.println(time);
+
+4.比long大的**非基本数据类型BigInteger**
+
+```
+
+## double
+```
+1.浮点数直接量默认是double类型,若想表示float，需在**数字后加F和f**
+
+2.double运算时有可能会出现舍入**误差**,精确运算的场合,不能使用double和float,要用**非基本数据类型BigDecimal**
+
+double m=3.0,n=2.9;
+System.out.println(m-n);
+结果0.1会产生误差0.10000000000000009
+```
+
+## float
+```
+float直接量需在数字后面加F或f
+float a=3.14F;
+```
+
