@@ -160,4 +160,40 @@ float a=3.14F;
 ```
 
 
+## 基本数据类型转换(两种方式)
+```
+基本数据类型从小到大依次为
+byte → short → int → long → float → double  
+				↑
+		char → 
 
+1.自动类型转换：从小类型到大类型（隐式类型转换）
+2.强制类型转换：从大类型到小类型
+
+
+int a=5;
+long b=a; //自动类型转换
+
+int c=(int)b; //强制类型转换
+
+long d=5;  //自动类型转换
+double e=5; //自动类型转换
+
+long f=10000000000L;
+int g=(int)f;  //强制类型转换有可能溢出
+
+double h=56.789123;
+int i=int(h);   //强制类型转换有可能丢失精度
+
+两点规则：
+1.整数直接量可以直接赋值给byte,short,char，但不能超出范围
+byte b1=5;
+
+2.byte,short,char型数据参与运算时，先一律转换为int再运算
+
+byte b1=5;
+byte b2=6;
+byte b3=(byte)(b1+b2);
+
+System.out.println('2'+'2');  //输出结果为100
+```

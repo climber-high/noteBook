@@ -88,4 +88,5 @@
 	* [Java简介](notebook/Java/Java简介.md)
 	* [Java开发环境](notebook/Java/Java开发环境.md)
 	* [Java基本类型](notebook/Java/Java基本类型.md)
+	* [运算符和表达式](notebook/Java/运算符和表达式.md)
 
