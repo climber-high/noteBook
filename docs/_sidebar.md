@@ -77,7 +77,7 @@
 	* [网络基础概念](notebook/Apache/网络基础概念.md)
 	* [Apache工作内容](notebook/Apache/Apache工作内容.md)
 	* [安装Apache](notebook/Apache/安装apache.md)
-	* [配置Apache](notebook/Apache/配置apache.md)
+	* [配置Apache](notebook/Apache/配置Apache.md)
 	* [虚拟主机配置](notebook/Apache/虚拟主机配置.md)
 	* [配置支持php](notebook/Apache/配置php支持.md)
 	
