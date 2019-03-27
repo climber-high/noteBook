@@ -170,7 +170,6 @@ byte → short → int → long → float → double
 1.自动类型转换：从小类型到大类型（隐式类型转换）
 2.强制类型转换：从大类型到小类型
 
-
 int a=5;
 long b=a; //自动类型转换
 
