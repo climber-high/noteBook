@@ -91,4 +91,5 @@
 	* [运算符和表达式](notebook/Java/运算符和表达式.md)
 	* [分支结构](notebook/Java/分支结构.md)
 	* [循环结构](notebook/Java/循环结构for.md)
+	* [数组](notebook/Java/数组.md)
 
