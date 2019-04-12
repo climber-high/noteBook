@@ -92,4 +92,5 @@
 	* [分支结构](notebook/Java/分支结构.md)
 	* [循环结构](notebook/Java/循环结构for.md)
 	* [数组](notebook/Java/数组.md)
+	* [方法](notebook/Java/方法.md)
 
