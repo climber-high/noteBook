@@ -94,5 +94,6 @@
 	* [数组](notebook/Java/数组.md)
 	* [方法](notebook/Java/方法.md)
 	* [对象](notebook/Java/对象.md)
+	* [访问控制、static和final](notebook/Java/访问控制、static和final.md)
 	* [经典题目](notebook/Java/经典题目.md)
 
