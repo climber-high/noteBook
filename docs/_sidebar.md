@@ -99,5 +99,6 @@
 	* [内部类](notebook/Java/内部类.md)
 	* [接口](notebook/Java/接口.md)
 	* [多态](notebook/Java/多态.md)
+	* [对象内存管理](notebook/Java/对象内存管理.md)
 	* [经典题目](notebook/Java/经典题目.md)
 
