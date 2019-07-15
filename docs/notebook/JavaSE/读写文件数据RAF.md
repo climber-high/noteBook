@@ -84,3 +84,83 @@ while((len=txt.read(data))!=-1) {
 	txt2.write(data,0,len);
 }
 ```
+
+### 新建文件并写入字符串
+
+例:
+```
+RandomAccessFile raf = new RandomAccessFile("dat.txt","rw");
+String str = "123";
+raf.write(str.getBytes("UTF-8"));
+raf.close();
+System.out.println("写入完成");
+```
+
+
+### RAF读写基本类型数据，以及基于指针的操作
+
+>RAF总是在指针当前位置或读或写，并且读写完毕后指针会自动向后移动，以备下次读写操作。
+
+### 位移运算>>>,(将给定数字二进制整体向右移动指定位)
+
+>在文件写入一个int最大值
+
+例:
+```
+RandomAccessFile raf = new RandomAccessFile("raf.dat","rw");
+int max = Integer.MAX_VALUE;
+raf.write(max>>>24);
+raf.write(max>>>16);
+raf.write(max>>>8);
+raf.write(max);
+raf.close();
+```
+### void writeInt(int i)
+
+>RAF提供了方便写出基本类型数据的方法(连续写出4个字节，将int的值写入文件)
+
+其他基本类型方法也有:
+1.void writeLong(long l)
+2.void writeDouble(double d)
+
+例:
+```
+RandomAccessFile raf = new RandomAccessFile("raf.dat","rw");
+int max = Integer.MAX_VALUE;
+raf.writeInt(max);
+```
+
+### int readInt()
+
+>连续读取4个字节，将int值返回
+
+**如果读的字节比文件末尾的字节数大，那么会报错java.io.EOFException（end of file）**
+
+例:
+```
+RandomAccessFile raf = new RandomAccessFile("raf.dat","rw");
+raf.writInt(1);   //连续写4个字节,写完再读要用void seek(指定位置)，不然有可能报错
+raf.seek(0);
+raf.readInt();    //1
+```
+
+### void seek(long pos)
+
+>将指针移动到指定位置
+
+例:
+```
+RandomAccessFile raf = new RandomAccessFile("raf.dat","rw");
+raf.seek(0);
+raf.writInt(1);
+```
+
+### long getFilePointer()
+
+>返回当前RAF的指针位置
+
+例:
+```
+RandomAccessFile raf = new RandomAccessFile("raf.dat","rw");
+long a = raf.getFilePointer();
+```
