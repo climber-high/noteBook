@@ -100,13 +100,15 @@ bos.close();
 >当一个类的实现希望可以被对象流进行读写，那么该类必须实现Serializable接口
 
 例:
+一个类的实例在序列化时可以忽略不必要的属性来减少字节量从而降低资源开销。**transient**关键字只有**序列化时有效**，不会对属性有其他任何影响
 ```
 import java.io.Serializable;
 public class Preson implements Serializable{
 	private String name;
 	private int age;
 	private String gender;
-	private String[] otherInfo;
+    
+	private transient String[] otherInfo;
     ...get和set方法
     public String toString() {
 		return name+","+age+","+gender+","+Arrays.toString(otherInfo);
@@ -140,13 +142,144 @@ oos.close();
 例:
 ```
 public static void main(String[] args) throws IOException, ClassNotFoundException{
-	FileInputStream fis = new FileInputStream("data.obj");
-	ObjectInputStream ois = new ObjectInputStream(fis);
-	Preson p = (Preson)ois.readObject();
-	System.out.println(p);
-	ois.close();
+    FileInputStream fis = new FileInputStream("data.obj");
+    ObjectInputStream ois = new ObjectInputStream(fis);
+
+	//readObject返回值为Object类型，要强转为Preson类型
+    Preson p = (Preson)ois.readObject();
+    System.out.println(p);
+    ois.close();
 }
 ```
+
+## 文本数据IO操作
+
+>java将流按照读写的数据单位进行了划分
+
+1.字节流:以字节为单位读写数据。超类为InputStream 和 OutputStream。
+2.字符流:以字符为单位读写数据，超类Reader,Writer
+
+**字符流只用于读写文本数据，底层实际还是读写字节，但是字符与字节的转换工作字符流自行完成了。**
+
+>转换流（java.io.InputStreamReader 和 java.io.OutputStreamWriter）
+
+它们是一对高级流，将来在实际开发中不直接操作它们但是它们在流连接中起到很重要的作用。使用来衔接其他字符流与字节流的。(java中其他的字符流在流连接中都只能连接在其他字符流上，不能直接连接在字节流上)
+
+>OutputStreamWriter(直接写字符串到文件)
+
+例:
+```
+FileOutputStream fos = new FileOutputStream("osw.txt");
+//将字符按照指定的字符集转换为字节
+OutputStreamWriter osw = new OutputStreamWriter(fos,"UTF-8");
+
+osw.write("一二三");
+System.out.println("写入完毕");
+osw.close();
+```
+
+>InputStreamReader()读取文本数据
+
+例:
+```
+//		将文件中的字符读取出来
+FileInputStream fos = new FileInputStream("osw.txt");
+InputStreamReader isr = new InputStreamReader(fos,"UTF-8");
+
+int d = -1;
+while((d=isr.read())!=-1) {
+    System.out.print((char)d);
+}
+
+字符流的int read()方法:
+读取一个字符，返回值以int型返回，但实际表示的是一个char,若返回值为-1则表示流读取到末尾。
+
+该方法实际读取几个字节取决于指定的字符集以及实际读取的数据表示的字符内容，但是字符流会自行判定读取几个字节还原对应字符。
+```
+
+## 缓冲字符流(BufferedWriter 和 BufferedReader)
+
+>缓冲流可以提高读写文本数据的效率。并且可以按行读写文本数据。
+
+>java.io.PrintWriter:具有自动行刷新的缓冲字符流内部连接BufferedWriter作为其缓冲加速的部分。
+
+例:
+```
+PrintWriter pw = new PrintWriter("pw.txt","UTF-8");
+pw.println("一二三");
+System.out.println("写出完毕");
+pw.close();
+```
+
+**PrintWrite是一个高级流**
+里面用到的流:
+PrintWrite -->
+（**缓冲字符流**自动行刷新，按行写出字符串）
+
+BufferedWriter-->
+（**缓冲流**块写文本数据，提高写出效率）
+
+OutputStreamWriter -->
+（**转换流**将字符按照指定的字符集转化为字节）
+
+FileOutputStream
+(**文件流**将字节写入文件)
+
+例:
+```
+FileOutputStream fos = new FileOutputStream("aaa.txt");
+OutputStreamWriter osw = new OutputStreamWriter(fos,"UTF-8");
+BufferedWriter bw = new BufferedWriter(osw);
+PrintWriter pw =new PrintWriter(bw);
+
+pw.println("7");
+System.out.println("写完");
+pw.close();
+```
+
+>如果PrintWriter第一个参数为流，那么可以填入第二个boolean型参数,自动行刷新，pw.println()调用时会自动行刷新，每一行自动执行pw.flush()。pw.print()不会行刷新
+
+**缓冲字符输入流BufferedReader**
+
+>特点:提高读取文本数据效率(块读)，还可以按行读取字符串
+
+例:
+```
+FileInputStream fis = new FileInputStream("src/IO/BRDemo.java");
+InputStreamReader isr = new InputStreamReader(fis);
+BufferedReader br = new BufferedReader(isr);
+
+String line = null;
+while((line=br.readLine())!=null) {
+        System.out.println(line);
+}
+
+br.close();
+```
+
+**String readLine()**
+
+缓冲字符输入流**BufferReader**提供的独有方法，该方法用来一次性读取一行字符串。一行结束的标志是读取到换行符，但是返回的字符串中不含有最后的换行符。若返回值为null，则表示流读取到了末尾。如果某一行只有换行符，返回值为空字符串。
+
+
+                         输入流               						输出流
+                    超类:InputStream      					超类:OutputStream
+                     低级流 | 高级流          					低级流 | 高级流
+	字节流  FileInoutStream | BufferedInputStream  	FileInoutStream | BufferedOutputStream
+    					  | ObjectInputStream                        | ObjectOutputStream
+
+                      超类:Reader           						超类:Writer
+                     低级流 | 高级流        						             低级流 | 高级流
+    字符流                  | InputStreamReader                        | OutputStreamWriter
+                 | BufferReader                             | BufferedWriter
+     		  	    	   				                     | PrintWrite
+
+
+
+
+
+
+
 
 
 
