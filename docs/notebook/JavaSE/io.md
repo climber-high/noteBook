@@ -139,6 +139,7 @@ oos.close();
 >对象输入流(进行对象的反序列化操作)
 
 **使用对象流读取的字节必须时通过对象输出流序列化的一组字节才可以**
+
 例:
 ```
 public static void main(String[] args) throws IOException, ClassNotFoundException{
@@ -194,7 +195,8 @@ while((d=isr.read())!=-1) {
 字符流的int read()方法:
 读取一个字符，返回值以int型返回，但实际表示的是一个char,若返回值为-1则表示流读取到末尾。
 
-该方法实际读取几个字节取决于指定的字符集以及实际读取的数据表示的字符内容，但是字符流会自行判定读取几个字节还原对应字符。
+该方法实际读取几个字节取决于指定的字符集以及实际读取的数据表示的字符内容，但是字符流会自行判定读取几个字节
+还原对应字符。
 ```
 
 ## 缓冲字符流(BufferedWriter 和 BufferedReader)
@@ -212,7 +214,9 @@ pw.close();
 ```
 
 **PrintWrite是一个高级流**
+
 里面用到的流:
+
 PrintWrite -->
 （**缓冲字符流**自动行刷新，按行写出字符串）
 
@@ -266,13 +270,13 @@ br.close();
                     超类:InputStream      					超类:OutputStream
                      低级流 | 高级流          					低级流 | 高级流
 	字节流  FileInoutStream | BufferedInputStream  	FileInoutStream | BufferedOutputStream
-    					  | ObjectInputStream                        | ObjectOutputStream
+    					   | ObjectInputStream                        | ObjectOutputStream
 
-                      超类:Reader           						超类:Writer
-                     低级流 | 高级流        						             低级流 | 高级流
+                      超类:Reader           					     超类:Writer
+                     低级流 | 高级流        					  低级流 | 高级流
     字符流                  | InputStreamReader                        | OutputStreamWriter
-                 | BufferReader                             | BufferedWriter
-     		  	    	   				                     | PrintWrite
+                 		  | BufferReader                       	  | BufferedWriter
+     		  	    	   				                    	| PrintWrite
 
 
 
