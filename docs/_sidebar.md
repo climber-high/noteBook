@@ -116,6 +116,7 @@
 	* [多线程](notebook/JavaSE/多线程.md)
 	* [集合](notebook/JavaSE/集合.md)
 	* [Map](notebook/JavaSE/Map.md)
+	* [maven配置](notebook/JavaSE/maven配置.md)
 	* [WebServer](notebook/JavaSE/WebServer.md)
 
 * 数据库
