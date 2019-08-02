@@ -116,8 +116,13 @@
 	* [多线程](notebook/JavaSE/多线程.md)
 	* [集合](notebook/JavaSE/集合.md)
 	* [Map](notebook/JavaSE/Map.md)
+	* [XML](notebook/JavaSE/XML.md)
+	* [反射](notebook/JavaSE/反射.md)
+	* [线程池](notebook/JavaSE/线程池.md)
+	* [Date对象](notebook/JavaSE/date.md)
 	* [maven配置](notebook/JavaSE/maven配置.md)
 	* [WebServer](notebook/JavaSE/WebServer.md)
+	
 
 * 数据库
 	* [数据库操作命令](notebook/数据库/mysql.md)
