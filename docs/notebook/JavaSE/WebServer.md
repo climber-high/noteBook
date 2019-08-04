@@ -1,5 +1,3 @@
-doc.canglaoshi.org
-
 ### WebServer是模拟Tomcat实现的一个Web容器 
 
 >Web容器的主要职责是管理其下部署的多个webapp并且通过TCP协议与HTTP协议等与客户端建立连接，使得用户可以通过客户端(通常是浏览器)与服务端建立连接并访问webapp中的功能。

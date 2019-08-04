@@ -120,6 +120,7 @@
 	* [反射](notebook/JavaSE/反射.md)
 	* [线程池](notebook/JavaSE/线程池.md)
 	* [Date对象](notebook/JavaSE/date.md)
+	* [lambda表达式](notebook/JavaSE/lambda.md)
 	* [maven配置](notebook/JavaSE/maven配置.md)
 	* [WebServer](notebook/JavaSE/WebServer.md)
 	
