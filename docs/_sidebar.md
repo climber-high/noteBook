@@ -51,6 +51,9 @@
 	* [Date日期对象](notebook/javascript/Date日期对象.md)
 	* [计时器](notebook/javaScript/计时器.md)
 
+* JQuery
+	* [JQ方法](notebook/JQuery/jq.md)
+
 * ES6
 	* [ES6简介](notebook/ES6/ES6简介.md)
 
@@ -123,7 +126,7 @@
 	* [lambda表达式](notebook/JavaSE/lambda.md)
 	* [maven配置](notebook/JavaSE/maven配置.md)
 	* [WebServer](notebook/JavaSE/WebServer.md)
+	* [进制](notebook/JavaSE/bin.md)
 	
-
 * 数据库
 	* [数据库操作命令](notebook/数据库/mysql.md)
