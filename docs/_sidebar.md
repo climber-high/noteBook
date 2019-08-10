@@ -48,7 +48,7 @@
 	* [JS基础](notebook/javaScript/js基础.md)
 	* [JS基本类型](notebook/javaScript/js基本类型.md)
 	* [string字符串常用方法](notebook/javaScript/string字符串常用方法.md)
-	* [Date日期对象](notebook/javascript/Date日期对象.md)
+	* [Date日期对象](notebook/javaScript/Date日期对象.md)
 	* [计时器](notebook/javaScript/计时器.md)
 
 * JQuery
@@ -130,3 +130,5 @@
 	
 * 数据库
 	* [数据库操作命令](notebook/数据库/mysql.md)
+	* [SQL基本语句](notebook/数据库/SQL基本语句.md)
+	* [约束,查询语句](notebook/数据库/约束,查询语句.md)
