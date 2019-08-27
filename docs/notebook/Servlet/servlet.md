@@ -68,7 +68,81 @@ resp.setContentType("text/html;charset=utf-8");
 - 此方法给浏览器返回一个地址和302状态码，当浏览器接收到302状态码的时候会立即向地址放送请求
 
 
+## Thymeleaf
+
+>什么是Thymeleaf:Thymeleaf是一个模板引擎，功能是将一个html页面作为一个模板，并根据模板中特定的标记 对模板中的内容进行替换或修改，最后形成一个新的html
+
+>为什么使用Thymeleaf:如果不使用Thymeleaf 我们需要在Servlet里面即需要处理数据也许处理复杂的html标签， 使用Thymeleaf后可以将html标签部分从Servlet中分离出来，仍然在单独的html页面文件中写页面相关内容
 
 
+配置:
+```
+    <dependency>
+      <groupId>org.thymeleaf</groupId>
+      <artifactId>thymeleaf</artifactId>
+      <version>3.0.9.RELEASE</version>
+    </dependency>
+```
 
+例:
+```
+//创建模板引擎对象
+TemplateEngine te = new TemplateEngine();
+//创建解析器
+ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
+
+//设置字符集
+resolver.setCharacterEncoding("utf-8");
+//把解析器和模板引擎关联
+te.setTemplateResolver(resolver);
+
+//创建上下文对象，用于传递参数
+Context context = new Context();
+context.setVariable("msg", "Hello Thymeleaf");
+
+//把数据加载到页面中
+String html = te.process("hello.html", context);
+
+//把html返回给客户端
+response.setContentType("text/html;charset=utf-8");
+PrintWriter pw = response.getWriter();
+pw.println(html);
+pw.close();
+
+HTML代码:
+<h1 th:text="${msg}">abcd</h1>
+```
+
+## Thymeleaf 属性
+
+1. th:text 类似于innerText
+例:
+```
+<div th:text="${user.name}"></div>
+```
+
+2. th:utext 类似于innerHTML
+例:
+```
+<div th:utext="${msg}"></div>
+```
+
+3. 如果需要给页面传递多个相关参数，可以将多个相关参数封装到一个对象中，这样只需要给页面传递一个对象即可，在页面中通过以下方式获取数据
+4.th:remove="all"  当动态加载页面时删除标签
+例:
+```
+<div th:remove="all"></div>
+```
+
+5.th:each="e : ${emps}" 遍历集合中的对象 
+例:
+```
+<tr th:each="e : ${emps}">
+    <td th:text="${e.empno}"></td>
+    <td th:text="${e.ename}"></td>
+    <td th:text="${e.sal}"></td>
+</tr>
+```
+
+6.th:src=@{images/img{n}.jpg(n=${first.articleRandomDouble%20})}
 
