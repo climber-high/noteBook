@@ -513,52 +513,58 @@ public class HelloController {
 
 1. 在服务器端创建cn.climber.ajax.User类，在类中声明属性：
 
-	public class User {
-	    private Integer id;
-	    private String username;
-	    private String password;
-	    private Integer age;
-	    private String phone;
-	    private String email;
-	    //get和set方法，toString方法
-	}
+```
+public class User {
+    private Integer id;
+    private String username;
+    private String password;
+    private Integer age;
+    private String phone;
+    private String email;
+    //get和set方法，toString方法
+}
+```
 	
 2. 然后，在项目中添加jackson依赖：
 
-	<dependency>
-	    <groupId>com.fasterxml.jackson.core</groupId>
-	    <artifactId>jackson-databind</artifactId>
-	    <version>2.9.8</version>
-	</dependency>
-
+```
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.9.8</version>
+</dependency>
+```
 3. 还需要Spring的配置文件中添加配置：
 
-	<!-- 注解驱动 -->
-	<mvc:annotation-driven />
+```
+<!-- 注解驱动 -->
+<mvc:annotation-driven />
+```
 
 以上添加的jackson依赖可以自动将处理请求的方法返回的对象组织为JSON数据格式。
 
 当SpringMVC框架向客户端响应正文时，框架内部需要使用Converter(转换器)将方法的返回值转换为字符串响应给客户端，如果返回值的类型是`String`类型，会使用`StringHttpMessageConverter`转换器，如果返回值的类型是SpringMVC框架默认不可识别的类型(例如开发者自定义的数据类型)，将会自动使用Jackson框架内部的转换器，Jackson框架内部的转换器会自动将对象转换为JSON格式的字符串，并且，在响应头(Response Headers)中，将`Content-Type`值设置为`application/json;charset=utf-8`，所以，响应的数据中是可以包含中文的！
 
 4. 返回JSON数据
-	
-	@Controller
-	public class HelloController {
-		@RequestMapping("hello.do")
-		@ResponseBody
-		public User showHello() {
-			System.out.println("HelloController.showHello");
-			User user = new User();
-			user.setId(1);
-			user.setUsername("John");
-			user.setPassword("123456");
-			user.setAge(23);
-			user.setPhone("13800138001");
-			user.setEmail("john@tedu.cn");
-			return user;
-		}
-	}
 
+```
+@Controller
+public class HelloController {
+	@RequestMapping("hello.do")
+	@ResponseBody
+	public User showHello() {
+		System.out.println("HelloController.showHello");
+		User user = new User();
+		user.setId(1);
+		user.setUsername("John");
+		user.setPassword("123456");
+		user.setAge(23);
+		user.setPhone("13800138001");
+		user.setEmail("john@tedu.cn");
+		return user;
+	}
+}
+```
 **小结：当服务器需要向客户端响应JSON格式的数据时，应该自定义某个数据类型，把要响应的属性设计为该类的属性，然后，在控件器处理请求的方法中，返回该类型的对象即可！**
 
 ### 附1：GET与POST的区别
