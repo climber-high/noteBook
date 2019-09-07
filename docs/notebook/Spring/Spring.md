@@ -322,6 +322,20 @@ public class DemoBean {
 
 ### 利用IOC、DI创建数据库连接池对象
 
+在pom.xml配置依赖
+```
+<dependency>
+	<groupId>mysql</groupId>
+	<artifactId>mysql-connector-java</artifactId>
+	<version>5.1.6</version>
+</dependency>
+<dependency>
+	<groupId>commons-dbcp</groupId>
+	<artifactId>commons-dbcp</artifactId>
+	<version>1.4</version>
+</dependency>
+```
+
 例:
 ```
 <bean id="ds" class="org.apache.commons.dbcp.BasicDataSource">
