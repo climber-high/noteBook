@@ -223,14 +223,23 @@ public class TestCase {
 
 例:
 ```
-<bean id="demoBean" class="pack.DemoBean" lazy-init="true"></bean>
+<bean id="demoBean" class="pack.DemoBean" lazy-init="true">
+	<property name="num" value="1"></property> //依赖注入
+</bean>
 ```
 
 DemoBean类:
 ```
 public class DemoBean {
+	private int num;
+
 	public DemoBean() {
 		System.out.println("创建DemoBean对象");
+	}
+	
+	//bean不设置lazy-init，set方法也会在容器启动时立即创建对象执行这个方法
+	public void setNum(int num){
+		this.num=num;
 	}
 }
 ```
