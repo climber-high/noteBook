@@ -55,7 +55,7 @@ System.out.println(bean);
 
 例:
 ```
-class User{
+class User implements Serializable{
 	private int age; //对象属性，实例变量
     private String name;  //对象属性，实例变量
     private boolean married; //对象属性，实例变量
