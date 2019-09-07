@@ -226,6 +226,15 @@ public class TestCase {
 <bean id="demoBean" class="pack.DemoBean" lazy-init="true"></bean>
 ```
 
+DemoBean类:
+```
+public class DemoBean {
+	public DemoBean() {
+		System.out.println("创建DemoBean对象");
+	}
+}
+```
+
 ## DI 依赖注入
 
 >Spring在初始化Bean的时候，按照配置约定的规则将Bean组件依赖的Bean注入到Bean属性中；被依赖的对象获得方式，通过运行环境自动注入，称为依赖注入。
