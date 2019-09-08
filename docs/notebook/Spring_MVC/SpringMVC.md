@@ -375,13 +375,16 @@ public String handlerLogin(String username,String password,ModelMap modelMap) {
 
 >转发与重定向区别
 
-    	转发时，客户端只发出了1次请求，在浏览器的地址栏中显示的URL就是请求的URL，如果提交的请求是POST请求，刷新时还会重新提交请求数据；重定向时，客户端发出了2次请求，第1次请求时，服务器端会响应302状态码及重定向的目标路径，客户端再次自动发出第2次请求，最终在浏览器的地址栏中显示的URL是第2次请求的URL，在刷新只也会向第2个请求路径再次发出请求。
+    	转发时，客户端只发出了1次请求，在浏览器的地址栏中显示的URL就是请求的URL，如果提交的请求是POST请求，
+	刷新时还会重新提交请求数据；重定向时，客户端发出了2次请求，第1次请求时，服务器端会响应302状态码及重
+	定向的目标路径，客户端再次自动发出第2次请求，最终在浏览器的地址栏中显示的URL是第2次请求的URL，在刷新
+	只也会向第2个请求路径再次发出请求。
 
 ##  关于@RequestMapping
 
 >在方法的声明之前添加`@RequestMapping`注解，用于配置请求路径与处理请求的方法的映射关系！
 
-==也可以类的声明之前添加该注解，则当前类中所有处理请求的路径之前都会添加配置值，类似于多了一层文件夹！==
+也可以类的声明之前添加该注解，则当前类中所有处理请求的路径之前都会添加配置值，类似于多了一层文件夹！
 
 例:
 ```
@@ -429,7 +432,7 @@ public String showRegister() { }
 
 >可以在处理请求的方法的参数之前添加`@RequestParam`注解！
 
-==1.通过配置`name`/`value`属性可以解决客户端提交的参数名称与服务器端要求的名称不一致的问题==
+1. 通过配置`name`/`value`属性可以解决客户端提交的参数名称与服务器端要求的名称不一致的问题
 
 例:
 ```
@@ -442,7 +445,7 @@ HTTP Status 400 – Bad Request
 Message:Required String parameter 'uname' is not present
 ```
 
-==2.required 设置该请求参数是否为必须的，默认为true(必填)==
+2. required 设置该请求参数是否为必须的，默认为true(必填)
 
 **如果并不是强制要求提交该参数，可以显式的将属性设置为`false`**
 
@@ -451,7 +454,7 @@ Message:Required String parameter 'uname' is not present
 @RequestParam(name="uname", required=false) String username
 ```
 
-==3.defaultValue 客户端没有传参数给服务端时，服务端自己设的默认值==
+3. defaultValue 客户端没有传参数给服务端时，服务端自己设的默认值
 
 > 当需要设置defaultValue属性以配置默认值时，需要显式的将required设置为false，否则，配置的defaultValue将没有意义！
 
@@ -488,6 +491,81 @@ Message:Required String parameter 'uname' is not present
     <url-pattern>/*</url-pattern>
 </filter-mapping>
 ```
+
+## 服务器向客户端响应正文
+
+>在SpringMVC项目中，可以将处理请求的方法的返回值类型设置为`String`，表示需要响应的正文，然后，在方法之前添加`@ResponseBody`注解，表示本次响应将不再是转发或重定向，而是直接将方法的返回值响应给客户端，其它配置或操作与一般的SpringMVC项目完全相同
+
+```
+@Controller
+public class HelloController {
+    @RequestMapping("hello.do")
+    @ResponseBody
+    public String showHello() {
+        System.out.println("HelloController.showHello()");
+        return "success";
+    }
+}
+```
+**由于默认的响应头中设置的Content-Type值为text/html; charset=ISO-8859-1，所以，默认情况下，如果直接返回中文，在浏览器中看到的会是乱码！**
+
+## 服务器向客户端响应JSON格式的数据
+
+1. 在服务器端创建cn.climber.ajax.User类，在类中声明属性：
+
+```
+public class User {
+    private Integer id;
+    private String username;
+    private String password;
+    private Integer age;
+    private String phone;
+    private String email;
+    //get和set方法，toString方法
+}
+```
+	
+2. 然后，在项目中添加jackson依赖：
+
+```
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.9.8</version>
+</dependency>
+```
+3. 还需要Spring的配置文件中添加配置：
+
+```
+<!-- 注解驱动 -->
+<mvc:annotation-driven />
+```
+
+以上添加的jackson依赖可以自动将处理请求的方法返回的对象组织为JSON数据格式。
+
+当SpringMVC框架向客户端响应正文时，框架内部需要使用Converter(转换器)将方法的返回值转换为字符串响应给客户端，如果返回值的类型是`String`类型，会使用`StringHttpMessageConverter`转换器，如果返回值的类型是SpringMVC框架默认不可识别的类型(例如开发者自定义的数据类型)，将会自动使用Jackson框架内部的转换器，Jackson框架内部的转换器会自动将对象转换为JSON格式的字符串，并且，在响应头(Response Headers)中，将`Content-Type`值设置为`application/json;charset=utf-8`，所以，响应的数据中是可以包含中文的！
+
+4. 返回JSON数据
+
+```
+@Controller
+public class HelloController {
+	@RequestMapping("hello.do")
+	@ResponseBody
+	public User showHello() {
+		System.out.println("HelloController.showHello");
+		User user = new User();
+		user.setId(1);
+		user.setUsername("John");
+		user.setPassword("123456");
+		user.setAge(23);
+		user.setPhone("13800138001");
+		user.setEmail("john@tedu.cn");
+		return user;
+	}
+}
+```
+**小结：当服务器需要向客户端响应JSON格式的数据时，应该自定义某个数据类型，把要响应的属性设计为该类的属性，然后，在控件器处理请求的方法中，返回该类型的对象即可！**
 
 ### 附1：GET与POST的区别
 
