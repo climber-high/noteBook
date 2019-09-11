@@ -239,8 +239,12 @@ public JsonResult reg(User user) {
 }
 ```
 
+针对响应的JSON字符串中包括许多为null的属性，可以在对应的类的属性之前添加`@JsonInclude(value=Include.NON_NULL)`注解配置，则当属性为null时，该属性将不会被序列化到JSON字符串中，也可以将该注解添加在类的声明之前，则该类中所有属性都有这样的特点！
 
+**如果希望当前项目中，所有序列化为JSON的过程都有这样的效果，可以在application.properties中添加配置：**
 
-
+```
+spring.jackson.default-property-inclusion=NON_NULL
+```
 
 
