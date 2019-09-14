@@ -153,3 +153,5 @@
 	
 * SpringBoot
 	* [SpringBoot](notebook/SpringBoot/SpringBoot.md)
+	* [添加异常处理配置](notebook/SpringBoot/SpringBoot异常处理.md)
+	* [密码加密](notebook/SpringBoot/密码加密.md)
