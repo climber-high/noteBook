@@ -147,6 +147,7 @@
 * Spring MVC
 	* [Spring_MVC](notebook/Spring_MVC/SpringMVC.md)
 	* [SpringMVC中Session和拦截器](notebook/Spring_MVC/SpringMVC中Session和拦截器.md)
+	* [处理文件上传](notebook/Spring_MVC/处理文件上传.md)
 
 * MyBatis
 	* [MyBatis](notebook/MyBatis/MyBatis.md)
