@@ -23,7 +23,7 @@ date.setTime(0);
 System.out.println(date);
 ```
 
-## SimpleDateFormat
+## SimpleDateFormat(非线程安全)
 
 >java.text.SimpleDateFormat
 
@@ -42,6 +42,30 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 String str = sdf.format(date);
 System.out.println(str);
 ```
+
+**SimpleDateFormat是线程不安全的类，一般不要定义位static变量，如果定义为static，必须加锁，或者使用DateUtils工具类。**
+
+正例：注意线程安全，使用DateUtils。亦推荐如下处理
+```
+private static final ThreadLocal<DateFormat> df = new ThreadLocal<DateFormat>(){
+    @Override
+    protected DateFormat initialValue(){
+        return new SimpleDateFormat("yyyy-MM-dd");
+    }
+};
+```
+>如果是JDK8的应用，可以使用Instant代替Date，LocalDateTime代替Calendar,DateTimeFormatter 代替SimpleDateFormat
+
+
+## LocalDateTime,LocalDate,LocalTime(线程安全)
+
+>jdk1.8可以使用
+
+```
+LocalDateTime d = LocalDateTime.now();
+System.out.println(d);
+```
+
 
 ##### Date parse(String line)
 
