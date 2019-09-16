@@ -114,12 +114,13 @@ System.out.println(a);  300亿
 
 2.如果运算时有可能溢出，那么L加在第一个数的后面
 
-3.System.currentTimeMillis()用于获取1970年一月一号到现在的毫秒数
+3.System.currentTimeMillis() 用于获取1970年一月一号到现在的毫秒数
+  System.nanoTime() 用于获取1970年一月一号到现在的纳秒数
 
 long time=System.currentTimeMillis();
 System.out.println(time);
 
-4.比long大的**非基本数据类型BigInteger**
+4.比long大的非基本数据类型BigInteger
 
 ```
 
