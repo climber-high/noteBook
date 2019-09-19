@@ -38,3 +38,18 @@ try {
 2. 如果某个业务涉及2次或更多次增删改(例如2次Update，或1次Delete加1次Update，或1次Insert加1次Delete)，必须在业务方法之前添加@Transactional注解！
 
 **另外，该注解也可以添加在业务类的声明之前，则表示该类中所有业务方法都是以事务的方式来运行的！一般没有这个必要，所以，在需要使用事务的方法之前添加该注解即可！**
+
+## MYSQL 事务处理主要有两种方法：
+
+1. 用 BEGIN, ROLLBACK, COMMIT来实现
+BEGIN 开始一个事务
+ROLLBACK 事务回滚
+COMMIT 事务确认
+
+2. 直接用 SET 来改变 MySQL 的自动提交模式:
+SET AUTOCOMMIT=0 禁止自动提交
+SET AUTOCOMMIT=1 开启自动提交
+
+
+
+
