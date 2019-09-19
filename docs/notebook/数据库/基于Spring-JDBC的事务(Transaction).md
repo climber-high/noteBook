@@ -42,14 +42,17 @@ try {
 ## MYSQL 事务处理主要有两种方法：
 
 1. 用 BEGIN, ROLLBACK, COMMIT来实现
+```
 BEGIN 开始一个事务
 ROLLBACK 事务回滚
 COMMIT 事务确认
+```
 
 2. 直接用 SET 来改变 MySQL 的自动提交模式:
+```
 SET AUTOCOMMIT=0 禁止自动提交
 SET AUTOCOMMIT=1 开启自动提交
-
+```
 
 
 
