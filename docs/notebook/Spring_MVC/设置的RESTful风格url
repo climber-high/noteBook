@@ -15,7 +15,7 @@ public class AddressController extends BaseController {
 	@RequestMapping("{aid}/set_default")
 	public JsonResult<Void> setDefault(@PathVariable("aid") Integer aid ,HttpSession session){
 		Integer uid = getUidFromSession(session);
-	   String username = getUsernameFromSession(session);
+		String username = getUsernameFromSession(session);
 		addressService.setDefault(aid, uid, username);
 		return new JsonResult<>(SUCCESS);
 	}
