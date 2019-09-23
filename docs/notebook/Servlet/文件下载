@@ -1,0 +1,139 @@
+### 文件下载原理
+
+**Http协议提供了文件下载功能，只要遵守Http协议实现下载，Spring MVC和Servlet等计算都可以用于实现下载功能。**
+
+>浏览器发送请求
+
+```
+Request = Request-Line; //请求行
+
+//通用头或请求头或实体头
+*(( general-header; | request-header; | entity-header) CRLF);
+CRLF //回车换行
+[ message-body ] //消息体
+```
+
+>服务器响应请求
+
+```
+Response = Status-Line; //状态行
+//通用头或响应头或实体头
+*(( general-header; | response-header; | entity-header) CRLF);
+CRLF  //回车换行
+[ message-body ]  //消息体
+
+响应头包括:
+Content-Type=image/png
+Content-Length=200
+```
+
+>比如要从服务器下载图片要的响应头加上
+
+```
+Content-Disposition:attachment;filename='demo.png'
+```
+
+>1.图片下载例子:
+
+使用springMVC框架，先在pom.xml中配置jar
+
+	<dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>4.3.9.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>4.3.9.RELEASE</version>
+    </dependency>
+
+**执行下载代码:**
+```
+@RequestMapping("/demo")
+@Controller
+public class DemoController {
+	@RequestMapping("/download.do")
+	@ResponseBody
+	public byte[] download(HttpServletResponse response) throws IOException {
+		
+		String file = "演示图片.png";
+		file = URLEncoder.encode(file,"utf-8");  //响应头只支持ISO8859,要转编码
+		
+		response.setContentType("image/png");
+		response.setHeader("Content-Disposition", "attachment; filename=\""+file+"\"");
+		
+		//生成图片
+		byte[] bytes = createPNG();
+		return bytes;
+	}
+
+	private byte[] createPNG() throws IOException {
+		BufferedImage img = new BufferedImage(100,50,BufferedImage.TYPE_3BYTE_BGR);
+		img.setRGB(50, 25, 0xffff00);
+		Graphics2D g = img.createGraphics();
+		
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		ImageIO.write(img,"png",out);
+		out.close();
+		byte[] png = out.toByteArray();
+		return png;
+	}
+}
+```
+
+>2. 生成Excel文件，由浏览器进行下载
+
+添加jar包
+
+	<dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi-ooxml</artifactId>
+        <version>3.17</version>
+    </dependency>
+
+例:
+```
+@RequestMapping(value="/export.do",produces="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+@ResponseBody
+public byte[] export(HttpServletResponse response) throws IOException {
+
+    String file = "Excel表格.xlsx";
+    file = URLEncoder.encode(file,"utf-8");  //响应头只支持ISO8859,要转编码
+
+    //response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    response.setHeader("Content-Disposition", "attachment; filename=\""+file+"\"");
+
+    byte[] bytes = createExcel();
+    return bytes;
+}
+
+private byte[] createExcel() throws IOException {
+    //POI API生成Excel
+    XSSFWorkbook workbook = new XSSFWorkbook();
+
+    //在Excel工作簿中创建一个工作表
+    XSSFSheet sheet = workbook.createSheet("Demo");
+
+    //createRow创建行
+    XSSFRow row = sheet.createRow(0);
+
+    //创建数据格子
+    XSSFCell cell = row.createCell(0);
+
+    cell.setCellValue("Hello World!");
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    workbook.write(out);
+    workbook.close();
+    out.close();
+    byte[] excel = out.toByteArray();
+    return excel;
+}
+```
+
