@@ -22,3 +22,9 @@ npm run dev
 ```
 npm run build
 ```
+
+**注意：**
+要想npm run build后把代码git到服务器要在.gitignore去掉/dist/
+
+如果dist不是根路径，有一层项目包裹那么要在config的index.js中修改为assetsPublicPath: './',
+如果两层目录则assetsPublicPath: '../',
