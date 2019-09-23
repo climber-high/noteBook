@@ -160,4 +160,6 @@
 	* [添加异常处理配置](notebook/SpringBoot/SpringBoot异常处理.md)
 	* [密码加密](notebook/SpringBoot/密码加密.md)
 	* [自定义上传文件尺寸的上限值](notebook/SpringBoot/自定义上传文件尺寸的上限值.md)
+	* [在配置文件配置值并调用](notebook/SpringBoot/在配置文件配置值并调用.md)
+	* [java处理跨域请求](notebook/SpringBoot/java处理跨域请求.md)
 	
