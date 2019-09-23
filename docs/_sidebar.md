@@ -141,7 +141,9 @@
 	* [Servlet](notebook/Servlet/servlet.md)
 	* [http](notebook/Servlet/http.md)	
 	* [mvc](notebook/Servlet/mvc.md)	
-	* [Cookie,Session,过滤器](notebook/Servlet/Cookie,Session.md)	
+	* [Cookie,Session,过滤器](notebook/Servlet/Cookie,Session.md)
+	* [文件下载](notebook/Servlet/文件下载.md)
+	
 
 * Spring
 	* [Spring](notebook/Spring/Spring.md)
@@ -163,3 +165,5 @@
 	* [在配置文件配置值并调用](notebook/SpringBoot/在配置文件配置值并调用.md)
 	* [java处理跨域请求](notebook/SpringBoot/java处理跨域请求.md)
 	
+* Linux
+	* [基本命令](notebook/Linux/基本命令.md)
