@@ -26,5 +26,4 @@ npm run build
 **注意：**
 要想npm run build后把代码git到服务器要在.gitignore去掉/dist/
 
-如果dist不是根路径，有一层项目包裹那么要在config的index.js中修改为assetsPublicPath: './',
-如果两层目录则assetsPublicPath: '../',
+要在config的index.js中修改为`assetsPublicPath: './'`，因为dist中的index.html和static是同个目录所以要`./`，默认是返回根路径找static文件夹
