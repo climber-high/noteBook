@@ -34,6 +34,7 @@ public JsonResult<Void> reg(User user){
 ## 后端不能接收request payload数据处理
 
 >前端:
+
 ```
 1.使用jq的ajax
 2.原生ajax实例化FormData对象，传到后端
@@ -44,6 +45,7 @@ public JsonResult<Void> reg(User user){
 ```
 
 >后端:
+
 ```
 private String getRequestPayload(HttpServletRequest req) { 
 	StringBuilder sb = new StringBuilder(); 
