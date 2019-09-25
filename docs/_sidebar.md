@@ -147,6 +147,7 @@
 
 * Spring
 	* [Spring](notebook/Spring/Spring.md)
+	* [Spring AOP](notebook/Spring/Spring AOP.md)
 	
 * Spring MVC
 	* [Spring_MVC](notebook/Spring_MVC/SpringMVC.md)
