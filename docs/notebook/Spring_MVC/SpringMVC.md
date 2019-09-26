@@ -33,6 +33,12 @@
 ```
 https://www.cnblogs.com/leiqiannian/p/7807579.html
 
+## Spring MVC九大内置对象
+
+request,response,session,aplication,Exception,out,page,pagecontext,config
+
+>四大作用域:Page,request,session,application
+
 #### 使用SpringMVC
 
 1.配置spring-webmvc依赖
