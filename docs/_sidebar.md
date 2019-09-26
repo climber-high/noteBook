@@ -165,6 +165,9 @@
 	* [自定义上传文件尺寸的上限值](notebook/SpringBoot/自定义上传文件尺寸的上限值.md)
 	* [在配置文件配置值并调用](notebook/SpringBoot/在配置文件配置值并调用.md)
 	* [java处理跨域请求](notebook/SpringBoot/java处理跨域请求.md)
+
+* JSP
+	* [JSP基本用法](notebook/JSP/JSP基本用法.md)
 	
 * Linux
 	* [基本命令](notebook/Linux/基本命令.md)
