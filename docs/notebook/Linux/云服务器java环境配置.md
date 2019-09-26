@@ -1,0 +1,45 @@
+## 购买云服务器
+
+```
+1.地域:国内配置域名时候必须备案，国外服务器无需备案
+2.配置:x86服务器，1CPU 1G 内存
+3.镜像:公共镜像 CentOS 7.4
+4.网络:1M
+5.安全组(防火墙):开放端口 80，443，22
+  - 注意:没有开放 8080 需要以后配置
+
+6.设置root密码
+7.设置服务器名
+```
+## 服务器环境初始化
+
+>下载相关www.oracle.com
+
+1.安装配置JDK
+2.安装配置Tomcat
+3.安装配置MySQL
+4.将本地MySQL 迁移到远程服务器
+5.将Java WEB 应用部署到远程服务器
+6.为服务器配置域名，Nginx
+
+##### 配置Java环境
+	
+1. 从Oracle网站下载Linux x64 JDK (.tar.gz)
+2. 将jdk释放到/usr/local/java
+
+
+	su(输入管理员密码)
+    mkdir /usr/local/java
+    cd /usr/local/java
+    tar -xzvf /home/soft01/jdk1.8.0_144.tar.gz
+    在/usr/local/java文件夹中解压/home/soft01/中的jdk
+    
+3. 配置Java环境变量
+    
+    
+    export PATH=/usr/local/java/jdk1.8.0_144/bin:$PATH
+
+	javac -version
+    java -version
+
+
