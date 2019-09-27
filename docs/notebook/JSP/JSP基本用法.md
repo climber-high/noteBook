@@ -37,6 +37,20 @@ jsp是一个以".jsp"为后缀的文件，该文件的内容主要是html和少�
 
 >直接可以使用的对象，比如out,request,response,session,applicetion,pagecontext,config,exception,page。容器在生成对应的servlet时，会添加获得这些
 
+	page(了解即可): jsp实例本身，jsp实例指的是jsp对应的那个
+				servlet对象。
+	pageContext: 容器会为每一个jsp实例创建唯一的一个符合PageContext
+				接口要求的对象，该对象会一直存在，除非jsp实例被删除。
+				作用1:绑订数据。
+				作用2:提供了一些方法，用来获得其它所有的隐含对象。
+
+	config: 即ServletConfig,用来读取初始化参数。   
+	exception: 用来获得jsp运行时产生的一些异常信息的。
+	session：会话
+	application
+
+
+
 ## 指令
 
 >通过指令，可以告诉容器，在生成servlet代码时，额外做一些处理，比如导包。
@@ -56,6 +70,15 @@ jsp是一个以".jsp"为后缀的文件，该文件的内容主要是html和少�
     
     contentType属性：设置response.setContentType方法的内容。
     pageEncoding属性：容器在读取jsp文件的内容时，会按照该属性指定的字符集去解码。
+    
+    errorPage属性:用于指定一个异常处理页面。
+		注：当jsp运行发生了异常，则容器会调用异常处理页面。
+		
+	isErrorPage属性：缺省值是false, 当值是true时，才可以
+		使用exception隐含对象。
+		
+	session属性：缺省值是true,当值为false时，不能够使用 
+		session隐含对象。
 ```
 
 ## jsp执行流程
