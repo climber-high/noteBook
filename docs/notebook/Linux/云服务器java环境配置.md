@@ -81,8 +81,8 @@ yum -y install tomcat
 启动命令: systemctl start tomcat.service
 停止命令: systemctl stop tomcat.service
 重新启动: systemctl restart tomcat.service
-设置自动启动: systemctl enable tomcat.service
-关闭自动启动: systemctl disable tomcat.service
+设置开机启动: systemctl enable tomcat.service
+关闭开机启动: systemctl disable tomcat.service
 ```
 
 2. 使用原厂的包下载Tomcat。(tomcat.apache.org)
@@ -147,6 +147,147 @@ http://ip:8080
 ```
 在管理，本实例安全组，配置规则，添加安全组规则，输入端口范围8080/8080，授权对象:0.0.0.0/0全开放
 ```
+
+#### 安装配置 MySQL
+
+>MySQL 已经分支为两个版本
+
+1. Oracle 维护 MySQL (www.mysql.com,社区版免费Community server)
+2. 开源社区维护 MariaDB(mariadb.org)
+
+**yum安装MariaDB:**
+```
+yum -y install mariadb mariadb-server
+安装客户端跟服务端两个组件
+```
+
+**启动/停止MySQL:**
+```
+启动命令: systemctl start mariadb.service
+停止命令: systemctl stop mariadb.service
+重新启动: systemctl restart mariadb.service
+设置开机启动: systemctl enable mariadb.service
+关闭开机启动: systemctl disable mariadb.service
+```
+
+**运行mysql看编码是否为utf-8**
+```
+show variables like '%char%'; 
+
+character_set_database的编码,默认latin1
+character_set_server的编码,默认latin1
+```
+
+**设置mysql的中文编码**
+```
+1.进入etc文件夹: cd /etc
+2.cp my.cnf my.cnf.2019 备份文件
+3.修改里面的my.cnf文件: vim my.cnf
+4.在文件里#那行下面加上: character-set-server=utf8
+5.重启数据库: systemctl restart mariadb.service
+6.设置开机启动: systemctl enable mariadb.service
+7.再检查编码是否正确：show variables like '%char%'; 
+```
+
+#### 数据库迁移
+
+>导出(备份)数据库
+
+	mysqldump -uroot -proot data_db>data_db_日期.sql
+
+>导入数据库
+
+    1. 用sftp把sql文件put到服务器上,退出
+    2. 用ssh登录服务器
+    3. 创建新数据库，使用数据库，用source +路径，导入数据
+
+
+#### 将Java WEB应用部署到远程服务器
+
+1. 打包成.war文件
+
+```
+项目右键Export -> WAR file
+```
+
+2. put到服务器
+
+3. 用cp把war文件复制到/usr/local/apache-tomcat/webapps文件夹下
+
+```
+tomcat会自动把.war文件部署好
+```
+
+4. 修改连接数据库的配置文件
+
+```
+webapps/项目名/WEB-INF/classes/db.properties
+vim db.properties
+```
+
+5. 去tomcat目录的bin文件夹下重启tomcat
+
+```
+关闭tomcat
+./shutdown.sh
+
+看tomcat还有没有在运行
+ps -A|grep java
+
+启动tomcat
+./startup.sh
+
+看是否运行
+ps -A|grep java
+```
+
+6. 查看日志
+
+```
+tomcat的bin文件夹下apache-tomcat/logs/catalina.out
+```
+
+## 输出重定向
+
+>将一个命令的输出目标从标准控制台(标准输出)重新定向到其他设备(一般是一个文件)
+
+```
+将终端输出的结果写到指定的文件中
+ls>demo.txt  创建文件并写到demo.txt里面，如果有这个文件就覆盖
+
+ls>>demo.txt 创建文件并写到demo.txt里面，如果有这个文件就在后面追加
+```
+
+**用途:**
+```
+1.记录命令的执行日志
+	tar -czvf demo.tar.gz demo>demo.log
+
+2.快速生成文本文件
+	echo "Hello World" > hello.txt
+    (vi就麻烦)
+```
+
+## 文件的权限
+
+>ls -l
+
+```
+ 文件权限  连接数 当前用户 用户所在组 文件大小 日期               文件名
+drwxrwxr-x. 2   soft01  soft01   4096   9月  28 16:35      demo
+-rwxr-xr-x. 1   soft01  soft01    245   9月  25 2017  eclipse.desktop
+
+d rwx rwx r-x
+d:第一个字母为-的是文件，第一个字母为d的是文件夹
+第一个rwx:当前用户的权限
+第二个rwx:当前用户的同组用户权限
+r-x：与当前用户不同组的其它人的权限
+
+soft01  soft01
+第一个soft01:文件的拥有者
+第二个soft01:文件的拥有者所在组
+```
+
 
 ## PATH 变量的作用
 
@@ -226,5 +367,5 @@ vi与vim
     :wq 保存并退出
     :q! 强制退出
 
-**more 文件名查看内容并分屏，cat 文件名查看内容但不分屏**
+**more 文件名查看内容，cat 文件名查看内容但不分屏**
 
