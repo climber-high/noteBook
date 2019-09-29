@@ -174,4 +174,6 @@
 	* [基本命令](notebook/Linux/基本命令.md)
 	* [vim命令](notebook/Linux/vim命令.md)
 	* [云服务器java环境配置](notebook/Linux/云服务器java环境配置.md)
+	* [Nginx](notebook/Linux/Nginx.md)
+	
 	
