@@ -256,6 +256,8 @@ tomcat的bin文件夹下apache-tomcat/logs/catalina.out
 ls>demo.txt  创建文件并写到demo.txt里面，如果有这个文件就覆盖
 
 ls>>demo.txt 创建文件并写到demo.txt里面，如果有这个文件就在后面追加
+
+ls />>abc.txt
 ```
 
 **用途:**
@@ -279,8 +281,8 @@ drwxrwxr-x. 2   soft01  soft01   4096   9月  28 16:35      demo
 
 d rwx rwx r-x
 d:第一个字母为-的是文件，第一个字母为d的是文件夹
-第一个rwx:当前用户的权限
-第二个rwx:当前用户的同组用户权限
+第一个rwx:当前拥有者的权限，可读(r)写(w)和执行或进入文件夹(x)
+第二个rwx:当前拥有者的同组用户权限
 r-x：与当前用户不同组的其它人的权限
 
 soft01  soft01
@@ -288,6 +290,60 @@ soft01  soft01
 第二个soft01:文件的拥有者所在组
 ```
 
+>chmod -x(r/w) 文件夹  （管理权限）
+
+```
+mkdir 文件夹
+chmod -x 文件夹  //把进入文件夹的权限去掉，之后进入文件夹就会权限不够
+chmod +x 文件夹  //把进入文件夹的权限加上
+
+更仔细的为三块设置权限:
+
+chmod u+x,g-x,o-x 文件/文件夹
+
+u:user(第一组:拥有者);
+g:group(第二组:拥有者的分组);
+o:other(第三组:其他不同组的用户)
+
+二进制写法:(三个数相加得到的结果为一个组所有对应权限)
+rwx 421
+--- 000
+--x 001
+、、、
+
+d rwx rwx r-x (利用数字设置文件权限)
+设置对应的权限:chmod 775 文件/文件夹
+```
+
+## 可以执行的文件
+
+>Linux中可以执行的文件
+
+1. 文件是可以执行的**2进制程序**或者是**可执行的脚本程序**
+2. 文件具有可以执行的权限
+
+>可以执行的脚本：也称为shell脚本，是一个文本文件，文件的每一行都是可以执行的shell命令。如果有执行权限，这个文件就可以执行，执行时候批量执行文件中每个命令，经常用于自动化运维。
+
+
+例(自动化脚本):
+```
+1.创建文件 vim Hello.sh
+2.编辑文件:
+echo 'public class HelloWorld{'>HelloWorld.java
+echo '	public static void main(String[] args) {'>>HelloWorld.java
+echo '		System.out.println("Hello");'>>HelloWorld.java
+echo '	}'>>HelloWorld.java
+echo '}'>>HelloWorld.java
+cat HelloWorld.java
+javac HelloWorld.java  //编译生成.class文件
+java HelloWorld  //执行.class文件
+
+3.开放执行权限
+chmod +x Hello.sh;
+
+4.执行
+./Hello.sh
+```
 
 ## PATH 变量的作用
 
