@@ -65,7 +65,7 @@ c.读取请求参数值
 
 2.使用taglib指令导入要使用的标签。
 
-	<%@ taglib uri="" prefix=""%> 
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 	uri属性：用于指定jsp标签所属的命名空间的。
 	prefix属性：指定命名空间的别名。
  	 
@@ -112,3 +112,15 @@ c.读取请求参数值
 			一些方法用于获得当前遍历的状态：
 			getIndex(): 获得当前正在被遍历的元素的下标(从零开始)。
 			getCount(): 获得这是第几次遍历（从1开始)。
+			
+	<c:forEach items="${users}" var="u" varStatus="s">  
+		//先由servlet的service()重写方法设定request.setAttribute("users", users);
+		//${users}其实是request.getAttribute("users");
+		<tr class="row${s.index% 2+1}">
+			<td>${s.count}</td>  //遍历的第几次
+			<td>${u.username}</td>
+			<td>${u.gender}</td>
+			<td>${u.age}</td>
+			<td>${s.index}</td>  //遍历元素的下标
+		</tr>
+	</c:forEach>
