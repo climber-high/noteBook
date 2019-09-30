@@ -175,5 +175,6 @@
 	* [vim命令](notebook/Linux/vim命令.md)
 	* [云服务器java环境配置](notebook/Linux/云服务器java环境配置.md)
 	* [Nginx](notebook/Linux/Nginx.md)
+	* [Nginx反向代理集群](notebook/Linux/Nginx反向代理集群.md)
 	* [HTTPS](notebook/Linux/HTTPS.md)
 	
