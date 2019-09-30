@@ -24,6 +24,12 @@
 
 >yum -y install nginx
 
+**测试命令**
+
+```
+nginx -t
+```
+
 **启动命令**
 
 ```
@@ -126,6 +132,25 @@ http{
 
 	#gzip  on; //IE6不支持，把信息压缩给客户端，客户端再解压，可以减少流量
 
+	server{ //配置两个虚拟主机
+    	listen 80;
+        server_name t1.climber.com;
+        location / {
+        	//路径 /usr/local/nginx/t1
+        	root t1;
+            index index.html
+        }
+    }
+    server{  //配置两个虚拟主机
+    	listen 80;
+        server_name t2.climber.com;
+        location / {
+        	//路径 /usr/local/nginx/t2
+        	root t2;
+            index index.html
+        }
+    }
+
 	server{
     	虚拟主机参数
     }
@@ -150,16 +175,76 @@ nginx -s reload
 
 ## 虚拟主机
 
->将一台服务器作为多个web服务器使用，称为虚拟主机
+>将一台服务器作为多个web服务器使用，称为虚拟主机。充分复用一个服务器硬件资源，对于客户端来说，其感受就是一台正常的WEB服务器。
+
+**虚拟主机有3种方式:**
+
+```
+1.基于端口的虚拟主机，80，8080，需要使用80以外的其他端口，客户端使用不方便
+2.基于IP的虚拟主机，一个服务器可以绑定多个IP,ip珍贵并不方便。
+3.基于域名虚拟主机，共享一个IP，共享一个80端口，一个80端口，可以提供多个虚拟主机服务
+```
+
+Nginx 配置文件:
+```
+server{ //配置两个虚拟主机
+    listen 80;
+    server_name t1.climber.com;
+    location / {
+        //路径 /usr/local/nginx/t1
+        root t1;
+        index index.html
+    }
+}
+server{  //配置两个虚拟主机
+    listen 80;
+    server_name t2.climber.com;
+    location / {
+        //路径 /usr/local/nginx/t2
+        root t2;
+        index index.html
+    }
+}
+在nginx文件夹中创建t1和t2文件夹放对应2个虚拟主机域名的页面
+
+更新文件 nginx -t -c /usr/local/nginx/conf/nginx.conf
+
+nginx -c /usr/local/nginx/conf/nginx.conf
+```
 
 
+## ping 域名
 
+1.检查目标服务器是否存在
 
+2.检查域名能不能解析成ip
 
+TTL=49。64-49=15。经过15个路由器
 
+## 外网配置DNS(可以在公网展示)
 
+1. 产品，域名注册，搜域名
 
+2. 备案
 
+3. 域名，解析(进行域名解析)，解析设置，添加解析
 
+```
+1.主机记录t1
+2.记录值：购买的服务器ip。
+```
+
+## Linux配置/etc/hosts文件（用于本地测试使用）
+
+```
+域名 网址
+192.168.2.10  t1.climber.com
+
+ping  t1.climber.com 就会指向192.168.2.10
+```
+
+## windows hosts文件
+
+>c:\Windows\System32\Drivers\etc\hosts
 
 
