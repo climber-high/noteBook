@@ -245,6 +245,6 @@ ping  t1.climber.com 就会指向192.168.2.10
 
 ## windows hosts文件
 
->c:\Windows\System32\Drivers\etc\hosts
+>c:\Windows\System32\Drivers\etc\notepad hosts
 
 
