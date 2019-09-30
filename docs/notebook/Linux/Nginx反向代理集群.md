@@ -70,3 +70,64 @@ server{
 ```
 /usr/local/nginx/sbin/nginx -s reload
 ```
+
+## Nginx 集群的负载均衡策略
+
+>一共有3种
+
+1. 轮训策略，是默认策略(可以增加权重weight)
+
+**可以配合Redis 实现Session共享**
+
+```
+修改nginx反向代理的配置文件
+upstream toms{
+	server 10.7.15.21:8080 weight=10;
+	server 10.7.15.12:8080 weight=50;
+}
+```
+
+2. ip_hash ip散列，根据用户的IP地址映射到固定的服务器
+
+**可以解决Session问题**
+
+```
+利用散列算法映射服务器
+upstream toms{
+	ip_hash;
+	server 10.7.15.21:8080 weight=10;
+	server 10.7.15.12:8080 weight=50;
+}
+```
+
+3. url_hash 根据URL映射到固定的服务器（要外加模块）
+
+
+## 服务器的临时下线 添加down属性
+
+```
+upstream toms{
+	server 10.7.15.21:8080 weight=10 down;
+}
+```
+
+## MySQL 远程连接(3306端口)
+
+>默认不允许远程访问
+
+```
+开启:
+
+grant all privileges on *.* to 用户名@"固定ip" identified by "密码"
+
+*.*是指全部数据库，固定ip可以填"%",就是所有ip
+```
+
+>登录(要开放3306端口)
+
+```
+mysql -h固定ip -u用户名 -p密码
+```
+
+
+
