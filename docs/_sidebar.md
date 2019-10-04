@@ -60,6 +60,7 @@
 
 * Vue.js
 	* [vue构建配置项目](notebook/vue/vue构建配置项目.md)
+	* [vue](notebook/vue/vue.md)
 	* [axios](notebook/vue/axios.md)
 	
 * 微信小程序
