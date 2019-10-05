@@ -233,7 +233,190 @@ filters:{
 
 ```
 Vue.config.keycodes.f2=113;然后全局就可以使用f2这个修饰符了
+
+@keyup.f2="方法名"
 ```
 
 ## 自定义全局指令
 
+```
+定义的时候，指令的名称前面不需要加v-前缀，在调用的时候要加v-
+
+<input type="text" v-focus v-color="'blue'">
+
+Vue.directive("focus",{
+
+	//当指令绑定到元素上的时候，会立即执行这个bind函数，只执行一次
+	bind:function(el){
+		//el为绑定指令的这个元素，el参数是原生js对象，样式相关可以在bind中
+	}, 
+
+	 //当指令插入到dom的时候，会立即执行这个inserted函数，只执行一次
+	inserted:function(el){
+		el.focus();
+		//与js有关的写在inserted中
+	},
+	updated:function(){} //当VNode更新的时候，会执行updated函数，可能执行多次
+});
+
+Vue.directive("color",{
+	bind:function(el,binding){
+		//第二个参数是一个对象，包含多个属性
+		//1.binging.name (指令的名字color)
+		//2.binding.value (指令运算后的值，如果是'1+1',就会为2)
+		//3.binding.expression(不会运算，直接返回'1+1')
+		el.style.color=binging.value;
+	}
+})
+```
+
+## 自定义私有指令
+
+```
+<input type="text" v-color="'blue'">
+
+1.
+directives:{
+	color:{
+		bind:function(el,binding){
+			el.style.color=binding.value;
+		}
+		...
+	}
+}
+
+2.
+directives:{
+	color:function(el,binding){  //相当于把代码写到bind和update里面
+		el.style.color=binding.value;
+	}
+}
+```
+
+## 实例的生命周期
+
+```
+创建:
+	beforeCreate:实例化了vue，但还没初始化data和methods
+	Created:data和methods初始化完成
+
+	beforeMount:创建了模板，但没有挂载在页面当中
+	mounted:模板挂载在了页面中
+
+运行:
+	beforeUpdate:数据已经更新，但是页面上还是旧的数据
+	updated:新的数据在页面上也更新显示了
+
+销毁:
+	beforeDestory:在销毁前夕，但实例仍然完全可用
+	destoryed:vue实例销毁后调用，所有东西解绑定，所有事件监听移除，子实例也被销毁
+```
+
+## vue-resource
+
+```
+//全局配置根路径
+Vue.http.options.root="主路径/";
+下面填的开头不能加"/"
+
+//全局配置emulateJSON
+Vue.http.options.emulateJSON=true;
+
+引入js文件
+
+this.$http.get(路径名).then(function(result){
+	成功的回调函数
+})
+
+//通过post方法的第三个参数，设置提交的内容类型为普通表单格式
+this.$http.post(路径名,{参数},{emulateJSON:true}).then(result=>{
+	成功的回调函数
+})
+
+this.$http.jsonp(路径名).then(function(result){
+	成功的回调函数
+})
+```
+
+## transtion动画元素(单个标签)
+
+>使用transtion元素，把需要被动画控制的元素，包裹起来
+
+```
+/*进入前跟离开后*/
+.v-enter,
+.v-leave-to{
+	opacity:0;
+	transform: translateX(150px);
+}
+
+/*入场跟离场的时间段*/
+.v-enter-active,
+.v-leave-active{
+	transition: all 0.8s linear;
+}
+
+<input type="button"  @click=" flag=!flag" value="toggle">
+<transition>
+	<h3 v-if="flag">666</h3>
+</transition>
+```
+
+## 多个元素标签动画
+
+```
+<transition-group appear tag="ul">
+	appear是刚进入是的动画效果，tag会让transition-group元素用ul标签显示，默认渲染为span 
+</transition-group>
+```
+
+
+## 动画 修改v-前缀
+
+```
+transition添加name属性，在样式上就可以用自己定义的不用再用v-，改成m-
+<transition name="m">
+	<h6 v-if="flag2">666</h6>
+</transition>
+```
+
+## 引用第三方animated样式
+
+```
+<input type="button"  @click="flag=!flag" value="toggle">
+
+//进入时的动画，离开时的动画，动画的持续时间
+//如果元素显示出来了，那么下一步会执行离开操作
+//如果元素还没有显示，那么下一步会执行进入操作
+<transition enter-active-class="bounceIn" leave-active-class="bounceOut" :duration="{enter:200,leave:400}">
+	<h3 v-if="flag" class="animated">666</h3>
+</transition>
+```
+
+## 半场动画
+
+>使用js钩子函数
+
+```
+<transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+	<div class="ball" v-if="flag"></div>
+</transition>
+
+methods: {
+	beforeEnter(el){
+		//动画入场之前，动画尚未开始，写开始之前样式
+		el.style.transform="translate(0,0)";
+	},
+	enter(el,done){
+		el.offsetHeight;  //offset触发了动画的重排重绘
+		//动画开始之后的样式
+		el.style.transition = "all 800ms linear";
+		el.style.transform="translate(150px,450px)";
+
+		done() //这个时afterEnter函数的引用
+	},
+	afterEnter(el){
+		this.flag=false;
+	}
+}
+```
