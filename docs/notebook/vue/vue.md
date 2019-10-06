@@ -201,6 +201,45 @@ v-if:每次都会重新删除或创建元素
 v-show:每次不会重新的删除或创建元素，只是在display:none/block;之间切换 
 ```
 
+## vue实例的属性
+
+```
+new Vue({
+	el:"#app",
+	data:{},
+	methods:{
+		mt(){
+
+		}
+	},
+	filters:{ //字符串过滤器
+		msgFormat(data,arg){
+			return msg+arg;
+		}
+	},
+	directives:{ //自定义指令
+		color:{
+			bind:function(el,binding){
+				el.style.color=binding.value;
+			}
+		}
+	},
+	components:{
+		mycom:{
+			template:'模板'
+		}
+	},
+	beforeCreate:{},   //生命周期钩子(函数)
+	created:{},
+	beforeMount:{},
+	mounted:{},
+	beforeUpdate:{},
+	updated:{},
+	beforeDestory:{},
+	destoryed:{}
+})
+```
+
 ## 全局过滤器
 
 ```
@@ -298,7 +337,7 @@ directives:{
 ```
 创建:
 	beforeCreate:实例化了vue，但还没初始化data和methods
-	Created:data和methods初始化完成
+	created:data和methods初始化完成
 
 	beforeMount:创建了模板，但没有挂载在页面当中
 	mounted:模板挂载在了页面中
@@ -419,4 +458,174 @@ methods: {
 		this.flag=false;
 	}
 }
+```
+
+## 全局vue组件
+
+>拆分vue实例的代码量，不同的组件来划分不同的模块
+
+```
+模块化:从代码逻辑的角度进行划分
+组件化:从UI界面的角度进行划分
+```
+
+>1.使用Vue.extend来创建全局的Vue组件模板对象
+
+```
+创建组件模板对象:
+var coml = Vue.extend({
+	template:'<h3>extend创建的组件</h3>'
+})
+
+创建组件并使用:
+<my-coml></my-coml>
+
+Vue.component('myComl',coml);
+或:
+Vue.component('myComl',{
+	template:'<h3>extend创建的组件</h3>'
+});
+```
+
+**注意:template中只能有一个根元素**
+
+>创建组件的另外一种方式
+
+```
+HTML:
+
+<div id="app">
+	<my-coml></my-coml>  //一样填组件的名称
+</div>
+
+<template id="tem1"> //要把模板放到vue实例容器外面，填上对应的id
+	<div>
+		<h3>创建的组件</h3>
+		<span>6666</span>
+	</div>
+</template>
+
+JS:
+
+Vue.component('myComl',{
+	template:"#tem1"	
+});
+```
+
+## 定义私有组件
+
+```
+<my-com></my-com>
+
+components:{
+	myCom:{   //定义的组件名称
+		template:'<h3>666</h3>'  //组件内容
+	}
+}
+```
+
+## 组件可以有自己的data跟methods
+
+```
+Vue.component('myComl',{
+	template:"<h3>{{msg}}<h3/>",
+	data:function(){     //组件中的data必须是一个方法
+		return {		//方法内部还必须返回一个对象，数据可以给组件使用
+			msg:'组件中的data定义的数据'
+		}		
+	},methods: {
+		mt(){
+			
+		}
+	}
+});
+
+data是一个方法的原因:让组件中每个数据都独立出来，当成局部变量。如果使用了多次
+这个组件，可以让数据也独立出来，防止一修改数据而导致所有组件内容数据都发生变化
+```
+
+## 组件component元素
+
+```
+HTML:
+<a href="" @click.prevent="comName='login'">登录</a>
+<a href="" @click.prevent="comName='register'">注册</a>
+<!-- :is属性可以用来指定来展示的组件名称 -->
+<component :is="comName"></component>
+
+JS:
+Vue.component("login", {
+	template: '<h3>登录组件</h3>'
+})
+
+Vue.component("register", {
+	template: '<h3>注册组件</h3>'
+})
+
+let vue = new Vue({
+	"el": "#app",
+	data: {
+		comName : 'login'
+	}
+})
+```
+
+## 父组件向子组件传值props
+
+```
+<com1 :parentmsg="msg"></com1>  //自定义名字绑定父组件数据
+
+data: {
+	msg:'父组件的数据'
+},
+components:{
+	com1:{
+		//把父组件传递过来的属性，先在props数组中定义了才能使用
+		props:['parentmsg'], 
+		template:'<h3>{{parentmsg}}</h3>'
+	}
+}
+```
+
+## 父组件向子组件传方法并调用 this.$emit()
+
+>通过子组件绑定父组件的方法，子组件中通过this.$emit('自定义绑定名',data)，可以调用父组件的方法并且把data传到父组件方法的参数列表中，进行使用。（先父绑定方法，子调用方法并后面接着传递参数回去）
+
+```
+<div id="app">	
+	<com @func="show"></com>   //1.绑定父组件的show方法
+</div>
+
+<template id="teml">
+	<div>
+		<h1>666</h1>
+		<input type="button" value="子组件拿父组件的方法" @click="myclick">
+	</div>
+</template>
+
+
+var com2={
+	template:'#teml',
+	methods: {
+		myclick(){
+			//2.拿到父组件传递过来的func方法并调用,并向父组件的方法show传一个参
+			this.$emit('func',123);
+		}
+	},
+}
+
+var vue = new Vue({
+	"el": "#app",
+	data: {
+		msg:'父组件的数据'
+	},
+	methods: {
+		show(data){
+			console.log("父组件的方法"+data)  //父组件的方法123
+		}
+	},
+	components:{
+		com:com2
+	}
+})
 ```
