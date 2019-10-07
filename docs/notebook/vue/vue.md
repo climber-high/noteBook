@@ -629,3 +629,117 @@ var vue = new Vue({
 	}
 })
 ```
+
+## ref获取元素跟dom组件
+
+>获取元素
+
+```
+<div id="app">
+	<h3 ref="myh3">哈哈哈</h3>
+</div>
+
+mounted() {
+	console.log(this.$refs.myh3.innerText)
+}
+```
+
+>**获取**组件
+
+```
+<div id="app">
+	<login ref="mylogin"></login>
+</div>
+
+var login={
+	template:'<h1>登录组件</h1>',
+	data:function(){
+		return{
+			msg:'son msg'
+		}
+	},
+	methods: {
+		show(){
+			console.log('调用了子组件的方法')
+		}
+	},
+}
+
+var vue = new Vue({
+	"el": "#app",
+	data: {
+		
+	},
+	methods: {
+		getElement(){
+			console.log(this.$refs.mylogin.msg)   //可以获取子组件并获取属性跟调用方法
+		}
+	},
+	components:{
+		login:login
+	}
+})
+```
+
+## 路由
+
+>对于单页应用，主要通过URL中的hash(#号)，来实现不同页面之间的切换，http请求中不会包含hash相关的内容
+
+#### 创建路由(new VueRouter)并使用(router-view元素)
+
+```
+HTML:
+<div id="app">
+	<!-- <a href="#/login">登录</a>
+	<a href="#/register">注册</a> -->
+
+	<!-- 路由跳转可以用router-link标签，不指定标签的话默认是a标签
+	跟上面效果等同，可以用tag属性改变展示的标签，也可以进行点击 -->
+	<router-link to="login" tag="span">登录</router-link>
+	<router-link to="register">注册</router-link>
+
+	<!-- 这是vue-router提供的元素，当作占位符，将来路由规则匹配到的组件，
+	就会展示到这个router-view中去 -->
+	<router-view></router-view>
+</div>
+
+
+JS:
+var login = {
+	template:'<h1>登录组件</h1>'
+}
+var register = {
+	template :'<h1>注册组件</h1>'
+}
+
+const routerObj = new VueRouter({
+	routes:[ //路由匹配规则
+		//每个路由规则，都是一个对象
+		//属性1:是path,表示监听哪个路由链接地址
+		//属性2:component，表示，如果路由是前面匹配到的path，则表示component属性对应的哪个组件
+		//注意:component的属性值，必须是一个组件的模板对象
+
+		{path:'/',redirect:'/login'},   //路由重定向
+		{path:'/login',component:login},
+		{path:'/register',component:register},
+	]
+})
+
+var vue = new Vue({
+	"el": "#app",
+	data: {},
+	//将路由规则对象，注册到vm实例上，用来监听URL地址的变化，然后展示对应的组件
+	router:routerObj
+})
+```
+
+#### 路由重定向redirect
+
+```
+const routerObj = new VueRouter({
+	routes:[ //路由匹配规则
+		//重定向到哪个路径
+		{path:'/',redirect:'/login'},   //路由重定向
+	]
+})
+```
