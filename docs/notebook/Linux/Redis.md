@@ -208,8 +208,31 @@ jedis.close();
 
 ## 多个tomcat服务器使用redis共享session
 
+>1.把三个jar包放进tomcat服务器的TOMCAT_BASE/lib文件夹中
 
+```
+tomcat-redis-session-manager-VERSION.jar
+jedis-2.5.2.jar
+commons-pool2-2.2.jar
+```
 
+>2.修改tomcat里面的conf/context.xml
+
+```
+<Valve className="com.orangefunction.tomcat.redissessions.RedisSessionHandlerValve" />
+<Manager className="com.orangefunction.tomcat.redissessions.RedisSessionManager"
+         host="localhost" <!-- redis服务器位置 -->
+         port="6379"
+         database="0"
+         maxInactiveInterval="60" <!--redis失效时间-->
+/>
+```
+
+>3.写jsp文件进行测试
+
+```
+在tomcat的 webapps/ROOT/ 下创建jsp文件
+```
 
 
 
