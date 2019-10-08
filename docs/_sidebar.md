@@ -178,5 +178,7 @@
 	* [云服务器java环境配置](notebook/Linux/云服务器java环境配置.md)
 	* [Nginx](notebook/Linux/Nginx.md)
 	* [Nginx反向代理集群](notebook/Linux/Nginx反向代理集群.md)
+	* [Redis](notebook/Linux/Redis.md)
 	* [HTTPS](notebook/Linux/HTTPS.md)
+	
 	
