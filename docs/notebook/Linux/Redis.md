@@ -1,5 +1,7 @@
 ### Redis
 
+>Redis在互联网架构中经常充当数据库的缓冲作用, 将经常读取的数据缓冲到Redis中, 可以提高数据读取的效率, 实现"高性能".
+
 #### 数据库分类:
 
 ```
@@ -13,7 +15,7 @@
       经常作为关系型数据库的缓存使用，常见产品:MemoryCache Redis
 ```
 
->Redis是一种非关系型KV数据库
+>Redis是一种非关系型KV数据库(用于解决高性能问题)
 
 1. 是内存型数据库，同时提供了磁盘持久存储
 2. Redis 采用散列表技术，查询性能高，可以达到千万级并发。
@@ -228,11 +230,178 @@ commons-pool2-2.2.jar
 />
 ```
 
->3.写jsp文件进行测试
+>3.写jsp文件进行测试是否保存了对应session
 
 ```
-在tomcat的 webapps/ROOT/ 下创建jsp文件
+在tomcat的 webapps/ROOT/ 下创建2个jsp文件,设置session跟读取，然后重启服务器:
+
+add.jsp
+<%@ page contentType="text/html; charset=utf-8"
+        pageEncoding="utf-8"%>
+<html>
+  <body>
+    <h1>218 Save Session</h1>
+    <%
+        session.setAttribute("message", "Hello World!");
+    %>
+  </body>
+</html>
+
+get.jsp
+<%@ page contentType="text/html; charset=utf-8"
+        pageEncoding="utf-8"%>
+<html>
+  <body>
+    <h1>218 Get Session</h1>
+    <%
+        String str=(String)session.getAttribute("message");
+    %>
+    <%=str%> 
+  </body>
+</html>
 ```
 
+## Spring-Data-Redis
 
+>提供了按照对象方法操作Redis的API
+
+>网站:projects.spring.io/spring-data-redis/
+
+1. 利用Spring-Data-Redis API 可以将Java对象序列化存储到Redis中
+
+```
+导入API:
+
+<dependency>
+    <groupId>com.redislabs</groupId>
+    <artifactId>jedis</artifactId>
+    <version>3.0.0-m1</version>
+    <type>jar</type>
+    <scope>compile</scope>
+</dependency>
+<dependency>
+    <groupId>redis.clients</groupId>
+    <artifactId>jedis</artifactId>
+    <version>2.9.0</version>
+    <type>jar</type>
+    <scope>compile</scope>
+</dependency>
+<dependency>
+    <groupId>org.springframework.data</groupId>
+    <artifactId>spring-data-redis</artifactId>
+    <version>2.0.6.RELEASE</version>
+</dependency>
+```
+
+2. 配置spring容器, 初始化RedisTempalte对象: spring-redis.xml
+
+```
+<bean id="jedisConnFactory"
+		 class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+    <property name="usePool" value="true"/>
+    <property name="hostName" value="localhost"></property> <!--redisIP-->
+</bean>
+
+<!-- redis template definition -->
+<bean id="redisTemplate"
+    class="org.springframework.data.redis.core.RedisTemplate">
+    <property name="connectionFactory" ref="jedisConnFactory"/>
+</bean>
+```
+
+3. 使用RedisTemplate访问Redis
+
+```
+ClassPathXmlApplicationContext ctx;
+RedisTemplate<String, Object> template;
+
+@Before
+public void init(){
+    ctx=new ClassPathXmlApplicationContext(
+            "spring-redis.xml");
+    template=ctx.getBean("redisTemplate",
+                RedisTemplate.class);
+}
+@After
+public void destory(){
+    ctx.close();
+}
+
+@Test
+public void SpringRedisTest(){
+	//opsForValue()返回字符串类型操作
+    template.opsForValue().set("demo", "Hello World");
+    String str = (String) template.opsForValue().get("man");
+    System.out.println(str);
+}
+
+@Test 
+public void testSaveObject(){
+    User user = new User(1,"Tom", 12);  //User类要实现序列化接口Serializable
+    template.opsForValue().set("loginUser",user, 1, TimeUnit.DAYS);
+    User guy=(User)template.opsForValue().get("starMan");
+    System.out.println(guy);
+}
+```
+
+##### 为项目添加redis
+
+>1. 导入Spring Data Redis
+
+```
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-webmvc</artifactId>
+    <version>4.3.8.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jdbc</artifactId>
+    <version>4.3.8.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-aop</artifactId>
+    <version>4.3.8.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>redis.clients</groupId>
+    <artifactId>jedis</artifactId>
+    <version>2.9.0</version>
+    <type>jar</type>
+    <scope>compile</scope>
+</dependency>
+<dependency>
+    <groupId>org.springframework.data</groupId>
+    <artifactId>spring-data-redis</artifactId>
+    <version>1.8.2.RELEASE</version>
+</dependency>
+```
+
+**注意:Spring容器版本提升到4.3.8.RELEASE, 这个版本与Spring-data-Redis: 1.8.2.RELEASE是兼容的。**
+
+>2.添加spring-redis.xml 配置文件
+
+>3.更新业务层, 增加缓存功能 DictService
+
+```
+@Resource
+private RedisTemplate<String, Object> redisTemplate;
+
+public synchronized List<Province> getProvince() {
+    //先查询Redis中是否有省份信息
+    @SuppressWarnings("unchecked")  //知道这警告，但不显示警告
+    List<Province> list= (List<Province>)
+            redisTemplate.opsForValue()
+            .get("province");
+    if(list==null){ //如果没有
+        System.out.println("查询Provice"); 
+        list=dictMapper.selectProvince(); //在数据库里查
+        redisTemplate.opsForValue() //缓存到Redis中
+        .set("province",list,1,TimeUnit.DAYS);
+    }
+
+    return list;
+}
+```
 
