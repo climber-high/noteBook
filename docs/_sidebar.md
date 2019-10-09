@@ -180,5 +180,7 @@
 	* [Nginx反向代理集群](notebook/Linux/Nginx反向代理集群.md)
 	* [Redis](notebook/Linux/Redis.md)
 	* [HTTPS](notebook/Linux/HTTPS.md)
-	
+
+* 数据结构和算法
+	* [数据结构和算法](notebook/数据结构和算法/数据结构.md)
 	
