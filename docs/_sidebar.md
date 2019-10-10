@@ -182,5 +182,5 @@
 	* [HTTPS](notebook/Linux/HTTPS.md)
 
 * 数据结构和算法
-	* [数据结构和算法](notebook/数据结构和算法/数据结构.md)
+	* [数据结构](notebook/数据结构和算法/数据结构.md)
 	
