@@ -1,5 +1,17 @@
 ### maven配置
 
+>Maven是项目管理工具，可以管理项目的完整的生命周期，创建，开发，编译，测试，部署
+
+**主要用了依赖管理功能，管理软件中的jar包。**
+
+使用Maven的依赖管理功能:
+
+1. 配置Maven镜像仓库:settings.xml
+2. 在Maven仓库中搜索组件坐标
+3. 将组件坐标复制到pom.xml文件
+4. 保存时候自动导入jar文件
+	- Maven自动下载jar到本地仓库 .m2 文件夹
+
 ## 安装配置maven
 
 1.从Apache网站 http://maven.apache.org/ 下载并且解压缩安装Apache Maven
@@ -48,6 +60,12 @@ Artifact id:项目名称
 Packaging:打包形式，如果是桌面项目请选择jar
 
 
+## SVN
 
+>Subversion简称SVN
+
+1. 是集中式版本管理软件
+2. 在软件开发模型中也称为**配置管理工具**
+3. 在软件开发中用于团队的协作问题
 
 
