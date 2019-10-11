@@ -79,6 +79,18 @@ for(Integer val : value) {
 }
 ```
 
+#### HashMap,Hashtable,ConcurrentHashMap的区别:
+
+1. HashMap是线程不安全的，性能好。
+
+**注：可以使用Collections.synchronizedMap方法将HashMap转换成线程安全的HashMap。**
+
+b.Hashtable是线程安全的，性能不好。
+
+c.ConcurrentHashMap是线程安全的，并且性能良好。
+
+**结论：在多线程环境下，应该使用ConcurrentHashMap,否则使用HashMap。**
+
 
 
 
