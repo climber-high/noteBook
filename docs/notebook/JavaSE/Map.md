@@ -85,9 +85,9 @@ for(Integer val : value) {
 
 **注：可以使用Collections.synchronizedMap方法将HashMap转换成线程安全的HashMap。**
 
-b.Hashtable是线程安全的，性能不好。
+2. Hashtable是线程安全的，性能不好。
 
-c.ConcurrentHashMap是线程安全的，并且性能良好。
+3. ConcurrentHashMap是线程安全的，并且性能良好。
 
 **结论：在多线程环境下，应该使用ConcurrentHashMap,否则使用HashMap。**
 
