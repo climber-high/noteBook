@@ -743,3 +743,123 @@ const routerObj = new VueRouter({
 	]
 })
 ```
+
+#### 设置当前路由高亮样式
+
+```
+//路由切换的高亮样式
+.router-link-active,myactive{
+	color:red;
+}
+
+const routerObj = new VueRouter({
+	routes:[],
+	linkActiveClass : 'myactive'  //修改.router-link-active激活类为myactive
+})
+```
+
+#### 路由query方式传参
+
+```
+<div id="app">
+    <!--如果在路由中，使用查询字符串，给路由传递参数，则不需要修改路由规则的path属性-->
+    <router-link to="login?id=10&name=123">登录</router-link>
+    <router-view></router-view>
+</div>
+
+
+var login = {
+	template:'<h1>登录组件{{$router.query.id}}--{{$router.query.name}}</h1>',
+	created:{
+	  console.log(this.$router.query.id)  //获取router的id参数值,$router.query可以获取多个参数
+	}
+}
+const routerObj = new VueRouter({
+	routes:[
+	    {path:'/',redirect:'/login'}, 
+	    {path:'/login',component:login}
+	]
+})
+var vue = new Vue({
+	"el": "#app",
+	data: {},
+	router:routerObj
+})
+```
+
+#### 利用params方式传参
+
+```
+<div id="app">
+    <router-link to="login/12/zs">登录</router-link>
+    <router-view></router-view>
+</div>
+
+
+var login = {
+	template:'<h1>登录组件{{$router.params.id}}</h1>',
+	created:{
+	  console.log(this.$router.params.id)  //获取router的id参数值,$router.query可以获取多个参数
+	}
+}
+const routerObj = new VueRouter({
+	routes:[
+	    {path:'/',redirect:'/login'},
+	    {path:'/login/:id/:name',component:login} //:id 和 :name 占位符所对应router-link to对应的参数
+	]
+})
+var vue = new Vue({
+	"el": "#app",
+	data: {},
+	router:routerObj
+})
+```
+
+#### 使用children属性实现路由嵌套
+
+```
+<div id="app">
+    <router-link to="/account">Account<router-link>
+    <router-view></router-view>
+</div>
+
+<template>
+    <div>
+      <h1>这是Account组件</h1>
+      <router-link to="/account/login">登录<router-link>
+      <router-link to="/account/register">注册<router-link>
+    </div>
+<template>
+
+
+var acount = {
+	template:'#tmpl',
+}
+var login = {
+	template:'<h1>登录模板</h1>',
+}
+var register = {
+	template:'<h1>注册模板</h1>',
+}
+
+
+const routerObj = new VueRouter({
+	routes:[
+	    {
+	      path:'/account',
+	      component:acount,
+	      children:[   //children实现子路由的嵌套，子路由的path前面不要带"/"
+		{path:'login',component:login},
+		{path:'register',component:register}
+	      ]
+	     }
+	]
+})
+var vue = new Vue({
+	"el": "#app",
+	data: {
+	}，
+	router:routerObj
+})
+```
+
