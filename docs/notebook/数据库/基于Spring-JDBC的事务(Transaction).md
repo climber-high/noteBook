@@ -54,5 +54,59 @@ SET AUTOCOMMIT=0 禁止自动提交
 SET AUTOCOMMIT=1 开启自动提交
 ```
 
+#### select @@tx_isolation;
+
+>查询当前会话隔离级别(默认REPEATABLE-READ)
+
+#### 设置当前会话隔离级别
+
+>set session transaction isolation level read uncommitted
+
+```
+1.read uncommitted : 读未提交(对方未提交但自己仍然看到对方修改后的数据)
+
+2.read committed : 读已提交,不可重复读取 (对方未提交,自己看不到对方修改后的数据，对方commit后才会看到修改数据)
+
+3.repeatable read : 可重复读取(对方提交后,自己也看不到对方修改后的数据，要自己commit后才会看到修改数据)
+
+4.serializable : 序列化(隔离级别最高)
+```
+
+## 脏读
+
+>一个事务读到了另外一个事务尚未提交的数据
+
+```
+解决脏读:可以将事务的隔离级别设置为read committed就可以解决脏读的问题
+```
+
+## 不可重复读取
+
+>在一个事务当中，对于同一条记录，两次读取的数据不一样
+
+```
+可以将事务的隔离级别设置为repeatable read就可以解决不可重复读取问题，
+另外，该隔离级别也解决了脏读问题。
+```
+
+## 虚读(幻影读取)
+
+>在一个事务(A事务)当中，读取到了一些记录，
+
+```
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
