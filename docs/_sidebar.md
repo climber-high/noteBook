@@ -57,9 +57,11 @@
 * ES6
 	* [ES6简介](notebook/ES6/ES6简介.md)
 	* [字符串新方法](notebook/ES6/字符串新方法.md)
+	* [Promise](notebook/ES6/Promise.md)
 
 * Vue.js
-	* [vue构建配置项目](notebook/vue/vue构建配置项目.md)
+	* [vue-cli2构建配置项目](notebook/vue/vue构建配置项目.md)
+	* [vue-cli3配置](notebook/vue/vue-cli3配置.md)
 	* [vue](notebook/vue/vue.md)
 	* [axios](notebook/vue/axios.md)
 	

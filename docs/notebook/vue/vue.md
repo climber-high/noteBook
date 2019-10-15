@@ -229,6 +229,19 @@ new Vue({
 			template:'模板'
 		}
 	},
+	watchs:{ //监听
+		'$route.path':function(newVal,oldVal){
+			//根据newVal新改变的值获取当前路由地址
+		}
+	},
+	computed:{ //计算属性
+		'fullName':function(){
+			return this.firstName + '-' +this.lastName;  //需要return
+		}
+	},
+	render(Element) { //Element是一个方法，调用它能够把指定的组件模板渲染为html结构
+		return Element(login);
+	},
 	beforeCreate:{},   //生命周期钩子(函数)
 	created:{},
 	beforeMount:{},
@@ -523,6 +536,24 @@ components:{
 	}
 }
 ```
+
+## 利用render函数渲染组件
+
+```
+var login ={
+	template:"<h1>登录组件</h1>"
+}
+
+var vue = new Vue({
+	"el": "#app",
+	data: {},
+	render(Element) { //Element是一个方法，调用它能够把指定的组件模板渲染为html结构
+		return Element(login);
+		//这里return的结果会替换页面中el指定的哪那个容器,指定的容器将不会存在
+	}
+})
+```
+
 
 ## 组件可以有自己的data跟methods
 
@@ -819,15 +850,15 @@ var vue = new Vue({
 
 ```
 <div id="app">
-    <router-link to="/account">Account<router-link>
+    <router-link to="/account">Account</router-link>
     <router-view></router-view>
 </div>
 
 <template>
     <div>
       <h1>这是Account组件</h1>
-      <router-link to="/account/login">登录<router-link>
-      <router-link to="/account/register">注册<router-link>
+      <router-link to="/account/login">登录</router-link>
+      <router-link to="/account/register">注册</router-link>
     </div>
 <template>
 
@@ -849,8 +880,8 @@ const routerObj = new VueRouter({
 	      path:'/account',
 	      component:acount,
 	      children:[   //children实现子路由的嵌套，子路由的path前面不要带"/"
-		{path:'login',component:login},
-		{path:'register',component:register}
+			{path:'login',component:login},
+			{path:'register',component:register}
 	      ]
 	     }
 	]
@@ -863,3 +894,123 @@ var vue = new Vue({
 })
 ```
 
+## router-view使用name放置对应组件
+
+>命名视图
+
+```
+一个路由的多个同级router-view可以用name放置对应的不同的组件
+
+<div id="app">
+	<router-view></router-view>
+
+	<div>
+		<router-view name="left"></router-view>
+		<router-view name="main"></router-view>
+	</div>
+</div>
+
+var header = {
+	template:'<h1>头部区域</h1>'
+}
+var leftBox = {
+	template:'<h1>侧边栏区域</h1>'
+}
+var mainBox = {
+	template:'<h1>主体区域</h1>'
+}
+
+var routerObj = new VueRouter({
+	routes:[
+		{path:'/',components:{
+			default:header,
+			left:leftBox,
+			main:mainBox
+		}}
+	],
+})
+var vue = new Vue({
+	"el": "#app",
+	data: {},
+	router:routerObj
+})
+```
+
+## watch监听
+
+#### 监听文本框值的改变
+
+```
+<input type="text" v-model="firstName">
+
+var vue = new Vue({
+	"el": "#app",
+	data: {
+		firstName:''
+	},
+	watch: {
+		firstName(newVal,oldVal){
+			console.log("新的值"+newVal);
+			console.log("旧的值"+oldVal);
+		}
+	}
+})
+```
+
+#### 监听路由地址的改变
+
+```
+watch: {
+	'$route.path':function(newVal , oldVal){
+		if(newVal==="/某个地址时"){
+
+		}
+	}
+}
+```
+
+## computed
+
+>在computed中可以定义一些属性，这些属性叫做**计算属性**，计算属性的本质，就是一个方法，只不过在使用这些计算属性的时候，是把它们的名称，直接当作属性来使用的，并不会把计算属性，当作方法调用
+
+**注意:**
+```
+1.计算属性在引用的时候，一定不要加()去调用，直接把它当作普通属性去使用
+2.只要计算属性，这个funciton内部，所用到的任何data中的数据发生了变化，立即重新计算这个计算属性的值
+3.计算属性的求值结果，会被缓存起来，方便下次使用。如果任何数据没有发生任何变化，不会重新计算
+```
+
+例:
+```
+<div id="app">
+	<input type="text" v-model="firstName"> + 
+	<input type="text" v-model="lastName"> = 
+	<input type="text" v-model="fullName">
+</div>
+
+var vue = new Vue({
+	"el": "#app",
+	data: {
+		firstName:'',
+		lastName:''
+	},
+	methods: {},
+	computed: {
+		'fullName':function(){
+			return this.firstName + '-' +this.lastName;
+		}
+	}
+})
+```
+
+## methods,computed,watch区别
+
+```
+1.computed必须要有return，把计算的值返回。其他的没有return。
+属性的结果会被缓存，除非依赖的属性变化才会中心计算，主要当作属性来使用
+
+2.methods表示一个具体的操作，主要写业务逻辑
+
+3.watch:一个对象，键是需要观察的表达式，值是对应回调函数，主要监听某些特定
+数据的变化，如路由地址变化，从而进行某些具体的业务逻辑操作
+```
