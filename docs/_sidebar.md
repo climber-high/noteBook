@@ -74,6 +74,8 @@
 	* [node读取文件](notebook/Node/读取文件.md)
 	* [node写入文件文件](notebook/Node/写文件.md)
 	* [node核心模块http](notebook/Node/http.md)
+	* [为node添加新版本](notebook/Node/为node添加新版本.md)
+	
 	
 * mui
 	* [mui简介](notebook/mui/mui简介.md)
