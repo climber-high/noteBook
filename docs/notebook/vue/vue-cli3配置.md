@@ -60,3 +60,15 @@ In package.json 在package.json文件里
 >11.回车下载
 
 >12.npm run serve 启动项目
+
+### 在package.json同级目录创建vue.config.js
+
+>https://cli.vuejs.org/zh/config/#vue-config-js
+
+```
+添加这个配置让npm run build时读取当前路径的资源
+
+module.exports={
+    publicPath:'./'
+}
+```

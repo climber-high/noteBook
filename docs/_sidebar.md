@@ -50,6 +50,7 @@
 	* [string字符串常用方法](notebook/javaScript/string字符串常用方法.md)
 	* [Date日期对象](notebook/javaScript/Date日期对象.md)
 	* [计时器](notebook/javaScript/计时器.md)
+	* [js面向对象](notebook/javaScript/js面向对象.md)
 
 * JQuery
 	* [JQ方法](notebook/JQuery/jq.md)
@@ -63,6 +64,7 @@
 	* [vue-cli2构建配置项目](notebook/vue/vue构建配置项目.md)
 	* [vue-cli3配置](notebook/vue/vue-cli3配置.md)
 	* [vue](notebook/vue/vue.md)
+	* [vue-cli3开发](notebook/vue/vue-cli3开发.md)
 	* [axios](notebook/vue/axios.md)
 	
 * 微信小程序
