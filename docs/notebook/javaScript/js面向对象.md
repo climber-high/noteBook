@@ -55,9 +55,14 @@ function Person(name,age,sex){
     this.sex=sex;
     this.eat=function () {
         console.log("吃饭");
+        this.study();  //实例对象的方法，是可以相互调用的
+    },
+    this.study=function () {
+        console.log("学习");
     }
 }
 var per = new Person("张三",18,"男");
+per.eat();
 
 判断这个对象是否这种数据类型:
 1.
@@ -98,3 +103,44 @@ console.log(p1.__proto__==Person.prototype); //true
 * 又因为实例对象是通过构造函数来创建的，构造函数中有原型对象prototype
 * 实例对象的__proto__指向了构造函数的原型对象prototype
 ```
+
+>例:
+
+```
+function Student(name,age){
+    this.name=name;
+    this.age=age;
+}
+//简单的原型写法
+Student.prototype={
+    //手动修改构造器的指向，原型对象里面才会有constructor属性
+    constructor:Student,
+    weight:188,
+    height:55,
+    eat:function(){   //原型对象中的方法，可以相互调用
+        console.log("吃");
+        this.student();
+    },
+    student:function(){
+        console.log("学习");
+    }
+}
+var s = new Student("zs",18);
+console.dir(Student);
+```
+
+#### 为内置对象添加原型方法
+
+
+
+### 理解原型对象
+
+**只要构建了一个函数**，该函数都会获得一个prototype属性
+这个属性指向函数的原型对象，所有的原型对象，都会获得一个
+constructor属性，指向构造函数
+
+### 理解原型链
+我们在调用对象里面的属性或方法时，会首先访问本身的原型对象，
+如果本身不具有这个属性或方法，就会通过__proto__向“爸爸”的原型对象中寻找，
+如果都没有，则继续通过爸爸的__proto__向“爷爷”的原型对象找，
+一直到尽头Object.prototype都没有的话，则返回undefined
