@@ -129,8 +129,42 @@ var s = new Student("zs",18);
 console.dir(Student);
 ```
 
-#### 为内置对象添加原型方法
+#### 改变原型的指向
 
+>当前构造函数的原型指向另一个实例对象
+
+```
+1.实例对象的原型__proto__指向的是该对象所在的构造函数的原型对象
+2.构造函数的原型对象(prototype)指向如果改变，实例对象的原型(__proto__)指向也会发生改变
+```
+
+**实例对象和原型对象之间的关系是通过__proto__原型来联系起来的，这个关系就是原型链**
+
+## 继承
+
+```
+1.改变原型指向--继承构造函数的属性跟方法
+2.借用构造函数:属性值重复问题
+```
+
+例:
+```
+function Person(name,age){
+    this.name=name;
+    this.age=age;
+}
+Person.prototype.eat=function(){
+    console.log("吃");
+}
+
+function Student(name,age,score){
+    Person.call(this,name,age)  //借用构造函数:属性值重复问题
+    this.score=score;
+}
+Student.prototype=new Person();
+var stu = new Student("张三1",18,100);
+var stu2 = new Student("张三2",18,100);
+```
 
 
 ### 理解原型对象
