@@ -1014,3 +1014,81 @@ var vue = new Vue({
 3.watch:一个对象，键是需要观察的表达式，值是对应回调函数，主要监听某些特定
 数据的变化，如路由地址变化，从而进行某些具体的业务逻辑操作
 ```
+
+## slot插槽
+
+>为了让封装的组件更有拓展性
+
+```
+1.插槽的基本使用:在组件添加<slot></slot>标签，在使用组件的时候的组件标签里面
+  <nav-bar>传入要插入的东西</nav-bar>
+2.可以为插槽传入默认值，没有传东西的时候按默认值来显示
+3.如果有多个值，同时放入到组件进行替换时，一起作为替换元素
+```
+
+#### 具名插槽
+
+>当组件中有多个插槽要添加name属性进行区分
+
+```
+<slot name="left"><span>左边</span></slot>
+<slot name="center"><span>中间</span></slot>
+<slot name="right"><span>右边</span></slot>
+
+<nav-bar><span slot="center">标题</span></nav-bar>
+```
+
+#### 作用域插槽
+
+>子组件通过插槽绑定子组件的数据传给父组件调用
+
+```
+<slot :data="pLanguage"></slot>
+
+<nav-bar>
+	<div slot-scope="slot">
+		<span v-for="(item,index) in slot.data" :key="index">{{item}}-</span>
+	</div>
+</nav-bar>
+```
+
+## Vuex
+
+>专为Vue.js应用程序开发的状态管理模式，可以把一些共享的数据，保存到vuex中，方便任何组件修改和使用
+
+```
+export default new Vuex.Store({
+  state: {
+    msg:0
+  },
+  mutations: {
+    add(state,c){
+      state.msg+=c
+    }
+  },
+  getters:{
+	  //只负责对外提供数据
+	  show(state){
+		return state.msg
+	  }
+  },
+  actions: {
+	  //写异步代码
+  },
+  modules:{
+	  //可以分成多个模块，并可以使用各个属性
+  } 
+});
+
+<input type="text" v-model="$store.state.msg">  //直接使用
+<input type="text" v-model="$store.getters.show"> //调用getters里的方法展示数据
+
+export default {
+   methods: {
+       add(){
+           this.$store.commit('add',2)  //调用vuex的mutations属性例方法来改变vuex的状态值
+		   //第二个参数是可以传递过去的参数
+       }
+   },
+}
+```
