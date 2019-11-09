@@ -158,7 +158,7 @@ data: {
 
 ```
 <h1 :style="{color:'red',fontSize:'16px'}">666</h1>
-值必须要用字符串形式，键名有斜杠必须fontSize或'fontSize',
+值必须要用字符串形式，键名有横杠必须fontSize或'fontSize',
 也可以把整个对象以属性值形式把属性传到上面
 
 <h1 :style="[style1,style2]">666</h1>
@@ -800,9 +800,9 @@ const routerObj = new VueRouter({
 
 
 var login = {
-	template:'<h1>登录组件{{$router.query.id}}--{{$router.query.name}}</h1>',
+	template:'<h1>登录组件{{$route.query.id}}--{{$route.query.name}}</h1>',
 	created:{
-	  console.log(this.$router.query.id)  //获取router的id参数值,$router.query可以获取多个参数
+	  console.log(this.$route.query.id)  //获取route的id参数值,$route.query可以获取多个参数
 	}
 }
 const routerObj = new VueRouter({
@@ -823,20 +823,24 @@ var vue = new Vue({
 ```
 <div id="app">
     <router-link to="login/12/zs">登录</router-link>
+
+	//绑定对应路由并可以传参
+	<router-link :to="{name:'login',params:{id:12,name:'zs'}}">登录</router-link> 
+
     <router-view></router-view>
 </div>
 
 
 var login = {
-	template:'<h1>登录组件{{$router.params.id}}</h1>',
-	created:{
-	  console.log(this.$router.params.id)  //获取router的id参数值,$router.query可以获取多个参数
+	template:'<h1>登录组件{{$route.params.id}}</h1>', 
+	created(){
+	  console.log(this.$route.params.id)  //获取router的id参数值,$route.query可以获取多个参数
 	}
 }
 const routerObj = new VueRouter({
 	routes:[
 	    {path:'/',redirect:'/login'},
-	    {path:'/login/:id/:name',component:login} //:id 和 :name 占位符所对应router-link to对应的参数
+	    {name:'login',path:'/login/:id/:name',component:login} //:id 和 :name 占位符所对应router-link to对应的参数
 	]
 })
 var vue = new Vue({
@@ -1075,7 +1079,7 @@ export default new Vuex.Store({
   actions: {
 	  //写异步代码
   },
-  modules:{
+  modules:{ 
 	  //可以分成多个模块，并可以使用各个属性
   } 
 });
