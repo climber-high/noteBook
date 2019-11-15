@@ -44,3 +44,16 @@ git reset --hard d48bf2fcd99
 ## git上传可以把一些文件不上传
 1.touch .gitignore
 2.再把不想上传的文件打上去
+
+## Github上搜索想要的开源项目
+
+```
+in:name spring boot stars:>3000
+
+name:项目名
+readme:项目readme文件里的内容
+description:项目描述
+language:是什么语言
+stars:星的数量
+pushed:填写更新时间，>2019-11-10
+```

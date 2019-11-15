@@ -70,6 +70,7 @@
 	
 * 微信小程序
 	* [配置项目](notebook/weChat/微信小程序配置项目.md)
+	* [相关知识](notebook/weChat/知识点.md)
 
 * Node.js
 	* [Node.js简介](notebook/Node/Node.js简介.md)
