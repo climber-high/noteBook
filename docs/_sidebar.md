@@ -11,6 +11,7 @@
 	* [列表](/notebook/html/列表.md)
 	* [实体字符](/notebook/html/实体字符.md)
 	* [git操作](/notebook/html/git操作.md)
+	* [svn操作](/notebook/html/svn操作.md)
 
 * css大纲
 	* [css引入方式](/notebook/css/css引入方式.md)
