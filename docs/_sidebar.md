@@ -68,6 +68,7 @@
 	* [vue](notebook/vue/vue.md)
 	* [vue-cli3开发](notebook/vue/vue-cli3开发.md)
 	* [axios](notebook/vue/axios.md)
+	* [vue2底层实现原理](notebook/vue/观察者(发布订阅)模式.md)
 	
 * 微信小程序
 	* [配置项目](notebook/weChat/微信小程序配置项目.md)
