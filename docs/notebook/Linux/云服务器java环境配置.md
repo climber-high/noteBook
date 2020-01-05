@@ -25,10 +25,14 @@
 6.为服务器配置域名，Nginx
 ```
 
+**服务器中默认又yum**
+
 #### 配置Java环境
 	
 1. 从Oracle网站下载Linux x64 JDK (.tar.gz)
 2. 将jdk释放到/usr/local/java
+
+**在Oracle下载jdk不要用wget 下载地址下载，解压时会失败**
 
 
 	su(输入管理员密码)
