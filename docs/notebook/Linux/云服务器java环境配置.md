@@ -189,7 +189,7 @@ character_set_server的编码,默认latin1
 1.进入etc文件夹: cd /etc
 2.cp my.cnf my.cnf.2019 备份文件
 3.修改里面的my.cnf文件: vim my.cnf
-4.在文件里#那行下面加上: character-set-server=utf8
+4.在文件里第一个#那行上面面加上: character-set-server=utf8
 5.重启数据库: systemctl restart mariadb.service
 6.设置开机启动: systemctl enable mariadb.service
 7.再检查编码是否正确：show variables like '%char%'; 
