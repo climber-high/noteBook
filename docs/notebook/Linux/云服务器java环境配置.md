@@ -134,6 +134,10 @@ ps -A|grep java
 6. 开放防火墙8080端口
 
 ```
+开启防火墙 systemctl start firewalld
+关闭防火墙 systemctl stop firewalld
+查看防火墙状态 systemctl status firewalld
+
 firewall-cmd --permanent --add-port=8080/tcp
 firewall-cmd --reload
 ```
