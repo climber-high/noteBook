@@ -146,6 +146,8 @@ firewall-cmd --permanent --add-port=8080/tcp
 firewall-cmd --reload
 ```
 
+**查看所有开启端口: netstat -aptn**
+
 7. 测试
 
 ```
