@@ -143,6 +143,7 @@ ps -A|grep java
 查看防火墙状态 systemctl status firewalld
 
 firewall-cmd --permanent --add-port=8080/tcp
+firewall-cmd --permanent --remove-port=8080/tcp
 firewall-cmd --reload
 ```
 
