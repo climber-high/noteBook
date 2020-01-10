@@ -54,6 +54,14 @@ systemctl disable nginx.service
 ps -A | grep nginx
 ```
 
+**防火墙开放80端口firewall-cmd --zone=public --add-port=80/tcp --permanent**
+
+**重启防火墙firewall-cmd --reload**
+
+**防火墙开放的端口firewall-cmd --list-ports**
+
+**防火墙状态firewall-cmd --state**
+
 ### 编译安装Nginx
 
 >nginx.org
