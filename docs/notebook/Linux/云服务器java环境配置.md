@@ -161,6 +161,10 @@ http://ip:8080
 在管理，本实例安全组，配置规则，添加安全组规则，输入端口范围8080/8080，授权对象:0.0.0.0/0全开放
 ```
 
+**想要更改tomcat默认访问的路径，则更改tomcat里文件夹conf里的配置文件server.xml文件，在Host标签里面加上想默认访问项目路径**
+
+**<Context path="" docBase="/usr/local/apache-tomcat-8.5.45/webapps/store" debug="0" reloadable="true"/>**
+
 #### 安装配置 MySQL
 
 >MySQL 已经分支为两个版本
