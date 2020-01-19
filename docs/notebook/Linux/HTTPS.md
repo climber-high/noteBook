@@ -50,6 +50,7 @@ server{
 	listen 80;
     server_name t3.climber.com;
 	return 301 https://t3.climber.com;（301永久重定向，搜索引擎友好）
+	//rewrite ^(.*)$ https://$host$1 permanent;
 }
 如果输入的域名没有加https用80端口访问的话就重定向到https://t3.climber.com;
 302临时重定向
