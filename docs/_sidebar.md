@@ -53,6 +53,7 @@
 	* [Date日期对象](notebook/javaScript/Date日期对象.md)
 	* [计时器](notebook/javaScript/计时器.md)
 	* [js面向对象](notebook/javaScript/js面向对象.md)
+	* [ES5,6,7](notebook/javaScript/ES5,6,7.md)
 	* [js知识补充](notebook/javaScript/js知识补充.md)
 
 * JQuery
