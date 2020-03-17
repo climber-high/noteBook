@@ -67,8 +67,102 @@ const obj = {
 	}
 ```
 
-## 题目:
+## 数组方法
 
+>1.forEach(不返回新数组)
+
+**forEach没有生成一个新的数组，而且无法通过return或break这样的语句跳出本次循环**
+
+```
+let arr = [1,2,3,4,5] 
+let newarr =arr.forEach((item,index)=>{
+    
+})
+```
+
+>2.map(返回新数组)
+
+**map不改变原数组，他可以返回一个新的数组，当遍历数组时，内部改变原数组的时候，不会改变新的数组，就是说新添加的元素不会进入循环里面**
+
+```
+let arr = [1,2,3,4,5] 
+let newarr =arr.map(item=>{
+    arr.push(10)
+    return item*2
+    
+    //如果return item>2,则返回数组符合条件就true,不符合就false
+    //[false, false, true, true, true]
+}) 
+console.log(arr)  //[1, 2, 3, 4, 5,10,10,10,10,10]
+console.log(newarr) //[2, 4, 6, 8, 10]
+```
+
+>3.filter(返回符合条件的新数组)
+
+**不会改变原数组，返回符合条件的数组**
+
+```
+let arr = [1,2,3,4,5] 
+let newArr=arr.filter(item=>{
+    return item>1
+    
+    //如果进行元素操作，则新数组跟就旧数组值一致
+})
+console.log(arr) //[1, 2, 3, 4, 5]
+console.log(newArr)  //[2, 3, 4, 5]
+```
+
+>4.every(条件都满足返回true)
+
+**every不会改变原数组，遍历数组的每一项，如果每一项都满足条件，则会返回true**
+
+```
+let arr = [1,2,3,4,5] 
+let newArr=arr.every(item=>{
+    return item>1
+})
+console.log(arr) //[1, 2, 3, 4, 5]
+console.log(newArr) //false
+```
+
+>5.some(有一个条件满足则返回true)
+
+**some不会改变原数组，遍历数组的每一项，如果任何一项满足条件，则会返回true**
+
+```
+let arr = [1,2,3,4,5] 
+let newArr=arr.some(item=>{
+    return item>1
+})
+console.log(arr) //[1, 2, 3, 4, 5]
+console.log(newArr) //true
+```
+
+>6.find
+
+**符合条件就返回第一个符合条件的数组元素**
+
+```
+let arr = [1,2,3,4,5] 
+let newarr =arr.find(item=>{
+    return item>2
+    
+    //如果对元素进行操作则只会返回第一个元素
+}) 
+console.log(newarr) //3
+```
+
+>7.reduce(返回数组的总和)
+
+```
+let arr = [1,2,3,4,5] 
+let newarr =arr.reduce((prev, next)=>{
+    return prev+next; //前一个数加后一个数，等于数组总和
+}) 
+console.log(newarr) //15
+```
+
+## 题目:
 
 ```
 var a = {},b={key:'b'},c={key:'c'};
