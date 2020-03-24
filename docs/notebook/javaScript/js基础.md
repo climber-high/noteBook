@@ -129,3 +129,23 @@ function sortFun(a,b){
 	return a-b;
 }
 ```
+
+## setTimeout/setInterval调用函数问题
+
+>定时器是`结合函数引用`进行调度的
+
+三种形式:
+
+```
+1.传函数名，不用加引号，也不用加括号
+setTimeout(func,1000); //交给定时器来调用
+
+2.传匿名函数
+setTimeout(function(){
+
+},1000)
+
+3.传函数字符串，加引号，也要加括号
+setTimeout('func()',1000);
+这种方法，会在全局作用域下查找函数，有时候有问题
+```
