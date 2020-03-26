@@ -131,7 +131,11 @@ Content-Length:224586(CRLF)(CRLF)
 1101010101001.....2进制字节数据
 ```
 
+#### 补充文章
 
+https://mp.weixin.qq.com/s/JGogFpLyyEg2kGLUnvVFRg
+
+https://mp.weixin.qq.com/s/vYZtK992NV5XdNsbJDnSAA
 
 
 

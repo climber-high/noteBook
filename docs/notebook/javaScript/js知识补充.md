@@ -174,6 +174,29 @@ console.log(newarr) //15
 拷贝后不会生成新的数据，而是拷贝是引用，修改拷贝以后的数据会影响原来的数据
 ```
 
+例:
+
+```
+var obj1 = {
+	name:"zs",
+	age:"18",
+	eat:function(){
+		console.log(1);
+	},
+	car:[1,2,3]
+}
+
+var obj2 = {};
+
+function extend(a,b){
+	for(var key in a){
+		b[key]=a[key];
+	}
+}
+
+extend(obj1,obj2);
+```
+
 >拷贝数据的方法
 
 ```
@@ -184,6 +207,74 @@ console.log(newarr) //15
 
 5.JSON.parse(JSON.stringify()) //数据中不能有函数，函数不能拷贝
 //深拷贝(因为先转成字符串，基本数据类型修改后不会影响原数据)
+```
+
+>深拷贝数据
+
+```
+拷贝的时候生成新数据，修改拷贝以后的数据不会影响原数据
+```
+
+>typeof返回的数据类型
+
+```
+String,Number,Boolean,Undefined,Object,Function
+```
+
+例:
+
+```
+var obj1 = {
+	car:[1,2,3]
+}
+var obj2 = {};
+function extend(a,b){
+	for(var key in a){
+		var item = a[key];
+//		console.log(Object.prototype.toString.call(item))
+//		console.log(item)
+		if(item instanceof Array){
+			b[key]=[];
+			extend(item,b[key]);
+		}else{
+			b[key]=item;
+		}
+		
+	}
+}
+extend(obj1,obj2);
+
+
+//定义检测数据类型的功能函数
+function checkedType(target){
+	return Object.prototype.toString.call(target).slice(8,-1)
+}
+//实现深度克隆(对象/数组)
+function clone(target){
+	//判断拷贝的数据类型
+	//初始化变量result 成为最终克隆的数据
+	let result,targetType = checkedType(target);
+	if(targetType === 'Object'){
+		result = {};
+	}else if(targetType === 'Array'){
+		result = [];
+	}else{
+		return target;
+	}
+	//遍历目标数据
+	for(let i in target){
+		//获取遍历数据结构的每一项值
+		let value = target[i];
+		//判断目标结构里的每一值是否存在对象/数组
+		if(checkedType(value) === 'Object' || checkedType(value) === 'Array'){
+			//继续遍历获取到的value的值
+			result[i] = clone(value);
+		}else{  //获取到的value值是基本的数据类型或者是函数
+			result[i] = value;
+		}
+	}
+	return result;
+}
 ```
 
 
