@@ -47,15 +47,16 @@
 * javaScript
 	* [JS简介](notebook/javaScript/js简介.md)
 	* [JS基本概念](notebook/javaScript/JS基本概念.md)
-	* [JS基础](notebook/javaScript/js基础.md)
 	* [JS基本类型](notebook/javaScript/js基本类型.md)
 	* [string字符串常用方法](notebook/javaScript/string字符串常用方法.md)
 	* [Date日期对象](notebook/javaScript/Date日期对象.md)
 	* [计时器](notebook/javaScript/计时器.md)
 	* [js面向对象](notebook/javaScript/js面向对象.md)
 	* [ES5,6,7](notebook/javaScript/ES5,6,7.md)
+	* [JS基础](notebook/javaScript/js基础.md)
 	* [js知识补充](notebook/javaScript/js知识补充.md)
 	* [web性能优化](notebook/javaScript/web性能优化.md)
+	* [题目](notebook/javaScript/题目.md)
 
 * JQuery
 	* [JQ方法](notebook/JQuery/jq.md)

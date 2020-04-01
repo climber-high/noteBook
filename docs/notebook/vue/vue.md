@@ -940,6 +940,96 @@ var vue = new Vue({
 })
 ```
 
+## vue-router导航钩子
+
+>主要用来作用是拦截导航，让他完成跳转或取消
+
+1. 全局导航钩子(两种:前置守卫、后置钩子)
+
+```
+1.注册一个全局前置守卫
+const router = new VueRouter({ ... });
+router.beforeEach((to, from, next) => {
+    
+});
+
+to: Route，代表要进入的目标，它是一个路由对象
+from: Route，代表当前正要离开的路由，同样也是一个路由对象
+next: Function，这是一个*必须需要调用的方法*，而具体的执行效果则依赖 next 方法调用的参数
+
+next()：进入管道中的下一个钩子，如果全部的钩子执行完了，则导航的状态就是 confirmed（确认的）
+next({
+	path:'/login',
+	query:{
+		redirect:to.fullPath
+	}
+})
+
+
+2.全局后置钩子
+router.afterEach((to, from) => {
+    不同于前置守卫，后置钩子并没有 next 函数，也不会改变导航本身
+});
+```
+
+2. 路由独享的钩子
+
+>单个路由独享的导航钩子，它是在路由配置上直接进行定义的
+
+```
+cont router = new VueRouter({
+    routes: [
+        {
+            path: '/file',
+            component: File,
+            beforeEnter: (to, from ,next) => {
+                
+            }
+        }
+    ]
+});
+```
+
+3. 组件内的导航钩子
+
+>beforeRouteEnter、beforeRouteUpdate、beforeRouteLeave
+
+```
+const File = {
+    template: `<div>This is file</div>`,
+    beforeRouteEnter(to, from, next) {
+		next (vm => {
+	        // 这里通过 vm 来访问组件实例解决了没有 this 的问题
+	        // 不能获取组件实例 this，因为当守卫执行前，组件实例被没有被创建出来
+	    })
+        // 在渲染该组件的对应路由被 confirm 前调用
+    },
+    beforeRouteUpdate(to, from, next) {
+        // 在当前路由改变，但是依然渲染该组件是调用
+    },
+    beforeRouteLeave(to, from ,next) {
+        // 导航离开该组件的对应路由时被调用
+    }
+}
+```
+
+4. 完整的导航解析流程
+
+```
+1.导航被触发
+2.在失活的组件里调用离开守卫
+3.调用全局的 beforeEach 守卫
+4.在重用的组件里调用 beforeRouteUpdate 守卫
+5.在路由配置里调用 beforEnter
+6.解析异步路由组件
+7.在被激活的组件里调用 beforeRouteEnter
+8.调用全局的 beforeResolve 守卫
+9.导航被确认
+10.调用全局的 afterEach 钩子
+11.触发 DOM 更新
+12.在创建好的实例调用 beforeRouteEnter 守卫中传给 next 的回调函数
+```
+
 ## watch监听
 
 #### 监听文本框值的改变
