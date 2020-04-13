@@ -166,3 +166,55 @@ setTimeout('func()',1000);
 ```
 延长外部函数局部变量的生命周期
 ```
+
+#### 缺点
+
+```
+容易造成内存泄漏
+```
+
+#### 注意
+```
+1.合理的使用闭包
+2.用完闭包要及时清除(销毁)
+```
+
+例1:
+```
+function fun(){
+	var count = 1;
+	return function(){
+		count++;
+		console.log(count);
+	}
+}
+var fun2 = fun();
+fun2(); //2
+fun2(); //3
+```
+
+例2:
+```
+function fun(n,o){
+	//var n = 0, o;
+	console.log(o);
+	return {
+		fun: function(m){
+			//var m = 1;  n = 0;
+			return fun(m, n)
+		}
+	}
+}
+var a = fun(0); //undefined
+a.fun(1); //0
+a.fun(2); //0
+a.fun(3); //0  只是不停的调用return里的fun,n值没改变
+
+var b = fun(0).fun(1).fun(2).fun(3)
+//undefined,0,1,2  每次都新调用都外部函数fun
+
+var c = fun(0).fun(1)
+c.fun(2);
+c.fun(3);
+//undefined,0,1,1
+```
