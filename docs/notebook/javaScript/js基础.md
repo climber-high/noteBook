@@ -99,6 +99,52 @@ a()
 
 ## 回调函数
 
+>把一个函数B作为实参传递给另外一个函数A，函数在执行的时候，
+可以把传递进来的函数B去执行
+
+```
+function each(arr,callBack) {
+	for(let i=0;i<arr.length;i++){
+		let flag = callBack.call(arr,arr[i], i);
+		if(flag===false){ //如果为false结束循环
+			break;
+		}
+	}
+}
+each([10,20,30,40], function (item, index) {
+	//this:arr
+	if(index>1){
+		return false;
+	}
+});
+```
+
+```
+function each(fun,obj){
+	var arr = this;
+	var newArr = [];
+	for(let i = 0;i<arr.length;i++){
+		if(isNaN(arr[i])){
+			break;
+		}
+		if(obj === undefined){
+			newArr.push(fun(arr[i],i));  //this:window
+		}else{
+			newArr.push(fun.call(obj,arr[i],i));  //this.obj
+		}
+	}
+	return newArr;
+}
+Array.prototype.each = each;
+
+let arr = [10,20,30,'AA',40];
+var obj = {};
+arr = arr.each(function(item,index){
+	return item * 10;
+},obj)
+console.log(arr);
+```
+
 例:
 ```
 function say(value){
