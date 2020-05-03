@@ -77,6 +77,7 @@
 
 * React
 	* [react相关知识](notebook/React/react相关知识.md)
+	* [事件](notebook/React/事件.md)
 
 * 微信小程序
 	* [配置项目](notebook/weChat/微信小程序配置项目.md)

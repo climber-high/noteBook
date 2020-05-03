@@ -282,6 +282,9 @@ import TodoHeader from './TodoHeader/TodoHeader'
 export{
     TodoHeader,
 }
+//或者
+//export {default as TodoHeader} from './TodoHeader/TodoHeader'
+//export {default as TodoInput} from './TodoInput/TodoInput'
 
 
 然后App.js就直接引入index.js中暴露出来的组件
@@ -298,7 +301,201 @@ import React, { Component, Fragment } from 'react'
 render() {
     return (
         <Fragment></Fragment>
+        <></>  或者直接空标签
     )
 }
 ```
 
+## 组件的数据挂载props和prop-types
+
+>函数式组件
+
+```
+App.js 父组件
+<TodoHeader title="待办事项" x={1}>  //传递数字用{}
+    <div>123</div>
+</TodoHeader>
+
+子组件
+export default function TodoHeader(props) {
+    return (
+        <div>
+            <h1>{props.title}</h1>     //显示‘待办事项’
+            <h1>{props.children}</h1>  //<div>123</div>
+        </div>
+    )
+}
+```
+
+>类组件
+
+```
+App.js 父组件
+<TodoList desc="list">
+    列表
+</TodoList>
+
+子组件
+export default class TodoList extends Component {
+    render() {
+        return (
+            <ul>
+                <li>{this.props.desc}</li>  //输出'list'
+                <li>{this.props.children}</li>  //'输出列表'
+            </ul>
+        )
+    }
+}
+```
+
+>prop-types
+
+```
+判断传入的参数是否为该组件需要的数据类型，或有没有传这个参数，
+如果类型不正确那么会报错
+
+npm包
+npm install --save prop-types
+
+import ProoTypes from 'prop-types'
+```
+
+函数式组件
+```
+父组件
+<TodoHeader title="待办事项" x={1}>
+    <div>123</div>
+</TodoHeader>
+
+子组件
+import PropTypes from 'prop-types'
+export default function TodoHeader(props) {
+    return (
+        <div>
+            <h1>{props.title}</h1>
+        </div>
+    )
+}
+
+//需要接收参数的数据类型，isRequired为是否必传过来该组件
+TodoHeader.propTypes = {
+    title : PropTypes.string,
+    x : PropTypes.number.isRequired
+}
+
+//对传过来的参数设默认值，如果没有传就使用这个值
+TodoHeader.defaultProps = {
+    title : '默认title'
+}
+```
+
+类组件
+```
+<TodoInput btnTxt="add"/>
+
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+
+export default class TodoInput extends Component {
+    static propTypes = {
+        btnTxt : PropTypes.string.isRequired
+    }
+
+    //对传过来的参数设默认值，如果没有传就使用这个值
+    static defaultProps = {   
+        btnTxt: '添加'
+    }
+
+    render() {
+        return (
+            <div>
+                <input type="text"></input>
+                <button>{this.props.btnTxt}</button>
+            </div>
+        )
+    }
+}
+```
+
+## 组件内部的数据--state
+
+>只有类组件有state
+
+```
+export default class App extends Component {
+
+    constructor(props){
+        super(props);
+        this.state = {
+            title : '待办事项'
+        }
+    }
+
+    render() {
+        return ()
+    }
+}
+```
+
+>非受控组件和完全受控组件
+
+```
+完全受控组件
+数据由父组件提供，自己不能修改该数据
+
+非受控组件
+数据由本身提供，可修改传递数据给子组件使用
+
+半受控组件
+```
+
+## 模板渲染语法
+
+```
+循环列表
+render() {
+    const data = this.props.todos
+    return (
+        <ul>
+            {data.map((item,index) => {
+                return <li key={item.id}>{item.title}</li>
+            })}
+        </ul>
+    )
+}
+
+渲染包含html的字符串
+render() {
+    return (
+        <Fragment>
+            {
+                <div dangerouslySetInnerHTML={{__html: this.state.article}} />
+            }
+        </Fragment>
+    )
+}
+```
+
+## setState
+
+>setState是异步的
+
+```
+fun = () => {
+  //第一个参数为对象
+  this.setState({
+    key : value
+  }, () => {
+    //获取最新的state，应该在这个回调里获取
+  })
+
+  //第一个参数为方法,prevState为上次的状态值
+  this.setState((prevState) => {
+    return {
+      key : value
+    }
+  }, () => {
+    //获取最新的state，应该在这个回调里获取
+  })
+}
+```
