@@ -1,5 +1,7 @@
 ### vue构建配置项目
 
+### vs code插件Vetur
+
 ## 全局安装 vue-cli
 ```
 npm i vue-cli -g

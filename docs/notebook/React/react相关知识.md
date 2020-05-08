@@ -2,7 +2,7 @@
 
 >用于构建用户界面的javaScript库
 
->特点:虚拟DOM、组件化、jsx语法
+>特点:虚拟DOM(render函数加载虚拟dom)、组件化、jsx语法
 
 >Create React App 是一个官方支持的创建 React 单页应用程序
 
@@ -416,6 +416,20 @@ export default class TodoInput extends Component {
     }
 }
 ```
+
+>验证JSON数据
+
+```
+static propTypes = {
+    参数 : PropTypes.arrayOf(PropTypes.shape({
+        id : PropTypes.number.isRequired,
+        title : PropTypes.string.isRequired,
+        isCompleted : PropTypes.bool.isRequired
+    })).isRequired
+}
+ 
+```
+
 
 ## 组件内部的数据--state
 
