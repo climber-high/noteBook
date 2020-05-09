@@ -513,3 +513,12 @@ fun = () => {
   })
 }
 ```
+
+## 使用scss
+
+>安装：cnpm i node-sass -S
+
+```
+直接引用scss文件
+import './App.scss'
+```
