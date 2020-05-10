@@ -85,6 +85,7 @@ import { LocaleProvider } from 'antd'
 修改 config-overrides.js
 
 const { override, fixBabelImports, addLessLoader } = require('customize-cra');
+const theme = require("./theme")
 
 module.exports = override(
   fixBabelImports('antd', {
@@ -95,8 +96,19 @@ module.exports = override(
 + addLessLoader({
 +   lessOptions: { // 如果使用less-loader@5，请移除 lessOptions 这一级直接配置选项。
 +     javascriptEnabled: true,
-+     modifyVars: { '@primary-color': '#1DA57A' },
++     modifyVars: theme, //新建一个配置文件放置配置项
 +   },
 + }),
 );
+
+可以创建theme.js文件
+module.exports = {
+    '@primary-color': 'red'
+}
 ```
+
+**有可能报错Less Loader has been initialized using**
+
+**更改customize-cra版本**
+
+**cnpm install customize-cra@1.0.0-alpha.0 -S**

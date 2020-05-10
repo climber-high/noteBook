@@ -80,6 +80,7 @@
 	* [事件](notebook/React/事件.md)
 	* [react-hooks](notebook/React/react-hooks.md)
 	* [context](notebook/React/context.md)
+	* [HOC](notebook/React/HOC.md)
 	* [redux](notebook/React/redux.md)
 	* [路由](notebook/React/路由.md)
 	* [Ant-design](notebook/React/Ant-design.md)
