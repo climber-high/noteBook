@@ -80,11 +80,12 @@
 	* [事件](notebook/React/事件.md)
 	* [react-hooks](notebook/React/react-hooks.md)
 	* [context](notebook/React/context.md)
-	* [HOC](notebook/React/HOC.md)
+	* [HOC高阶组件](notebook/React/HOC高阶组件.md)
 	* [redux](notebook/React/redux.md)
 	* [路由](notebook/React/路由.md)
 	* [Ant-design](notebook/React/Ant-design.md)
-	
+	* [immutable](notebook/React/immutable.md)
+	* [mobx](notebook/React/mobx.md)
 
 * 微信小程序
 	* [配置项目](notebook/weChat/微信小程序配置项目.md)

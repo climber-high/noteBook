@@ -63,3 +63,19 @@ gulp mincss
 2.把配置好的gulpfile,js和package.json复制到新项目的根目录
 3.再用cnpm i下载插件
 4.然后就可以调用任务了
+
+## npm
+
+```
+1. npm install module_name -S    
+  即    
+  npm install module_name --save    写入dependencies(需要发布到生产环境的)
+
+2. npm install module_name -D    
+  即    
+  npm install module_name --save-dev 写入devDependencies(只需要发布到开发环境的)
+
+3. npm install module_name -g 全局安装(命令行使用)
+
+4. npm install module_name 本地安装(将安装包放在 ./node_modules 下)
+```
