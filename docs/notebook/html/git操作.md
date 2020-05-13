@@ -39,7 +39,18 @@ git reset --hard d48bf2fcd99
 ```
 `hard`的参数值就是第一步所获取到的id(不需要全部，可以截取其中一截就可以了)、
 
+## git status
 
+>查看哪些文件被修改
+
+## git diff
+
+>查看所有文件具体被修改的地方
+
+```
+git diff 文件所在路径
+查看指定文件被修改的地方
+```
 
 ## git上传可以把一些文件不上传
 1.touch .gitignore
