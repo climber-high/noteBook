@@ -20,6 +20,21 @@
 3. 数据的改变必须通过纯函数完成
 ```
 
+#### 缺点
+
+```
+1.state修改不方便。每次修改都需要返回引用不同的对象，为了书写方便，不得不借助immutable这样的工具，
+让调试不再直接可读(会有大量toJS的滥用导致的性能问题)
+
+2.state很容易滥用。对程序而言，数据结构要比代码重要，但重视数据结构的人真心不多，
+这会导致大部分的状态都会被放到state中，大部分组件都在connect store。
+
+3.组件与store耦合度高，组件复用困难性能问题。
+
+4.每次action会触发所有reducer的处理；每次state变更会导致所有connect的组件重新执行mapStateToProps，
+这个函数写的不太理想或者组件没有对props的修改进行渲染判定会导致大量的组件重新render
+```
+
 ## redux
 
 >安装:npm i redux -S
@@ -112,13 +127,111 @@ componentDidMount () {
 }
 ```
 
->8.通过Action创建函数来修改reducers里面的状态
+>8.创建action
 
 ```
-在actions文件夹创建actionType.js
+在actions文件夹创建actionType.js，管理全部action
 
 export default {
     CART_AMOUNT_INCREMENT: 'CART_AMOUNT_INCREMENT',
     CART_AMOUNT_DECREMENT: 'CART_AMOUNT_DECREMENT'
 }
+
+创建action,cart.js:
+import actionType from './actionType'
+export const increment = (id) => {
+    return {
+        type: actionType.CART_AMOUNT_INCREMENT,
+        payload: {
+            id
+        }
+    }
+}
+
+export const decrement = (id) => {
+    return {
+        type: actionType.CART_AMOUNT_DECREMENT,
+        payload: {
+            id
+        }
+    }
+}
 ```
+
+>9.在CartList组件,调用createStore()下的dispatch()函数，调用action的方法并把id传过去，
+把action返回的type和payload传进dispatch里，reducer的第二个参数为这些数据
+
+```
+import { increment, decrement } from '../../actions/cart'
+
+<button onClick={
+    () =>{
+        this.props.store.dispatch(decrement(item.id))
+    }
+}>-</button>
+<span>{item.amount}</span>
+<button onClick={
+    () =>{
+        this.props.store.dispatch(increment(item.id))
+    }
+}>+</button>
+
+之后去action看decrement，increment方法是否被调用，参数是否传递过去
+```
+
+>10.之后在reducer进行状态的更改
+
+```
+import actionType from '../actions/actionType'
+
+const initState = [{
+    id: 1,
+    title: 'Apple',
+    price: 8888,
+    amount: 10
+},{
+    id: 2,
+    title: 'Orange',
+    price: 6666,
+    amount: 12
+}]
+
+export default (state = initState, action) => {  //action为CartList组件调用dispatch(*调用action方法返回的对象*)
+    switch (action.type) {
+        case actionType.CART_AMOUNT_INCREMENT:
+            return state.map(item => {  //使用map返回新数组
+                if(item.id === action.payload.id) {
+                    item.amount += 1
+                }
+                return item  //把数据返回
+            })
+        case actionType.CART_AMOUNT_DECREMENT:
+            return state.map(item => {
+                if(item.id === action.payload.id) {
+                    item.amount -= 1
+                }
+                return item
+            })
+        default:
+            return state
+    }
+}
+```
+
+>11.在cartList组件调用createStore的subscribe()方法监听state的变化来改变视图
+
+```
+getState = () => {
+    this.setState({
+        cartList:this.props.store.getState().cart
+    })
+}
+componentDidMount () {
+    this.getState()
+    this.props.store.subscribe(this.getState)
+}
+```
+
+## React Redux
+
+>安装:cnpm i react-redux -S
