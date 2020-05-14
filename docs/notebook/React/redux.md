@@ -49,7 +49,7 @@
 指定应用状态的变化如何响应 actions 并发送到 store 的，
 记住 actions 只是描述了有事情发生了这一事实，并没有描述应用如何更新 state
 
-const initState = [{
+const initState = [{   //初始化状态
     id: 1,
     title: 'Apple',
     price: 8888,
@@ -61,8 +61,12 @@ const initState = [{
     amount: 12
 }]
 
+//创建reducer,固定写法是由两个参数，第一个为state并有一个初始值，第二个为action
 export default (state = initState, action) => {
+    //根据不同的action.type,做不同处理，每次返回一个新的state，返回类型要一样
     switch (action.type) {
+
+        //一定要有default,当action不对时，就不处理，返回上次的state
         default:
             return state
     }
@@ -75,8 +79,8 @@ export default (state = initState, action) => {
 //使用combineReducers方法合并
 import { combineReducers } from 'redux'
 import cart from './cart'
-export default combineReducers({
-    cart
+export default combineReducers({  //导出合并后的reducer
+    cart  //把多个reducer作为参数传入
 })
 ```
 
@@ -156,6 +160,25 @@ export const decrement = (id) => {
         }
     }
 }
+
+
+第一种创建方式：写成一个对象，这是标准的action，但是，问题不方便传递动态参数
+export const increment = {
+    type: actionType.CART_AMOUNT_DECREMENT,
+    payload: {
+        id:123
+    }
+}
+
+第二种创建方式：使用actionCreator，它是一个方法，返沪一个对象，这个对象才是真正的action
+export const increment = (id) => {
+    return {
+        type: actionType.CART_AMOUNT_INCREMENT,
+        payload: {
+            id
+        }
+    }
+}
 ```
 
 >9.在CartList组件,调用createStore()下的dispatch()函数，调用action的方法并把id传过去，
@@ -165,7 +188,7 @@ export const decrement = (id) => {
 import { increment, decrement } from '../../actions/cart'
 
 <button onClick={
-    () =>{
+    () =>{  //里面是方法的调用，所以外面要套一层函数
         this.props.store.dispatch(decrement(item.id))
     }
 }>-</button>
@@ -234,4 +257,81 @@ componentDidMount () {
 
 ## React Redux
 
+>react-redux.js.org
+
 >安装:cnpm i react-redux -S
+
+>1.引入Provider组件，将<App />组件包裹起来，并且**必须传入store**属性
+
+```
+import { Provider } from 'react-redux'
+import store from './store.js'
+
+<Provider store={store}>
+    <App />
+</Provider>
+```
+
+>2.在任何子组件里都可以使用connect方法
+
+```
+import { connect } from 'react-redux'
+
+export default connect()(CartList)
+这样该组件的this.props就有dispatch函数，可以传入action中的方法并调用，
+但是没有reducer中的状态
+
+<button onClick={
+    () =>{  //里面是方法的调用，所以外面要套一层函数
+        this.props.dispatch(decrement(item.id))
+    }
+}>-</button>
+```
+
+>3.在connect()(CartList)第一个括号中传入一个函数
+
+```
+const mapStateToProps = (state) => {  //state实际上就是store.getState()的值
+    //这里return了什么，在组件里就可以通过this.props来获取
+    return {
+        cartList: state.cart
+    }
+}
+
+export default connect(mapStateToProps)(CartList该组件名)
+
+mapStateToProps作用就是从store里把state注入到当前组件的props上
+
+形参state就是reducer定义的state,可以直接使用(不需要再调用createStore下的getState方法了),
+也不用再使用subscribe()也能监听state的变化来改变视图
+```
+
+```
+import { increment, decrement } from '../../actions/cart'
+
+可以将action中的方法，使用对象的形式传入到connect函数的第二个参数里面，
+这个的主要作用是把action生成的方法注入到当前组件props上
+export default connect(mapStateToProps,{ increment, decrement })(CartList)  //可以使用装饰器
+
+就可以直接调用action里的方法
+<button onClick={this.props.decrement.bind(this,item.id)}>-</button>
+```
+
+**其他创建的reducers，action，store按常规使用redux创建，react-redux只不过省了state需要层层传递的麻烦**
+
+>简单流程:
+
+```
+1.创建reducers
+2.合并reducers
+3.createStore
+4.Provider store={store}
+5.connect(mapStateToProps)(YourComponent)
+6.actionCreators
+7.修改reducers
+8.connect(mapStateToProps, {...actionCreators})(YourComponent)
+```
+
+## 异步action
+
+
