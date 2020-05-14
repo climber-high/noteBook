@@ -332,6 +332,67 @@ export default connect(mapStateToProps,{ increment, decrement })(CartList)  //�
 8.connect(mapStateToProps, {...actionCreators})(YourComponent)
 ```
 
-## 异步action
+## 异步action(redux-thunk)
 
+>同步的action会自动执行dispatch(actionCreator()),如果进行异步操作还没返回
+action对象就执行dispatch了，所以会报错
 
+```
+actionCreator => 自动dispatch(actionCreator()) => reducer => store => view
+```
+
+>使用中间介:
+
+```
+middleware处理生成新的action之后，才会*手动执行dispatch*
+
+actionCreator => middleware处理生成新的action => 手动执行dispatch => reducer => store => view
+```
+
+>npm i redux-thunk -S
+
+>1.在store.js导入thunk
+
+```
+import { createStore, applyMiddleware } from 'redux'
+import rootReducer from './reducers'
+
+import thunk from 'redux-thunk'  //导入thunk
+
+export default createStore(
+    rootReducer,
+    applyMiddleware(thunk)  //使用applyMiddleware方法传入thunk
+)
+```
+
+>2.在action中添加异步方法
+
+```
+使用redux-thunk之后，就可以在actionCreator里return一个方法，
+这个方法的参数是dispatch
+
+export const incrementAsync = (id) => {
+    return (dispatch) => {
+        setTimeout(() => {
+            dispatch({  //调用同步的dispatch
+                type: actionType.CART_AMOUNT_INCREMENT,
+                payload: {
+                    id
+                }
+            })
+        },2000)
+    }
+}
+
+不同写法:
+export const decrementAsync = id => dispatch => {
+    setTimeout(() => {
+        dispatch({
+            type: actionType.CART_AMOUNT_DECREMENT,
+            payload: {
+                id
+            }
+        })
+    },2000)
+}
+```
