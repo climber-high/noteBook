@@ -396,3 +396,7 @@ export const decrementAsync = id => dispatch => {
     },2000)
 }
 ```
+
+## 容器组件Container和展示组件Presentational
+
+![](../../img/Container.png)
