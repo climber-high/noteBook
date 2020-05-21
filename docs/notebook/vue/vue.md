@@ -898,6 +898,91 @@ var vue = new Vue({
 })
 ```
 
+#### 路由懒加载
+
+>首屏组件加载速度更快一些，解决白屏问题
+
+>懒加载简单来说就是延迟加载或按需加载，即在需要的时候的时候进行加载,但是这种情况下一个组件生成一个js文件
+
+```
+1. vue异步组件实现懒加载
+resolve=>(require(['需要加载的路由的地址'])，resolve)
+
+import Vue from 'vue'
+import Router from 'vue-router'
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'HelloWorld',
+      component: resolve=>(require(["@/components/HelloWorld"],resolve))
+    }
+  ]
+})
+
+
+2. import方法
+const HelloWorld = （）=>import('需要加载的模块地址')
+
+import Vue from 'vue'
+import Router from 'vue-router'
+Vue.use(Router)
+
+const HelloWorld = ()=>import("@/components/HelloWorld")
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'HelloWorld',
+      component:HelloWorld
+    }
+  ]
+})
+
+
+3. webpack提供的require.ensure()
+{
+  path: '/home',
+  name: 'home',
+  component: r => require.ensure([], () => r(require('@/components/home')), 'demo')
+}
+```
+
+#### 组件懒加载
+
+```
+1.vue组件异步方法:
+
+export default {
+  components:{
+    "One-com":resolve=>(['./one'],resolve)
+  },
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App'
+    }
+  }
+}
+
+
+2.import方法:
+
+const One = ()=>import("./one");
+export default {
+  components:{
+    "One-com":One
+  },
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App'
+    }
+  }
+}
+```
+
+
 ## router-view使用name放置对应组件
 
 >命名视图

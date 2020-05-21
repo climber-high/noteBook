@@ -41,6 +41,7 @@
 	* [scss](notebook/css/scss.md)
 	* [iconfont](notebook/css/iconfont.md)
 	* [轮播图](notebook/css/轮播图.md)
+	* [可继承的css属性](notebook/css/可继承的css属性.md)
 	* [gulp的使用](notebook/css/gulp.md)
 	* [webpack的使用](notebook/css/webpack.md)
     
