@@ -1196,25 +1196,40 @@ var vue = new Vue({
 
 ## slot插槽
 
->为了让封装的组件更有拓展性
+>为了让封装的组件更有拓展性(模板样式显示由父组件决定，显不显示由子组件决定)
 
 ```
-1.插槽的基本使用:在组件添加<slot></slot>标签，在使用组件的时候的组件标签里面
-  <nav-bar>传入要插入的东西</nav-bar>
+1.插槽的基本使用:在子组件添加<slot></slot>标签，在父组件使用子组件的时候，组件标签里面
+  传入要插入的东西
 2.可以为插槽传入默认值，没有传东西的时候按默认值来显示
 3.如果有多个值，同时放入到组件进行替换时，一起作为替换元素
 ```
 
+```
+父组件:
+<topHeader>
+	<span>首页</span>   //传入的标签内容
+</topHeader>
+
+子组件:
+<slot>默认值</slot>   
+//子组件用slot接收，里面可以填默认值，父组件没传就显示
+```
+
 #### 具名插槽
 
->当组件中有多个插槽要添加name属性进行区分
+>当子组件中有多个插槽要添加name属性进行区分
 
 ```
+父组件:
+<topHeader>
+	<span slot="center">标题</span>
+</topHeader>
+
+子组件:
 <slot name="left"><span>左边</span></slot>
 <slot name="center"><span>中间</span></slot>
 <slot name="right"><span>右边</span></slot>
-
-<nav-bar><span slot="center">标题</span></nav-bar>
 ```
 
 #### 作用域插槽
@@ -1222,13 +1237,17 @@ var vue = new Vue({
 >子组件通过插槽绑定子组件的数据传给父组件调用
 
 ```
+子组件:
 <slot :data="pLanguage"></slot>
 
-<nav-bar>
+父组件:
+slot-scope接收子组件传过来的数据，是一个对象
+
+<topHeader>
 	<div slot-scope="slot">
 		<span v-for="(item,index) in slot.data" :key="index">{{item}}-</span>
 	</div>
-</nav-bar>
+</topHeader>
 ```
 
 ## Vuex

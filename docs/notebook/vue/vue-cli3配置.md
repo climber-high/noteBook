@@ -69,6 +69,8 @@ In package.json 在package.json文件里
 添加这个配置让npm run build时读取当前路径的资源
 
 module.exports={
-    publicPath:'./'
+    publicPath: process.env.NODE_ENV === 'production'
+    ? '/vue-project/dist/'
+    : '/'
 }
 ```
