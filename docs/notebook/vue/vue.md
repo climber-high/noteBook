@@ -1290,3 +1290,13 @@ export default {
    },
 }
 ```
+
+## this.$nextTick
+
+```
+1.在Vue生命周期的created()钩子函数进行DOM操作时一定要将操作放在nextTick()的回调函数中，
+因为在created生命周期时初始dom结构还未挂载到实例上且未渲染到页面上。
+
+2.v-if/v-show变化后需要获取dom结构时,nextTick作为vue提供的一个钩子函数，在需要使用随数据
+改变而改变的DOM结构的时候，可以将操作放在Vue.nextTick()的回调函数中保证必然能够取到dom结构
+```
