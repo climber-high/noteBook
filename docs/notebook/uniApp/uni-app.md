@@ -116,3 +116,30 @@ onLoad(option){
 	console.log(option)  //{'name':'zs'}
 }
 ```
+
+## 获取dom元素
+
+```
+uni.createSelectorQuert().in(this)
+```
+
+## 授权 wx.authorize
+
+>提前向用户发起授权请求。调用后会立刻弹窗询问用户是否同意授权小程序使用某项功能或获取用户的某些数据
+
+```
+1.可以通过 wx.getSetting 获取当前用户的设置，返回值中只会出现小程序已经向用户请求过的权限
+
+wx.getSetting({
+  success(res) {
+    if (!res.authSetting['scope.userInfo']) {
+      wx.authorize({
+        scope: 'scope.userInfo',
+        success () {
+          wx.getUserInfo()
+        }
+      })
+    }
+  }
+})
+```

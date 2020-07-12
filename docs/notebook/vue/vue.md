@@ -1255,6 +1255,14 @@ slot-scope接收子组件传过来的数据，是一个对象
 >专为Vue.js应用程序开发的状态管理模式，可以把一些共享的数据，保存到vuex中，方便任何组件修改和使用
 
 ```
+创建store文件夹跟文件
+
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+//全局引用
+Vue.use(Vuex)
+
 export default new Vuex.Store({
   state: {
     msg:0
@@ -1272,6 +1280,9 @@ export default new Vuex.Store({
   },
   actions: {
 	  //写异步代码
+	  fun(context){
+		  context里面包含了，state，mutations，getters
+	  }
   },
   modules:{ 
 	  //可以分成多个模块，并可以使用各个属性
@@ -1286,9 +1297,33 @@ export default {
        add(){
            this.$store.commit('add',2)  //调用vuex的mutations属性例方法来改变vuex的状态值
 		   //第二个参数是可以传递过去的参数
-       }
+       },
+	   fun(){
+		   //调用actions里面的方法
+		   this.$store.dispatch('fun')
+	   }
    },
 }
+```
+
+```
+在main.js引入该store文件，并添加到Vue实例里面
+
+import store from './store'
+
+
+new Vue({
+  el: '#app',
+  router,
+  store,
+  components: { App },
+  template: '<App/>'
+})
+
+或
+
+在main.js直接写到原型里面
+Vue.prototype.$store = store
 ```
 
 ## this.$nextTick
