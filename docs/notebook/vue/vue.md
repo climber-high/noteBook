@@ -616,6 +616,16 @@ components:{
 		template:'<h3>{{parentmsg}}</h3>'
 	}
 }
+
+props变量有默认值写法
+
+props: {
+  parentmsg: {  
+    required: true, // 必须提供字段
+	type:String,
+	default: 3  //有默认值
+  }
+}
 ```
 
 ## 父组件向子组件传方法并调用 this.$emit()

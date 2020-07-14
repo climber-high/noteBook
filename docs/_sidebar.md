@@ -93,6 +93,9 @@
 	* [相关知识](notebook/weChat/知识点.md)
 	* [wxs](notebook/weChat/wxs.md)
 	* [自定义组件](notebook/weChat/自定义组件.md)
+	* [生命周期](notebook/weChat/生命周期.md)
+	* [微信登录](notebook/weChat/微信登录.md)
+
 
 * Node.js
 	* [Node.js简介](notebook/Node/Node.js简介.md)
