@@ -74,6 +74,8 @@ description:项目描述
 language:是什么语言
 stars:星的数量
 pushed:填写更新时间，>2019-11-10
+
+搜索:awesome 资料，可以搜到学习资料
 ```
 
 ## git与svn区别

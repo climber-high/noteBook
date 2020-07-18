@@ -103,7 +103,7 @@ methods:{
 ```
 uni.navigateTo
 	redirectTo
-	reLaunch
+	reLaunch  //关闭所有页面，打开某个页面
 	switchTab
 	navigateBack
 	
