@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <link rel="stylesheet" href="source/vue.css">
   <link rel="shortcut icon" type="text/css" href="img/logo.jpg"/>
 	<style type="text/css">
 		.anchor:hover{
@@ -25,10 +25,23 @@
 			width: 100%;
 			height: 100%;
 		}
+		.bei{
+			position: fixed;
+   			bottom: 0;
+    			left: 0;
+    			right: 0;
+    			text-align: right;
+			padding-bottom:10px;
+			padding-right:50px;
+		}
+		.bei a{
+			text-decoration: none;
+		}
 	</style>
 </head>
 <body>
   <div id="app" style="color: aquamarine;">Loading...</div>
+  <div class="bei"><a target="_blank" href="https://beian.miit.gov.cn">粤ICP备20005261号</a></div>
   <script>
     window.$docsify = {
       name: '',
@@ -57,7 +70,7 @@
 	    }
     }
   </script>
-  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
-  <script src="//unpkg.com/docsify/lib/plugins/search.js"></script>
+  <script src="source/docsify.min.js"></script>
+  <script src="source/search.js"></script>
 </body>
 </html>
