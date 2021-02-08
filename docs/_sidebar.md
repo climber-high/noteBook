@@ -113,6 +113,9 @@
 * uni-app
 	* [uni-app](notebook/uniApp/uni-app.md)
 	
+* Nuxt
+	* [Nuxt](notebook/Nuxt/Nuxt.md)
+	
 * Apache配置
 	* [Apache简介](notebook/Apache/Apache简介.md)
 	* [网络基础概念](notebook/Apache/网络基础概念.md)
