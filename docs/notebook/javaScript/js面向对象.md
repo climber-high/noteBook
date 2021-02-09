@@ -46,6 +46,27 @@ var obj = createObject('张三')
 函数名大写，函数里没有new跟返回值，this是当前的对象，通过new的方式来创建对象
 ```
 
+## 单例模式
+
+>全局只允许实例化一次
+
+```
+function Person() {
+    this.name = "你好嘛";
+}
+Person.singleCase = function () {
+    if (!Person.db) {
+        console.log('hello world');
+        Person.db = new Person();
+    }
+    return Person.db;
+}
+var p = Person.singleCase();
+console.log(p.name);
+var b = Person.singleCase();   // 不会再实例化一次
+console.log(b.name);
+```
+
 ## 构造函数与实例对象的关系
 
 ```
