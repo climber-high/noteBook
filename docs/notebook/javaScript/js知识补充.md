@@ -380,3 +380,28 @@ function handle() {
 } 
 window.addEventListener('scroll', throttle(handle, 1000));
 ```
+
+## 不改变原数组跟改变原数组的方法
+
+>不改变原数组方法
+
+```
+concat()
+join()
+slice()
+
+indexOf()
+lastindexOf()
+```
+
+>改变原数组方法
+
+```
+shift()
+unshift()
+pop()
+push()
+sort()
+splice()
+reverse()
+```
