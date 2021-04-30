@@ -51,3 +51,58 @@ nuxt.config.js (配置文件)
 
 ```
 
+## 配置环境变量
+
+```
+1. 在nuxt.config.js添加
+
+// 环境变量
+const envFunc = require('./env);
+const env = envFunc(process.env.NODE_ENV);
+
+export default {
+    env,
+    head: {
+        title: '标题'
+        ....
+    }
+}
+
+2. 创建env文件夹，创建index.js文件
+
+const envConfig = {
+    development: require('./development), // 开发环境
+    small: require('./small'), //测试环境
+    big: require('./big')  //正式环境
+}
+module.exports = function (mode) {
+    return envConfig[mode];
+}
+
+3. 在env文件夹下创建 small.js , big.js文件
+
+module.exports = {
+    VUE_APP_Link: 'https://',
+    VUE_APP_BASEURL: 'https://',
+}
+
+4. 使用方法
+
+全局可以使用: process.env.VUE_APP_Link
+
+5. 配置packjson.js
+
+"scripts": {
+    "dev": "nuxt --mode development",
+    "build": "cross-env NODE_ENV=small nuxt build --mode",
+    "build:big": "cross-env NODE_ENV=big nuxt build --mode",
+}
+```
+
+
+
+
+
+
+
+
