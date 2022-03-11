@@ -276,5 +276,5 @@ mybatis.mapper-locations=classpath:mappers/*.xml
 1. 规划异常,创建控制器异常处理的基类BaseController
 2. 设计所需要处理的请求
 3. 添加基于`state`和`data`这2个属性的构造方法
-4. 添加处理请求的方法
+4. 添加处理请求的方法 
 ```
