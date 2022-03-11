@@ -247,4 +247,34 @@ public JsonResult reg(User user) {
 spring.jackson.default-property-inclusion=NON_NULL
 ```
 
+### 流程总结
 
+1. 开发顺序，通常应该遵循**从简单的功能开始，并且，依据增 > 查 > 删 > 改**的开发顺序
+2. 在每次处理一种新的数据类型之前，还应该先创建该数据在数据库中的数据表，然后，再创建数据表对应的实体类，再开始实现开发步骤
+3. 开发步骤都应该是：持久层 > 业务层 > 控制器 > 前端页面
+
+操作:
+
+```
+持久层: 
+1. 创建实体类的基类BaseEntity
+2. 创建实体类`entity`，继承自以上BaseEntity类，添加这些属性的SET/GET方法，基于`uid`生成`hashCode()`和`equals()`方法
+3. 创建持久层接口mapper, 用interface定义接口(接口里面只能包含常量和抽象方法)，并添加抽象方法
+第一次配置持久层接口，启动类之前添加`@MapperScan("持久层接口mapper路径")`，以配置接口文件的位置
+4. 配置映射，在根节点`<mapper>`中的namespace属性配置对应的接口文件，配置sql语句
+5. 在**application.properties**文件中添加关于XML映射文件的位置的配置信息
+mybatis.mapper-locations=classpath:mappers/*.xml
+6. 编写单元测试
+
+业务层: 
+1. 规划异常
+2. 创建`service`文件夹存放业务层接口，添加业务层抽象方法
+3. 在`impl`文件加中添加并重写以上抽象方法编写业务
+4. 编写单元测试
+
+控制器层(controller):
+1. 规划异常,创建控制器异常处理的基类BaseController
+2. 设计所需要处理的请求
+3. 添加基于`state`和`data`这2个属性的构造方法
+4. 添加处理请求的方法
+```
