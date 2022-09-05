@@ -69,12 +69,13 @@
 
 * Vue.js
 	* [vue-cli2构建配置项目](notebook/vue/vue构建配置项目.md)
-	* [vue-cli3配置](notebook/vue/vue-cli3配置.md)
 	* [vue](notebook/vue/vue.md)
-	* [vue-cli3开发](notebook/vue/vue-cli3开发.md)
-	* [axios](notebook/vue/axios.md)
 	* [vue2底层实现原理](notebook/vue/观察者(发布订阅)模式.md)
+	* [axios](notebook/vue/axios.md)
 	* [vue和react区别](notebook/vue/vue和react区别.md)
+	* [vue-cli3配置](notebook/vue/vue-cli3配置.md)
+	* [vue-cli3开发](notebook/vue/vue-cli3开发.md)
+	* [vue3](notebook/vue/vue3.md)
 
 * React
 	* [react相关知识](notebook/React/react相关知识.md)
