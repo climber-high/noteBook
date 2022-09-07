@@ -102,7 +102,7 @@ new Vue({
 
 ### 常用 Composition API
 
->1. setup
+>1. setup函数
 
 ```
 1. Vue3.0中一个新的配置项，值为一个函数 setup(){}
@@ -149,4 +149,84 @@ new Vue({
       }
     }
   </script>
+```
+
+>2. ref函数
+
+- 作用: 定义一个响应式的数据
+- 语法: `const xxx = ref(initValue)`
+    - 创建一个包含响应式数据的`引用对象（reference对象）`
+    - js中操作数据：`xxx.value`
+    - 模板中读取数据：不需要value，直接`<div>{{xxx}}</div>`
+- 备注:
+    - 接收的数据可以是：基本类型、也可以是对象类型。
+    - 基本类型的数据：响应式依然是靠`Object.defineProperty()`的`get`与`set`完成的。
+    - 对象类型的数据：内部使用了vue3中的一个新函数---`reactive`函数(底层Proxy函数)
+
+```vue
+<template>
+  <div>{{name}}</div>
+  <div>{{age}}</div>
+  <div>{{msg.sex}}</div>
+  <button @click="changeInfo">按钮</button>
+</template>
+
+<script>
+  import {ref} from 'vue';
+  export default {
+    name: 'App',
+    setup(){
+      let name = ref('张三');
+      let age = ref(18);
+      let msg = ref({
+        sex: '男'
+      })
+      function changeInfo() {
+        name.value = '李四';
+        age.value = 20;
+        msg.value.sex = '女'
+      }
+      return {name, age, changeInfo, msg}
+    }
+  }
+</script>
+```
+
+>3. reactive函数
+
+- 作用：定义一个`对象类型`的响应式数据(基本类型不要用它，要用`ref`函数)
+- 语法：`const 代理对象 = reactive(源对象)`接收一个对象(或数组)，返回一个`代理对象(proxy的实例对象,简称proxy对象)`
+- reactive定义的响应式数据是深层次的。
+- 内部基于ES6的Proxy实现，通过代理对象操作源对象内部数据进行操作。
+
+```vue
+<template>
+  <div>{{person.name}}</div>
+  <div>{{person.age}}</div>
+  <div>{{person.msg.sex}}</div>
+  <button @click="changeInfo">按钮</button>
+</template>
+
+<script>
+  import {reactive} from 'vue';
+  export default {
+    name: 'App',
+    setup(){
+      let person = reactive({
+        name: '张三',
+        age: 18,
+        msg : {
+          sex: '男'
+        }
+      })
+
+      function changeInfo() {
+        person.name = '李四';
+        person.age = 20;
+        person.msg.sex = '女';
+      }
+      return {person, changeInfo}
+    }
+  }
+</script>
 ```
