@@ -40,7 +40,7 @@ const p = new Proxy(person, {
         // target[propName] = value;
         Reflect.set(target, propName, value)
     },
-    defineProperty(target, propName) {
+    deleteProperty(target, propName) {
         // 监听删除，然后删除
         // return delete target[propName];
         return Reflect.deleteProperty(target, propName)
