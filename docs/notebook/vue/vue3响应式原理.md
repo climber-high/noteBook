@@ -21,6 +21,10 @@
 
 ### vue3.0的响应式
 
+- 实现原理：
+    - 通过Proxy(代理)：拦截对象中任意属性的变化，包括：属性值的读写、属性的添加、属性的删除等
+    - 通过Reflect(反射)：对被代理对象(源对象)的属性进行操作
+
 ```javascript
 let person = {
     name: '张三',
@@ -38,7 +42,7 @@ const p = new Proxy(person, {
     set(target, propName, value) {
         // 监听新增或修改，然后修改属性
         // target[propName] = value;
-        Reflect.set(target, propName, value)
+        return Reflect.set(target, propName, value)
     },
     deleteProperty(target, propName) {
         // 监听删除，然后删除
