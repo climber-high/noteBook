@@ -251,6 +251,52 @@ new Vue({
 - setup的参数
   - props：值为对象，包含：组件外部传递过来，且组件内部声明接收了的属性。
   - context：上下文对象
-    - attrs: 值为对象，包含：组件外部传递过来，但没有在props配置中声明的属性，相当于`this.$attrs`
+    - attrs: 值为对象，包含：组件外部传递过来，但没有在props配置中声明的属性，相当于`this.$attrs`(在props配置了传过来的参数，则attrs就会没有值；反之在props没配置该属性，则attrs就会有该值)
     - slots: 收到的插槽内容，相当于`this.$slots`
     - emit: 分发自定义时间的函数，相当于`this.$emit`
+
+```vue
+  父组件:
+  <template>
+    <DemoWorld @hello="showMsg" msg="123">
+      // vue3使用 v-slot:slotName 方式，vue2也可以slot=""方式
+      <template v-slot:slotName>
+        <span>具名插槽</span>
+      </template>
+    </DemoWorld>
+  </template>
+  <script>
+    import DemoWorld from './components/DemoWorld'
+    export default {
+      name: 'App',
+      // 注册组件
+      components: {DemoWorld},
+      setup() {
+        // 绑定事件
+        function showMsg(value) { alert(value) }
+        return {showMsg}
+      }
+  </script>
+
+   子组件:
+   <template>
+    <button @click="test">按钮</button>
+    // 展示具名插槽
+    <slot name="slotName"/>
+   </template>
+   <script>
+    export default {
+        name: 'DemoWorld',
+        // 需要获取父组件传过来的参数，不然会警告没有使用这些参数
+        props:['msg'],
+        // vue3新增的配置项，不加该配置会有警告
+        emits:['hello'],
+        setup(props, context){
+            console.log(props)  // Proxy {msg: '123'}  响应式数据
+            // 调用父组件方法
+            function test() { context.emit('hello',666) }
+            return {test}
+        }
+    }
+   </script>
+  ```
