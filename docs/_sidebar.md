@@ -77,6 +77,7 @@
 	* [vue-cli3开发](notebook/vue/vue-cli3开发.md)
 	* [vue3](notebook/vue/vue3.md)
 	* [vue3响应式原理](notebook/vue/vue3响应式原理.md)
+	* [vue3生命周期](notebook/vue/vue3生命周期.md)
 
 * React
 	* [react相关知识](notebook/React/react相关知识.md)
