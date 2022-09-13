@@ -64,7 +64,7 @@ vite官网: https://vitejs.cn
 3. 运行: npm run dev
 ```
 
-### 目录结构
+## 目录结构
 
 >initOnSave:false 在配置文件关闭语法检查, 无效则需要在package.json删除"eslint:recommended", 修改后重启
 
@@ -100,9 +100,9 @@ new Vue({
 1. template里不需要再有 根标签
 ```
 
-### 常用 Composition API
+## 常用 Composition API
 
->1. setup函数
+#### 1. setup函数
 
 ```
 1. Vue3.0中一个新的配置项，值为一个函数 setup(){}
@@ -151,7 +151,7 @@ new Vue({
   </script>
 ```
 
->2. ref函数
+#### 2. ref函数
 
 - 作用: 定义一个响应式的数据
 - 语法: `const xxx = ref(initValue)`
@@ -192,7 +192,7 @@ new Vue({
 </script>
 ```
 
->3. reactive函数
+#### 3. reactive函数
 
 - 作用：定义一个`对象类型`的响应式数据(基本类型不要用它，要用`ref`函数)
 - 语法：`const 代理对象 = reactive(源对象)`接收一个对象(或数组)，返回一个`代理对象(proxy的实例对象,简称proxy对象)`
@@ -229,6 +229,201 @@ new Vue({
     }
   }
 </script>
+```
+
+#### 4. computed函数
+
+>与vue2中computed配置功能一致`(都是实时计算值)`
+
+> `vue2写法`，computed为`对象形式`
+
+```javascript
+computed: {
+    msg() {
+        return this.person.name + ":" + this.person.age;
+    }
+}
+```
+
+> `vue3写法`，computed为`函数形式`
+
+```javascript
+import {reactive, computed} from 'vue';
+
+setup(){
+    let person = reactive({
+        name: '张三',
+        age: 18
+    })
+    // 简写
+    // let msg = computed(() => {
+    //     return person.name + ":" + person.age
+    // })
+    // 完整写法
+    let msg = computed({
+        get() {
+            return person.name + ":" + person.age
+        },
+        set(value) {
+            const msg = value.split(":");
+            person.name = msg[0];
+            person.age = msg[1];
+        }
+    }) 
+    return {person,msg}
+}
+```
+
+#### 5. watch函数
+
+> `vue2写法`，watch为`对象形式`
+
+```javascript
+watch: {
+    // 简写
+    // sum(newVal, oldVal) {
+    //     console.log(newVal, oldVal)
+    // }
+
+    // 完整写法
+    sum: {
+        immediate: true,  // 立即监听
+        deep: true,  // 监听深层属性
+        handler(newVal, oldVal) {
+            console.log(newVal, oldVal)
+        }
+    }
+},
+```
+
+> `vue3写法`，watch为`函数形式`
+
+- 1. 监听`ref()`定义的数据
+
+```javascript
+import {ref, watch} from 'vue';
+
+setup(){
+    let sum =ref(0);
+    let msg = ref('你好');
+    let person = ref({
+        name: '张三',
+        age: 18,
+        job: {
+            j1: {
+                salary: 20
+            }
+        }
+    })
+    // 监听一个数据
+    watch(sum, (newVal, oldVal) => {
+        console.log(newVal, oldVal)
+    }, {immediate: true});
+
+    // 监听多个数据
+    watch([sum, msg], (newVal, oldVal) => {
+        // newVal和oldVal也是以数组形式返回
+        console.log(newVal, oldVal)
+    }, {immediate: true});
+
+    // 监听用ref定义的对象
+    watch(person, (newVal, oldVal) => {
+        // 这里监听的是引用对象RefImpl，浅层的内存地址，可以用deep监听深层值的变化
+        console.log(newVal, oldVal)
+    }, {deep: true});
+    // 或
+    watch(person.value, (newVal, oldVal) => {
+       // 这里监听的是代理对象Proxy，可以直接监听属性值的变化
+        console.log(newVal, oldVal)
+    });
+
+    return {sum, msg}
+}
+```
+
+- 2. 监听`reactive()`定义的`整个`数据
+
+  - **vue3的坑，监听值的变化，newVal, oldVal所打印出来的都是新变化的值**
+
+  - **reactive()强制开启的深度监视(deep配置无效)**
+
+```javascript
+let person = reactive({
+    name: '张三',
+    age: 18
+})
+watch(person, (newVal, oldVal) => {
+    console.log(newVal, oldVal)
+})
+```
+
+- 3. 监听`reactive()`定义的`单个`数据
+
+```javascript
+let person = reactive({
+    name: '张三',
+    age: 18
+})
+watch(() => person.age, (newVal, oldVal) => {
+    console.log(newVal, oldVal)
+})
+```
+
+- 4. 监听`reactive()`定义的`某些`数据
+
+```javascript
+let person = reactive({
+    name: '张三',
+    age: 18
+})
+watch([() => person.age, () => person.name], (newVal, oldVal) => {
+    console.log(newVal, oldVal)
+})
+```
+
+- 5. 监听`reactive()`定义的`里面某个对象`数据
+
+  - **如果修改了深层次的属性salary，想要监听外层就能监听到内层数据的变化，就要加上deep:true**
+
+  - **该情况也是，监听值的变化，newVal, oldVal所打印出来的都是新变化的值**
+
+```javascript
+<template>
+    薪资: {{person.job.j1.salary}}
+    <button @click="person.job.j1.salary++">修改薪资</button>
+</template>
+
+let person = reactive({
+    name: '张三',
+    age: 18,
+    job: {
+      j1: {
+        salary: 20
+      }
+    }
+})
+watch(() => person.job, (newVal, oldVal) => {
+    console.log(newVal, oldVal)
+}, {deep:true})
+```
+
+#### 6. watchEffect函数
+
+- watch：既要指明监视的属性，也要指明监视的回调。
+- watchEffect：不用指明监视哪个属性，监视的回调中用到哪个属性，那就监视哪个属性。
+- watchEffect有点像computed
+  - 但computed注重的计算出来的值（回调函数的返回值），所以必须要写返回值。
+  - 而watchEffect更注重的是过程（回调函数的函数体），所以不用写返回值。
+
+```javascript
+import {watchEffect} from 'vue';
+
+//watchEffect所指定的回调中用到的数据只要发生变化，则直接重新执行回调。
+watchEffect(() => {
+  const x1 = sum.value;
+  const x2 = person.age;
+  console.log('watchEffect配置的回调执行了')
+})
 ```
 
 ### reactive对比ref
