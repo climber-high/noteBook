@@ -435,6 +435,31 @@ watchEffect(() => {
 - 应用：要将响应式对象中的某个属性单独提供给外部使用时。
 - 扩展：`toRefs`与`toRef`功能一致，但可以批量创建多个ref对象，语法：`const person = toRefs(person)`
 
+```javascript
+<template>
+    年龄: {{person.age}}
+    姓名: {{name}}
+    薪资: {{job.j1.salary}}
+</template>
+
+setup(){
+    let person = reactive({
+        name: '张三',
+        age: 18,
+        job: {
+            j1: {
+                salary: 20
+            }
+        }
+    })
+    return {
+      person,
+      name: toRef(person.name),
+      ...toRefs(person)  // 返回person下的第一层属性
+    }
+}
+```
+
 #### 8. 自定义hook函数
 
 - 什么是hook? 本质上是一个函数，把setup函数中使用的Composition API进行了封装
