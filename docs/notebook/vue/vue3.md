@@ -426,6 +426,53 @@ watchEffect(() => {
 })
 ```
 
+#### 7. toRef函数
+
+**说明：就是把源对象复制一份出来，当修改新对象的值时候，旧的对象也会跟着改变，并且是响应式对象数据**
+
+- 作用：创建一个ref对象，其value值指向另一个对象中的某个属性。
+- 语法：`const name = toRef(person, 'name')`
+- 应用：要将响应式对象中的某个属性单独提供给外部使用时。
+- 扩展：`toRefs`与`toRef`功能一致，但可以批量创建多个ref对象，语法：`const person = toRefs(person)`
+
+#### 8. 自定义hook函数
+
+- 什么是hook? 本质上是一个函数，把setup函数中使用的Composition API进行了封装
+- 类似于vue2.x中的mixin。
+- 自定义hook的优势：复用代码，让setup中的逻辑更清楚易懂
+
+```javascript
+1. 创建新文件夹hooks放hook函数，文件命名通常useXxx.js
+import {reactive,onMounted,onBeforeUnmount} from 'vue';
+export default function(){
+    let ponit = reactive({
+        x:0,
+        y:0
+    })
+    function clickFun(event){
+        ponit.x = event.pageX;
+        ponit.y = event.pageY;
+        console.log(event.pageX, event.pageY);
+    }
+    onMounted(() => {
+        window.addEventListener('click', clickFun);
+    })
+    onBeforeUnmount(() => {
+        window.removeEventListener('click', clickFun);
+    })
+    return ponit;
+}
+
+2. 使用
+import usePoint(自定义方法名usePoint) from '../hooks/usePoint'
+export default {
+    setup(){
+        let ponit = usePoint();
+        return {ponit}
+    }
+}
+```
+
 ### reactive对比ref
 
 - 从定义数据角度对比：
