@@ -192,6 +192,17 @@ new Vue({
 </script>
 ```
 
+- 可以获取html元素
+
+```
+<div ref="hello">123</div>
+
+const hello = ref();
+onMounted(() => {
+  console.log(hello.value);
+})
+```
+
 #### 3. reactive函数
 
 - 作用：定义一个`对象类型`的响应式数据(基本类型不要用它，要用`ref`函数)
