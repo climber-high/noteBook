@@ -558,6 +558,57 @@ person = readonly(person);
     - 1.有些值不应该被设置为响应式的，例如复杂的第三方类库等。
     - 2.当渲染具有不可变数据源的大列表时，跳过响应式转换可以提高性能。
 
+```javascript
+比如在一个已有的响应式对象中再添加一个普通对象
+let person = reactive({
+  name: '张三'
+})
+
+let msg = {age: 18, sex: '男'};
+person.msg = markRaw(msg);  // 标记其不会再成为响应式对象
+```
+
+#### 4.customRef
+
+- 作用：创建一个自定义的ref，并对其`依赖项跟踪`和`更新触发`进行显示控制。
+
+```javascript
+<template>
+    <input type="text" v-model="ketWord"/>
+    {{ ketWord }}
+</template>
+  
+<script>
+import {customRef} from 'vue';
+export default {
+    name: 'DemoWorld',
+    setup(){
+        let timer;
+        // 自定义一个ref
+        function myRef(value, delay) {
+            return customRef((track, trigger) => {
+                return {
+                    get() {
+                        track(); // 3. 通知Vue追踪数据的变化，然后更新
+                        return value;
+                    },
+                    set(newValue) {
+                        clearTimeout(timer); // 防抖
+                        timer = setTimeout(() => {
+                            value = newValue; // 1. 把新的值，重新赋值给传进来的value
+                            trigger(); // 2. 通知Vue去重新解析模板
+                        }, delay)
+                    }
+                }
+            });
+        }
+        let ketWord = myRef('hello', 500)
+        return {ketWord}
+    }
+}
+</script>
+```
+
 
 ### reactive对比ref
 
