@@ -609,6 +609,108 @@ export default {
 </script>
 ```
 
+#### 5.provide与inject
+
+> 实现祖与后代组件间通信
+
+**父组件有一个provide选项来提供数据，后代组件有一个inject来使用这些数据**
+
+```javascript
+// 父组件
+import { provide } from 'vue';
+setup() {
+  let person = {'name': '张三', age: 18};
+  provide('person', person);
+  return {}
+}
+
+//后代组件
+import { inject } from 'vue';
+setup() {
+  let person = inject('person');
+  console.log(person);
+  return {}
+}
+```
+
+#### 6.响应式数据的判断
+
+- isRef: 检查一个值是否为一个ref对象
+- isReactive: 检查一个对象是否由`reactive`创建的响应式代理
+- isReadonly: 检查一个对象是否由`readonly`创建的只读代理
+- isProxy: 检查一个对象是否由`reactive`或者`readonly`方法创建的代理
+
+## 新增的组件
+
+#### 1. Fragment
+
+- 在Vue2中：组件必须有一个根标签
+- 在Vue3中：组件可以没有根标签，内部会将多个标签包含在一个Fragment虚拟元素中
+- 好处：减少标签层级，减少内存占用
+
+#### 2. Teleport
+
+> Teleport是一种能够将我们的`组件html结构`移动到指定位置的技术
+
+```javascript
+to属性可以填存在于index.html的标签，标签元素(body)，id(#id)，class名(.class)
+
+<teleport to='body'>
+    <div>
+      内容
+    </div>
+</teleport>
+```
+
+#### 3. Suspense
+
+> 等待异步组件时渲染一些额外内容，让应用有更好的用户体验
+
+- 1. 异步引入组件
+
+```javascript
+import {defineAsyncComponent} from 'vue';
+const Child = defineAsyncComponent(() => import('./Child'))
+```
+
+- 2. 使用`Suspense`包裹组件，并配置好`default`与`fallback`
+
+**使用Suspense组件和异步引入子组件，setup可以返回Promise，延迟加载组件**
+
+**没有使用Suspense组件和异步引入子组件时，setup返回Promise对象，子组件会加载不出来**
+
+```javascript
+<Suspense>
+    // v-slot:default 固定写法，子组件加载完毕后，所展示的内容
+    <template v-slot:default>
+        <Child/>
+    </template>
+
+    // v-slot:fallback 固定写法，子组件还没有加载完成时，所展示的内容
+    <template v-slot:fallback>
+        loading...
+    </template>
+</Suspense>
+
+setup(){
+  let sum = ref(0)
+  return new Promise((resolve,reject) => {
+    setTimeout(() => {
+      resolve({sum})
+    }, 1000)
+  })
+}
+-----或------
+async setup(){
+  let sum = ref(0)
+  let p =  new Promise((resolve,reject) => {
+      setTimeout(() => {
+        resolve({sum})
+      }, 1000)
+    })
+  return await p;
+}
+```
 
 ### reactive对比ref
 
