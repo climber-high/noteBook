@@ -712,6 +712,80 @@ async setup(){
 }
 ```
 
+## 其他改变
+
+#### 1. 全局API的转移
+
+- Vue 2.x有许多全局API和配置
+  - 例如：注册全局组件、注册全局指令等
+
+  ```javascript
+  // 注册全局组件
+  Vue.component('MyButton', {
+    data: () => ({
+      count: 0
+    }),
+    template: ``
+  })
+
+  // 注册全局指令
+  Vue.directive('focus', {
+    inserted: el => el.focus()
+  })
+  ```
+
+- Vue3.0中对这些API做出了调整：
+  - 将全局的API，即：`Vue.xxx`调整到应用实例(`app`)上
+  |2.x全局API|3.x实例API(app)|
+  | :-- | :--: |
+  |Vue.config.xxx|app.config.xxx|
+  |Vue.config.productionTip (是否关闭vue的生产提示,false/true)|`移除`|
+  |Vue.component|app.component|
+  |Vue.directive|app.directive|
+  |Vue.mixin|app.mixin|
+  |Vue.use|app.use|
+  |Vue.prototype|app.config.globalProperties|
+
+#### 2.其他改变
+
+- data选项应始终被声明为一个函数`(防止组件在被复用的时候，产生数据的关联关系，从而造成干扰)`
+- 过度类名的更改
+  - vue2.x写法
+  ```
+    .v-enter, .v-leave-to {}
+    .v-leave, .v-enter-to {}
+  ```
+  - vue3.x写法
+  ```
+    .v-enter-from, .v-leave-to {}
+    .v-leave-from, .v-enter-to {}
+  ```
+- `移除`keyCode作为v-on的修饰符，同时也不再支持`config.keyCodes`(别名按键)
+
+```
+// vue3不再支持
+@keyup.13
+Vue.config.keyCodes.huiche = 13 (配置别名按键，@keyup.huiche)
+```
+
+- `移除`v-on.native修饰符
+  - 父组件中绑定事件
+  ```
+    <my-component
+      v-on:close="closeEvent"
+      v-on:click="clickEvent"
+    />
+  ```
+  - 子组件中声明自定义事件
+  ```
+    export default {
+      emits: ['close']
+    }
+    如果加上'click'，说明click也是自定义事件
+  ```
+
+- `移除`过滤器(filter)
+
 ### reactive对比ref
 
 - 从定义数据角度对比：
