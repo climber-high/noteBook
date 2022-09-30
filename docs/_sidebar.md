@@ -59,6 +59,10 @@
 	* [web性能优化](notebook/javaScript/web性能优化.md)
 	* [题目](notebook/javaScript/题目.md)
 
+* typeScript
+	* [typeScript简介](notebook/typeScript/typeScript简介.md)
+	* [typeScript相关知识](notebook/typeScript/ts相关知识.md)
+
 * JQuery
 	* [JQ方法](notebook/JQuery/jq.md)
 
