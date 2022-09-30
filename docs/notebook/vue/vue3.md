@@ -712,6 +712,57 @@ async setup(){
 }
 ```
 
+## 路由
+
+> 安装: npm install vue-router@4
+
+> 使用vue-router的步骤:
+
+**1. 配置路由**
+
+```javascript
+
+// 在main.js
+import { createApp } from 'vue'
+
+// 1. 引入createRouter，createWebHistory两个函数
+import {createRouter, createWebHistory, createWebHashHistory} from 'vue-router'
+import App from './App.vue'
+
+// 2. 配置路由的映射，组件和路径映射关系的routes数组；
+const routes = [
+    {path: '/demo', component: () => import('./demo.vue')}  //  路由异步加载
+]
+
+// 3. 创建router对象
+const router = createRouter({
+    history: createWebHistory(),  // history模式， createWebHashHistory()为hash模式
+    routes
+})
+
+const app = createApp(App)
+// 挂载，并使用router
+app.use(router).mount('#app');
+```
+
+**2. 使用路由**
+
+```javascript
+// 展示路由
+<router-view/>
+
+import {useRouter, useRoute} from 'vue-router'
+setup(){
+  // 调用useRouter，useRoute方法
+  let router = useRouter(), route = useRoute();
+
+  function goto() {
+      console.log(router, route);  // router的方法，route为代理对象
+      router.push('/demo');
+  }
+}
+```
+
 ## 其他改变
 
 #### 1. 全局API的转移
