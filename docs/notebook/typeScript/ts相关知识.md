@@ -94,6 +94,9 @@ npm install -D cross-env
 > 1. npm init -y 生成package.json文件
 
 ```
+npm install -D webpack@4.41.5 webpack-cli@3.3.10 webpack-dev-server@3.10.2 typescript@4.1.5 ts-loader@8.0.17 
+html-webpack-plugin@4.5.0 cross-env@7.0.3 clean-webpack-plugin@3.0.0
+
 "devDependencies": {
   "@webpack-cli/serve": "^1.7.0",
   "clean-webpack-plugin": "^3.0.0",
