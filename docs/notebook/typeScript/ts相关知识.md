@@ -147,7 +147,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        include: [resolve('src')]
+        include: [resolve(__dirname, 'tsconfig.json')]  // tsconfig.json配置文件在哪个文件夹下
       }
     ]
   },

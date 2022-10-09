@@ -62,6 +62,7 @@
 * typeScript
 	* [typeScript简介](notebook/typeScript/typeScript简介.md)
 	* [typeScript相关知识](notebook/typeScript/ts相关知识.md)
+	* [typeScript常用语法](notebook/typeScript/ts常用语法.md)
 
 * JQuery
 	* [JQ方法](notebook/JQuery/jq.md)
