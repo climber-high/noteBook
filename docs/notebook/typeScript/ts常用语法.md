@@ -32,7 +32,7 @@ let name: string = 'tom'
 ```
 let u: undefined = undefined
 let n: null = null
-let s: number = null | undefined
+let s: number = null | undefined (严格模式下会报错)
 ```
 
 #### 5. 数组
@@ -40,9 +40,10 @@ let s: number = null | undefined
 ```
 1. 第一种: number[]
     let list1: number[] = [1, 2, 3]
+    let list2: (number|string)[] = [1, 2, '3']
 
 2. 第二种方式是使用数组泛型，Array<元素类型>：
-    let list2: Array<number> = [1, 2, 3]
+    let list3: Array<number> = [1, 2, 3]
 ```
 
 #### 6. 元组 Tuple
@@ -55,4 +56,81 @@ let s: number = null | undefined
 let t1: [string, number] = ['hello', 10];
 
 console.log(t1[1].substring(1)) // Error, 'number' 不存在 'substring' 方法
+```
+
+#### 7. 枚举
+
+> 1. 枚举数值`默认从0开始`依次递增, 根据特定的名称得到对应的枚举数值
+
+**枚举的元素可以为中文，不推荐**
+
+```
+enum Color {
+  Red,
+  Green,
+  Blue,
+  中文
+}
+let myColor: Color = Color.Green
+console.log(myColor, Color.中文) // 1, 3
+```
+
+> 2. 默认情况下，从`0开始`为元素编号。 你也可以`手动的指定`成员的数值，没设置值的从上一个设置了值的开始自增
+
+```
+enum Color {
+  Red = 1,
+  Green,
+  Blue
+}
+console.log(Color.Green) // 2
+```
+
+> 3. 当枚举的值为数字，可以通过枚举的值，可以获取枚举所对应的元素名(枚举的值为`字符串不可以获取`其元素名)
+
+```
+enum Color {
+  Red = 1,
+  Green,
+  Blue
+}
+let colorName: string = Color[2]
+console.log(colorName) // 'Green'
+```
+
+> 4. 如果前一个枚举的`类型为字符串`，则下一个的枚举`必须定义值`，不然会报错
+
+```
+enum Color {
+    Red = '123',
+    Green = 1,
+    Blue = 2
+}
+```
+
+> 5. 枚举实现的原理
+
+```
+enum Color {
+    Red,
+    Green,
+    Blue
+}
+
+var Color;
+(function (Color) {
+    Color[Color["Red"] = 0] = "Red";
+    Color[Color["Green"] = 1] = "Green";
+    Color[Color["Blue"] = 2] = "Blue";
+})(Color || (Color = {}));
+```
+
+#### 8. any
+
+> 不清楚类型的变量指定一个类型
+
+```
+let notSure: any = 1;
+
+let list: any[] = [1, true, 'free']
 ```
