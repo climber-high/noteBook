@@ -132,5 +132,43 @@ var Color;
 ```
 let notSure: any = 1;
 
+// 当一个数组中要存多个数据，个数和类型不确定，可以使用
 let list: any[] = [1, true, 'free']
+```
+
+#### 9. void
+
+> `void`类型像是与`any类型相反`，它表示`没有任何类型`，当一个函数没有返回值时，通常其返回值类型是void
+
+```
+/* 表示没有任何类型, 一般用来说明函数的返回值不能是undefined和null之外的值 */
+function fn(): void {
+  console.log('fn()')
+  // return undefined
+  // return null  非严格模式下，可以返回null
+  // return 1 // error
+}
+```
+
+> 声明一个 void 类型的变量没有什么用，因为你只能为它赋予 `undefined` 和 `null`
+
+```
+let unusable: void = undefined;
+```
+
+#### 10. object
+
+> object表示非原始类型，也就是除number，string，boolean之外的类型。
+
+```
+function fn2(obj: object): object {
+  console.log('fn2()', obj)
+  return {}
+  // return undefined
+  // return null
+}
+console.log(fn2(new String('abc')))
+console.log(fn2(String))
+
+// console.log(fn2('abc') // error
 ```
