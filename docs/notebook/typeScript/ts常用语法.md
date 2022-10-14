@@ -172,3 +172,54 @@ console.log(fn2(String))
 
 // console.log(fn2('abc') // error
 ```
+
+#### 11. 联合类型（Union Types）
+
+> 表示取值可以为多种类型中的一种
+
+```
+function toString2(x: number | string): string {
+  return x.toString()
+}
+```
+
+#### 12. 类型断言(Type Assertion)
+
+> 可以用来手动指定一个值的类型
+
+- 语法:
+ - 方式一: <类型>值
+ - 方式二: 值 as 类型 ，tsx中只能用这种方式
+
+ ```
+function getLength(x: number | string) {
+// 直接x.length会报错是因为，传入x不清楚是数字或者字符串(字符串才有长度属性)
+  if ((<string>x).length) { // 所以指定x的字符串类型
+    // 证明为字符串
+    return (x as string).length
+  } else {
+    // 证明为数字
+    return x.toString().length
+  }
+}
+console.log(getLength('abcd'), getLength(1234))
+ ```
+
+#### 类型推断
+
+> TS 会在没有明确的指定类型的时候推测出一个类型
+
+**1.定义变量时赋值了, 推断为对应的类型**
+
+```
+let b9 = 123 // number
+// b9 = 'abc' // error
+```
+
+**2.定义变量时没有赋值, 推断为any类型**
+
+```
+let b10 // any类型
+b10 = 123
+b10 = 'abc'
+```
