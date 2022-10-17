@@ -1,6 +1,6 @@
 ### 常用语法
 
-## 基础类型
+## 一、基础类型
 
 > ts中变量一开始是什么类型，那么后期`赋值的时候`，只能用`这个类型的数据`，是不允许用其他类型的数据赋值给当前的这个变量
 
@@ -222,4 +222,59 @@ let b9 = 123 // number
 let b10 // any类型
 b10 = 123
 b10 = 'abc'
+```
+
+## 二、接口
+
+> TypeScript 的核心原则之一是对值所具有的结构进行类型检查。我们使用接口（Interfaces）来定义对象的类型
+
+**接口是对象的状态(属性)和行为(方法)的抽象(描述)**
+
+`类型检查器会查看对象内部的属性是否与 IPerson 接口描述一致, 如果不一致就会提示类型错误`
+
+- 接口类型的对象:
+  - 多了或者少了属性是不允许的
+  - 可选属性: ?
+  - 只读属性: readonly
+
+```
+// 定义人的接口, 限定或者约束该对象中的属性数据
+interface IPerson {
+  readonly id: number   // 1. 只读类型
+  name: string
+  age: number
+  sex?: string    // 2. 可选属性
+}
+
+const person1: IPerson = {
+  id: 1,
+  name: 'tom',
+  age: 20,
+  // sex: '男'  // 可以没有
+  // xxx: 12 // error 没有在接口中定义, 不能有
+}
+// person2.id = 2 // error，只读不能修改
+```
+
+#### 函数类型
+
+> 接口可以描述函数类型(参数的类型与返回的类型)
+
+> 为了使用接口表示函数类型，我们需要给接口定义一个调用签名。它就像是一个只有参数列表和返回值类型的函数定义。参数列表里的每个参数都需要名字和类型。
+
+```typescript
+interface SearchFunc {
+  (source: string, subString: string): boolean
+}
+
+const mySearch: SearchFunc = function(source: string, sub: string): boolean {
+  return source.search(sub) > -1   // search()字符串内置方法，但没有indexOf(sub, 1)可以指定起始查找位置灵活
+}
+
+// 创建函数的 参数列表类型 和 返回值类型，可以省略
+// const mySearch: SearchFunc = function(source, sub) {
+//  return source.search(sub) > -1
+// }
+
+console.log(mySearch('abcd', 'bc'))
 ```
