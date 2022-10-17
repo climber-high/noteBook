@@ -256,7 +256,7 @@ const person1: IPerson = {
 // person2.id = 2 // error，只读不能修改
 ```
 
-#### 函数类型
+#### 1. 函数类型
 
 > 接口可以描述函数类型(参数的类型与返回的类型)
 
@@ -277,4 +277,206 @@ const mySearch: SearchFunc = function(source: string, sub: string): boolean {
 // }
 
 console.log(mySearch('abcd', 'bc'))
+```
+
+#### 2. 类 类型
+
+> 一个`类`可以`实现多个`接口
+
+```
+interface Alarm {
+  alert(): any
+}
+
+interface Light {
+  lightOn(): void
+  lightOff(): void
+}
+
+class Car implements Alarm, Light {
+  // 实现接口，如果接口有方法，则类必须实现该接口方法
+  alert() {
+    console.log('Car alert')
+  }
+  lightOn(){}
+  lightOff(){}
+}
+```
+
+>一个`接口`可以`继承多个`接口，能够从一个接口里复制成员到另一个接口里
+
+```
+interface LightableAlarm extends Alarm, Light {}
+```
+
+## 三、类
+
+```javascript
+/*
+类的基本定义与使用
+*/
+
+class Greeter {
+  // 声明属性
+  message: string
+
+  // 构造方法，为了实例化对象的时候，可以直接对属性的值进行初始化
+  constructor(message: string) {
+    this.message = message
+  }
+
+  // 一般方法
+  greet(): string {
+    return 'Hello ' + this.message
+  }
+}
+
+// 创建类的实例
+const greeter = new Greeter('world')
+// 调用实例的方法
+console.log(greeter.greet())
+```
+
+#### 1. 继承，多态
+
+> 类从基类中继承了属性和方法，派生类通常被称作子类，基类通常被称作超类。
+
+> 类和类的继承关系，需要用到extends关键字
+
+```
+class Animal {
+  run(distance: number) {
+    console.log(`Animal run ${distance}m`)
+  }
+}
+
+class Dog extends Animal {
+  cry() {
+    console.log('wang! wang!')
+  }
+}
+
+const dog = new Dog()
+dog.cry()
+dog.run(100) // 可以调用从父中继承得到的方法
+```
+
+> 子类中可以调用父类中的构造函数，使用super关键字(也可以用super调父类实例方法)
+
+```javascript
+class Animal {
+  name: string
+  constructor(name: string) {
+    this.name = name;
+  }
+  run(distance: number) {
+    console.log(`Animal run ${distance}m`)
+  }
+}
+
+class Dog extends Animal {
+  constructor(name: string) {
+    // 实例化对象的时候调用父类构造方法。子类的构造函数必须在访问this下的属性前，调用super()函数
+    super(name); 
+    super.run(2);
+  }
+  run(distance: number) {   // 子类 重写 父类方法
+    console.log(666);
+    super.run(distance);   // 子类 调用 父类run方法
+  }
+}
+const dog:Dog = new Dog('小狗');   // 1. Animal run 2m
+dog.run(3)    // 2. 666; 3. Animal run 3m
+
+/* 如果子类型有扩展的方法, 不能让子类型引用指向父类型的实例 */
+// const dog:Dog = new Animal('小狗');  error
+
+// 对象的多态
+function showRun(ant: Animal) {
+  ant.run(3);
+}
+showRun(dog);
+```
+
+#### 2. 公共，私有与受保护的修饰符
+
+> 用来描述类内部的属性/方法的可访问性
+
+- public: `默认值`, 公开的外部也可以访问
+- private: 只能`类内部`可以访问 `(实例化后获取不到类的内部属性)`
+- protected: `类内部和子类`可以访问 `(实例化后获取不到类的内部属性)`
+
+```javascript
+class Animal {
+  public name: string
+
+  public constructor(name: string) {
+    this.name = name
+  }
+
+  public run(distance: number = 0) {
+    console.log(`${this.name} run ${distance}m`)
+  }
+}
+
+class Person extends Animal {
+  private age: number = 18
+  protected sex: string = '男'
+
+  run(distance: number = 5) {
+    console.log('Person jumping...')
+    super.run(distance)
+  }
+}
+
+class Student extends Person {
+  run(distance: number = 6) {
+    console.log('Student jumping...')
+
+    console.log(this.sex) // 子类能看到父类中受保护的成员
+    // console.log(this.age) //  子类看不到父类中私有的成员
+
+    super.run(distance)
+  }
+}
+
+console.log(new Person('abc').name) // 公开的可见
+// console.log(new Person('abc').sex) // 受保护的不可见
+// console.log(new Person('abc').age) //  私有的不可见
+```
+
+#### 3. readonly修饰符
+
+> 你可以使用`readonly`关键字将属性设置为只读的。 只读属性必须在声明时或构造函数里被初始化。
+
+```
+class Person {
+  readonly name: string = 'abc'
+  constructor(name: string) {
+    this.name = name
+    // 构造函数中，可以对只读的属性成员的数据进行修改
+    this.name = '123'
+  }
+}
+
+let john = new Person('John')
+// john.name = 'peter' // error
+```
+
+> `参数属性`可以方便地让我们在一个地方定义并初始化一个成员
+
+**构造函数中参数列表的参数,使用readonly修饰后，该参数name可以叫参数属性,该类就自动创建一个属性成员name，外部无法修改，但是能访问**
+
+**readonly, public, private, protected进行修饰，都会自动添加该属性**
+
+```javascript
+class Person2 {
+  // name: string = 'abc' 参数列表添加readonly修饰符，声明变量可以省略
+  constructor(readonly name: string) {
+    // this.name = name  也不需要手动初始化，外部也能够访问
+  }
+}
+
+const p = new Person2('jack')
+console.log(p.name)
 ```
