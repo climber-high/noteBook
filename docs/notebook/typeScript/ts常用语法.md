@@ -480,3 +480,156 @@ class Person2 {
 const p = new Person2('jack')
 console.log(p.name)
 ```
+
+#### 4. 存取器
+
+```javascript
+  class Person {
+    firstName: string = 'A'
+    lastName: string = 'B'
+    get fullName() {
+      return this.firstName + '-' + this.lastName
+    }
+    set fullName(value) {
+      const names = value.split('-')
+      this.firstName = names[0]
+      this.lastName = names[1]
+    }
+  }
+  
+  const p = new Person()
+  console.log(p.fullName) // A-B
+  
+  p.firstName = 'C'
+  p.lastName = 'D'
+  console.log(p.fullName) // C-D
+  
+  p.fullName = 'E-F'
+  console.log(p.firstName, p.lastName) // E-F
+```
+
+#### 5. 静态属性
+
+> 静态成员:在类中通过static修饰的属性或者方法，就是静态属性和静态方法
+
+**静态成员在使用的时候通过 `类名.`的这种语法来调用的**
+
+```javascript
+/*
+静态属性, 是类对象的属性
+非静态属性, 是类的实例对象的属性
+*/
+
+class Person {
+  name1: string = 'A'
+  // 静态属性
+  static name2: string = 'B'
+
+  // 构造函数是不能用static修饰的
+  constructor(name: string) {
+    this.name1 = name;
+    // name2是静态属性，不能通过实例对象来调用
+    Person.name2 = name;
+  }
+
+  // 静态方法
+  static sayHi() {console.log('你好')}
+}
+// name2是静态属性，不能通过实例对象来调用
+console.log(Person.name2)  // 'B'
+console.log(new Person('张三').name1)  // '张三'
+
+// 调用静态方法
+Person.sayHi();
+```
+
+#### 6. 抽象类
+
+> 抽象类做为其它派生类的基类使用。它们不能被实例化，为了让子类实例化及实现内部的抽象方法
+
+> 抽象类: 抽象方法一般没有任何具体的内容实现，也可以包含实例方法
+
+**`abstract` 关键字是用于定义抽象类和在抽象类内部定义抽象方法。**
+
+```javascript
+/*
+抽象类
+  不能创建实例对象, 只有实现类才能创建实例
+  可以包含未实现的抽象方法
+*/
+
+abstract class Animal {
+  abstract name: string
+  // 抽象方法
+  abstract cry()
+
+  // 实例方法
+  run() {
+    console.log('run()')
+  }
+}
+
+class Dog extends Animal {
+  name: string = '张三' 
+  // 重新实现抽象类中的方法
+  cry() {
+    console.log(' Dog cry()')
+  }
+}
+
+const dog = new Dog()
+dog.cry()
+dog.run()
+```
+
+## 四、函数
+
+#### 1. 函数类型
+
+```javascript
+// 函数声明式，命名函数
+function add(x: number, y: number): number {
+  return x + y
+}
+
+// 函数表达式，匿名函数
+let myAdd = function(x: number, y: number): number {
+  return x + y
+}
+
+// 完整写法
+// let myAdd2: (x: number, y: number) => number = function(x: number, y: number): number {
+//   return x + y
+// }
+```
+
+#### 2. 默认参数和可选参数
+
+```javascript
+// 1. 参数列表直接赋值 为默认参数
+// 2. 参数?: 为可选参数
+
+function buildName(firstName: string = 'A', lastName?: string): string {
+  if (lastName) {
+    return firstName + '-' + lastName
+  } else {
+    return firstName
+  }
+}
+console.log(buildName('C', 'D'))
+console.log(buildName('C'))
+console.log(buildName())  // 函数firstName参数有默认值，所以可以不传；lastName为可选参数，可以不传
+```
+
+#### 3. 剩余参数(rest参数)
+
+> rest参数需要放在形参的最后
+
+```
+function info(x: string, ...args: string[]) {
+  console.log(x, args)
+}
+info('abc', 'c', 'b', 'a')
+```
+
+#### 4. 函数重载
