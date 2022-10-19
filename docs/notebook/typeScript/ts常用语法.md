@@ -633,3 +633,214 @@ info('abc', 'c', 'b', 'a')
 ```
 
 #### 4. 函数重载
+
+> 函数名相同, 而形参不同，形参个数不同的多个函数
+
+```
+// 重载函数声明
+// 1. 如果不写该声明，调用函数时参数没有对应上，也会编译通过，但定义的函数有可能返回undefined
+// 2. 如果写了该声明，调用函数时参数没有对应上，那么会编译不通过，提示: 没有与此调用匹配的重载的错误
+
+function add(x: string, y: string): string
+function add(x: number, y: number): number
+
+// 定义函数实现
+function add(x: string | number, y: string | number): string | number {
+  // 在实现上我们要注意严格判断两个参数的类型是否相等，而不能简单的写一个 x + y
+  if (typeof x === 'string' && typeof y === 'string') {
+    return x + y
+  } else if (typeof x === 'number' && typeof y === 'number') {
+    return x + y
+  }
+}
+
+console.log(add(1, 2))
+console.log(add('a', 'b'))
+// console.log(add(1, 'a')) // error
+```
+
+## 五、泛型
+
+> 指在定义函数、接口或类的时候，不预先指定具体的类型，而在使用的时候再指定具体类型的一种特性
+
+**泛型写法可以在编写代码的时候，会有提示信息判断代码是否正确，并提示该值类型**
+
+**如果填写any类型，代码在编写的时候就算有错误或调用不存在的方法，都不会有错误提示**
+
+#### 1. 函数泛型
+
+```javascript
+function getArr<T>(value: T, count: number) : T[] {
+  const arr: Array<T> = [];
+  for(let i=0; i<count; i++) {
+    arr.push(value);
+  }
+  return arr;
+}
+
+const arr1 = getArr<number>(123,3);
+console.log(arr1[0].toFixed(2))
+// console.log(arr1[0].split(""))  error
+
+const arr2 = getArr<string>('123',3);
+// console.log(arr2[0].toFixed(2))  error
+console.log(arr2[0].split(""))
+```
+
+> 多个泛型参数的函数
+
+```javascript
+function swap<K, V>(a: K, b: V): [K, V] {
+  return [a, b]
+}
+const result = swap<string, number>('abc', 123)
+console.log(result[0].length, result[1].toFixed())
+```
+
+#### 2. 泛型接口
+
+> 在定义接口时, 为接口中的属性或方法定义泛型类型，在使用接口时, 再指定具体的泛型类型
+
+```javascript
+  // 定义一个泛型接口
+  interface IBaseCRUD<T> {
+    data: Array<T>
+    add: (t: T) => T 
+    getUserById: (id: number) => T
+  }
+
+  // 定义一个用户信息的类
+  class User {
+    id?: number
+    name: string
+    age: number
+    constructor(name: string, age: number) {
+      this.name = name
+      this.age = age
+    }
+  }
+
+  class UserCRUD implements IBaseCRUD<User> {
+    data: Array<User> = []
+    // 重新实现接口方法
+    // 添加用户方法
+    add(user: User): User {
+      user.id = Date.now() + Math.random()
+      this.data.push(user);
+      return user
+    } 
+    // 根据id获取用户信息
+    getUserById(id: number): User {
+      return this.data.find(user => user.id === id);
+    }
+  }
+  const userCRUD: UserCRUD = new UserCRUD();
+  userCRUD.add(new User('张三', 18));
+  const {id} = userCRUD.add(new User('李四', 20));
+  console.log(userCRUD.data);
+  console.log(userCRUD.getUserById(id));
+```
+
+#### 3. 泛型类
+
+> 在定义类时, 为类中的属性或方法定义泛型类型 在创建类的实例时, 再指定特定的泛型类型
+
+```javascript
+  // 定义一个类，类中的属性值类型不确定，方法中的参数及返回值的类型也不确定
+  class GenericNumber<T> {
+    defaultValue: T
+    add: (x: T, y: T) => T
+  }
+  // 在实例化类的对象的时候，再确定泛型的类型
+  const genericNumber: GenericNumber<number> = new GenericNumber<number>();
+  genericNumber.defaultValue = 123;
+  genericNumber.add = function(x, y) {
+    return x + y;
+  }
+  console.log(genericNumber.add(genericNumber.defaultValue, 20))
+```
+
+#### 4. 泛型约束
+
+> 如果我们直接对一个泛型参数取 length 属性, 会报错, 因为这个泛型根本就不知道它有这个属性
+
+```javascript
+// 没有泛型约束
+function fn<T>(x: T): void {
+  // console.log(x.length)  // error
+}
+```
+
+> 可以定义一个接口来`泛型约束`
+
+```javascript
+// 用来约束将来的某个类型中必须要有length属性
+interface Lengthwise {
+  // 接口中有一个属性length
+  length: number
+}
+
+// 指定泛型约束
+function fn2<T extends Lengthwise>(x: T): void {
+  console.log(x.length)
+}
+
+// 传入符合约束类型的值，必须包含必须 length 属性：
+fn2('abc')
+// fn2(123) // error  number没有length属性，传入的值需要有length属性，才满足Lengthwise接口约束
+```
+
+## 六、声明文件
+
+> 当使用第三方库时，我们需要引用它的声明文件，才能获得对应的代码补全、接口提示等功能
+
+**declare var 并没有真的定义一个变量，只是定义了全局变量 jQuery 的类型，仅仅会用于编译时的检查，在编译结果中会被删除**
+
+> 1. 声明语句: 如果需要ts对新的语法进行检查, 需要要加载了对应的类型说明代码
+
+```
+declare var jQuery: (selector: string) => any;
+```
+
+> 2. 声明文件
+
+```
+1. 把声明语句放到一个单独的文件（jQuery.d.ts）中, ts会自动解析到项目中所有声明文件
+
+2. 下载声明文件: npm install @types/jquery --save-dev
+```
+
+> 很多的第三方库都定义了`对应的声明文件库`, 库文件名一般为 @types/xxx, 可以在 https://www.npmjs.com/package/package 进行搜索
+
+> 有的第三库在下载时就会自动下载对应的声明文件库(比如: webpack),有的可能需要单独下载(比如 jQuery/react)
+
+## 七、内置对象
+
+> 内置对象是指根据标准在全局作用域（Global）上存在的对象。这里的标准是指 ECMAScript 和其他环境（比如 DOM）的标准。
+
+> 1. ECMAScript 的内置对象
+
+```javascript
+/* 1. ECMAScript 的内置对象 */
+let b: Boolean = new Boolean(1)
+let n: Number = new Number(true)  // 1，传入false或null为0，传入undefined为NaN
+let s: String = new String('abc')
+let d: Date = new Date()
+let r: RegExp = /^1/
+let e: Error = new Error('error message')
+b = true
+// let bb: boolean = new Boolean(2)  // error，改变了的类型不是基本数据类型
+```
+
+> 2. BOM 和 DOM 的内置对象 
+
+`Window，Document，HTMLElement，DocumentFragment，Event，NodeList`
+
+```javascript
+const div: HTMLElement = document.getElementById('test')
+const divs: NodeList = document.querySelectorAll('div')
+document.addEventListener('click', (event: MouseEvent) => {
+  console.dir(event.target)
+})
+const fragment: DocumentFragment = document.createDocumentFragment()
+```
