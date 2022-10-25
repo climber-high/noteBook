@@ -72,6 +72,9 @@
 	* [字符串新方法](notebook/ES6/字符串新方法.md)
 	* [Promise](notebook/ES6/Promise.md)
 
+* webpack5
+	* [webpack5简介](notebook/webpack5/webpack5简介.md)
+
 * Vue.js
 	* [vue-cli2构建配置项目](notebook/vue/vue构建配置项目.md)
 	* [vue](notebook/vue/vue.md)
