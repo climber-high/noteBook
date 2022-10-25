@@ -74,6 +74,7 @@
 
 * webpack5
 	* [webpack5简介](notebook/webpack5/webpack5简介.md)
+	* [基本配置](notebook/webpack5/基本配置.md)
 
 * Vue.js
 	* [vue-cli2构建配置项目](notebook/vue/vue构建配置项目.md)
